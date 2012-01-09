@@ -157,6 +157,16 @@ final class DateValue implements ImmutableDate, Comparable<DateValue>, Serializa
 	}
 	
 	/**
+	 * Contains the day number.
+	 * @return	The day number
+	 * @since	TFP 1.6
+	 */
+	public int dayNumber ()
+	{
+		return (date);
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 * @since	TFP 1.0
 	 */

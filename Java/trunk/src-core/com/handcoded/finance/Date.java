@@ -232,6 +232,16 @@ public final class Date extends TemporalDate
 	}
 	
 	/**
+	 * Contains the day number.
+	 * @return	The day number.
+	 * @since	TFP 1.6
+	 */
+	public int dayNumber ()
+	{
+		return (dateValue.dayNumber ());
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 * @since	TFP 1.0
 	 */
