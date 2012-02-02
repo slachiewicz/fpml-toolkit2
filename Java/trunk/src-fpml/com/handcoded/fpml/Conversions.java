@@ -1762,11 +1762,15 @@ public final class Conversions
 	}
 
 	/**
+	 * Attempts to determine the message type a document should use then converted
+	 * to the indicated FpML schema version.
 	 * 
-	 * @param targetVersion
-	 * @param source
-	 * @param document
-	 * @return
+	 * @param	targetVersion	The target FpML version number.
+	 * @param	source			The <CODE>Release</CODE> instance describing the source.
+	 * @param	document		The DOM <CODE>Document</CODE> for the source.
+	 * @return	The name of the message type or root element that should be used
+	 * 			when translating to the new version.
+	 * @since	TFP 1.5
 	 */
 	public static MessageType suggestMessage (final String targetVersion, Release source, Document document)
 	{
@@ -1796,9 +1800,11 @@ public final class Conversions
 	 * @since	TFP 1.0
 	 */
 	private Conversions ()
-	{
-	}
+	{ }
 	
+	/**
+	 * Initialises the message mapping tables.
+	 */
 	static {
 		messageMap.put ("DataDocument",
 			new MessageType (Releases.R5_0_CONFIRMATION, "dataDocument"));
