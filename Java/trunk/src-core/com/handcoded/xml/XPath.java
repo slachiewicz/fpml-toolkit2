@@ -1,4 +1,4 @@
-// Copyright (C),2005-2007 HandCoded Software Ltd.
+// Copyright (C),2005-2011 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -490,7 +490,22 @@ public final class XPath
 	{
 		return (paths (paths (paths (paths (paths (paths (paths (paths (context, name1), name2), name3), name4), name5), name6), name7), name8));
 	}
+	
+	//---------------------------------------------------------------------------
+	
+	public static boolean match (final Node context, final Node parent, final String name1)
+	{
+		if (name1.startsWith ("@"))
+			return ((context.getNodeType () == Node.ATTRIBUTE_NODE)
+				&& ((Attr) context).getLocalName ().equals (name1.substring (2)));
+		else
+			return ((context.getNodeType () == Node.ELEMENT_NODE)
+				&& ((Element) context).getLocalName ().equals (name1));
+	}
+	
 
+	//---------------------------------------------------------------------------
+	
 	/**
 	 * Ensures no instances can be constructed.
 	 * @since	TFP 1.0
