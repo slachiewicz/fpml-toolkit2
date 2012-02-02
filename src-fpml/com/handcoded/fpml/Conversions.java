@@ -26,8 +26,6 @@ import org.w3c.dom.NodeList;
 import com.handcoded.meta.ConversionException;
 import com.handcoded.meta.DirectConversion;
 import com.handcoded.meta.Helper;
-import com.handcoded.meta.Release;
-import com.handcoded.meta.SchemaRelease;
 import com.handcoded.meta.Schema;
 import com.handcoded.xml.DOM;
 import com.handcoded.xml.XPath;
@@ -39,7 +37,7 @@ import com.handcoded.xml.XPath;
  * <P>
  * Currently only conversions from earlier releases to later ones are
  * supported.
- * 
+ *
  * @author	BitWise
  * @version	$Id$
  * @since	TFP 1.0
@@ -53,7 +51,7 @@ public final class Conversions
 	 * <UL>
 	 * <LI>The &lt;product&gt; container element was removed.</LI>
 	 * <LI>Superfluous <CODE>type</CODE> attributes are removed.</LI>
-	 * </UL> 
+	 * </UL>
 	 * @since	TFP 1.0
 	 */
 	public static class R1_0__R2_0 extends DirectConversion
@@ -62,7 +60,7 @@ public final class Conversions
 		{
 			super  (Releases.R1_0, Releases.R2_0);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 * @since	TFP 1.0
@@ -73,21 +71,21 @@ public final class Conversions
 			Element			oldRoot = source.getDocumentElement ();
 			Element			newRoot	= target.getDocumentElement ();
 			NamedNodeMap	attrs  	= oldRoot.getAttributes();;
-			
+
 			// Transfer the scheme default attributes
 			for (int index = 0; index < attrs.getLength (); ++index) {
 				Attr attr = (Attr) attrs.item (index);
 				if (attr.getName ().endsWith ("SchemeDefault")) {
 					String name  = attr.getName ();
 					String value = attr.getValue ();
-					
+
 					if (Releases.R1_0.getSchemeDefaults ().getDefaultUriForAttribute (name).equals (value))
 						value = Releases.R2_0.getSchemeDefaults ().getDefaultUriForAttribute (name);
-					
+
 					if (value != null) newRoot.setAttributeNS (null, name, value);
 				}
 			}
-			
+
 			// Transcribe each of the first level child elements
 			for (Node node = oldRoot.getFirstChild (); node != null;) {
 				transcribe (node, target, newRoot);
@@ -96,12 +94,12 @@ public final class Conversions
 
 			return (target);
 		}
-		
+
 		/**
 		 * Recursively copies the structure of the old FpML 1-0 document
 		 * into a new FpML 2-0 document adjusting the elements and attributes
 		 * as necessary.
-		 * 
+		 *
 		 * @param 	context			The <CODE>node</CODE> to be copied.
 		 * @param 	document		The new <CODE>Document</CODE> instance.
 		 * @param 	parent			The new parent <CODE>Node</CODE>.
@@ -124,32 +122,32 @@ public final class Conversions
 					else {
 						Element 		clone = document.createElementNS (null, element.getLocalName ());
 						NamedNodeMap	attrs = element.getAttributes ();
-						
+
 						parent.appendChild (clone);
-						
+
 						// Transfer and update attributes
 						for (int index = 0; index < attrs.getLength (); ++index) {
 							Attr attr 	= (Attr) attrs.item (index);
 							String name = attr.getName ();
-							
+
 							if (!(name.equals ("type") || name.equals ("base"))) {
 								String value  = attr.getValue ();
-								
+
 								if (name.endsWith ("Scheme")) {
 									String oldDefault = Releases.R1_0.getSchemeDefaults ().getDefaultAttributeForScheme (name);
 									String newDefault = Releases.R2_0.getSchemeDefaults ().getDefaultAttributeForScheme (name);
-									
+
 									if (oldDefault != null && newDefault != null) {
-										String 	defaultUri = Releases.R1_0.getSchemeDefaults ().getDefaultUriForAttribute (oldDefault); 
+										String 	defaultUri = Releases.R1_0.getSchemeDefaults ().getDefaultUriForAttribute (oldDefault);
 										if ((defaultUri != null) && defaultUri.equals (value))
 											value = Releases.R2_0.getSchemeDefaults ().getDefaultUriForAttribute (newDefault);
 									}
 								}
-								
+
 								if (value != null) clone.setAttributeNS (null, name, value);
 							}
 						}
-						
+
 						// Recursively copy the child node across
 						for (Node node = element.getFirstChild (); node != null;) {
 							transcribe (node, document, clone);
@@ -158,7 +156,7 @@ public final class Conversions
 					}
 					break;
 				}
-				
+
 			default:
 				parent.appendChild (document.importNode (context, false));
 			}
@@ -173,7 +171,7 @@ public final class Conversions
 	 * <LI><CODE>href</CODE> attributes are come <CODE>IDREF</CODE> strings
 	 * rather then XLink expressions.</LI>
 	 * <LI>Superfluous <CODE>type</CODE> attributes are removed.</LI>
-	 * </UL> 
+	 * </UL>
 	 * @since	TFP 1.0
 	 */
 	public static class R2_0__R3_0 extends DirectConversion
@@ -182,7 +180,7 @@ public final class Conversions
 		{
 			super (Releases.R2_0, Releases.R3_0);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 * @since	TFP 1.0
@@ -193,40 +191,40 @@ public final class Conversions
 			Element			oldRoot = source.getDocumentElement ();
 			Element			newRoot	= target.getDocumentElement ();
 			NamedNodeMap	attrs  	= oldRoot.getAttributes();;
-			
+
 			// Transfer the scheme default attributes
 			for (int index = 0; index < attrs.getLength (); ++index) {
 				Attr attr = (Attr) attrs.item (index);
 				if (attr.getName ().endsWith ("SchemeDefault")) {
 					String name  = attr.getName ();
 					String value = attr.getValue ();
-					
+
 					if (Releases.R2_0.getSchemeDefaults ().getDefaultUriForAttribute (name).equals (value))
 						value = Releases.R3_0.getSchemeDefaults ().getDefaultUriForAttribute (name);
-					
+
 					if (value != null) newRoot.setAttributeNS (null, name, value);
 				}
 			}
-			
+
 			// Transcribe each of the first level child elements
 			Vector<Node> 	parties = new Vector<Node> ();
 			for (Node node = oldRoot.getFirstChild (); node != null;) {
 				transcribe (node, target, newRoot, parties);
 				node = node.getNextSibling ();
 			}
-	
+
 			// Then append the saved party elements
 			for (int index = 0; index < parties.size (); ++index)
 				transcribe (parties.elementAt (index), target, newRoot, null);
-	
+
 			return (target);
 		}
-		
+
 		/**
 		 * Recursively copies the structure of the old FpML 2-0 document
 		 * into a new FpML 3-0 document adjusting the elements and attributes
 		 * as necessary.
-		 * 
+		 *
 		 * @param 	context			The <CODE>node</CODE> to be copied.
 		 * @param 	document		The new <CODE>Document</CODE> instance.
 		 * @param 	parent			The new parent <CODE>Node</CODE>.
@@ -239,27 +237,27 @@ public final class Conversions
 			case Node.ELEMENT_NODE:
 				{
 					Element		element = (Element) context;
-		
+
 					// If this is the first pass through the tree then save
 					// party elements instead of processing them.
 					if ((parties != null) && element.getNodeName ().equals ("party")) {
 						parties.add (element);
 						return;
 					}
-					
+
 					Element 		clone = document.createElementNS (null, element.getLocalName ());
 					NamedNodeMap	attrs = element.getAttributes ();
-					
+
 					parent.appendChild (clone);
-					
+
 					// Transfer and update attributes converting hrefs
 					for (int index = 0; index < attrs.getLength (); ++index) {
 						Attr attr 	= (Attr) attrs.item (index);
 						String name = attr.getName ();
-						
+
 						if (!(name.equals ("type") || name.equals ("base"))) {
 							String value  = attr.getValue ();
-							
+
 							if (name.equals ("href")) {
 								if (value.startsWith ("#"))
 									value = value.substring (1);
@@ -267,18 +265,18 @@ public final class Conversions
 							else if (name.endsWith ("Scheme")) {
 								String oldDefault = Releases.R2_0.getSchemeDefaults ().getDefaultAttributeForScheme (name);
 								String newDefault = Releases.R3_0.getSchemeDefaults ().getDefaultAttributeForScheme (name);
-								
+
 								if (oldDefault != null && newDefault != null) {
-									String 	defaultUri = Releases.R2_0.getSchemeDefaults ().getDefaultUriForAttribute (oldDefault); 
+									String 	defaultUri = Releases.R2_0.getSchemeDefaults ().getDefaultUriForAttribute (oldDefault);
 									if ((defaultUri != null) && defaultUri.equals (value))
 										value = Releases.R3_0.getSchemeDefaults ().getDefaultUriForAttribute (newDefault);
 								}
 							}
-							
+
 							if (value != null) clone.setAttributeNS (null, name, value);
 						}
 					}
-					
+
 					// Recursively copy the child node across
 					for (Node node = element.getFirstChild (); node != null;) {
 						transcribe (node, document, clone, parties);
@@ -286,7 +284,7 @@ public final class Conversions
 					}
 					break;
 				}
-				
+
 			default:
 				parent.appendChild (document.importNode (context, false));
 			}
@@ -312,13 +310,13 @@ public final class Conversions
 	 * </UL>
 	 * @since	TFP 1.0
 	 */
-	public static class R3_0__R4_0 extends DirectConversion 
+	public static class R3_0__R4_0 extends DirectConversion
 	{
 		public R3_0__R4_0 ()
 		{
 			super (Releases.R3_0, Releases.R4_0);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 * @since	TFP 1.0
@@ -329,15 +327,15 @@ public final class Conversions
 			Element			oldRoot = source.getDocumentElement ();
 			Element			newRoot	= target.getDocumentElement ();
 			Hashtable<String, Object> cache	= new Hashtable<String, Object> ();
-			
+
 			newRoot.setAttributeNS (Schema.INSTANCE_URL, "xsi:type", "DataDocument");
-			
+
 			// Transcribe each of the first level child elements
 			for (Node node = oldRoot.getFirstChild (); node != null;) {
 				transcribe (node, target, newRoot, cache, true);
 				node = node.getNextSibling ();
 			}
-	
+
 			return (target);
 		}
 
@@ -345,7 +343,7 @@ public final class Conversions
 		 * Recursively copies the structure of the old FpML 3-0 document
 		 * into a new FpML 4-0 document adjusting the elements and attributes
 		 * as necessary.
-		 * 
+		 *
 		 * @param 	context			The <CODE>node</CODE> to be copied.
 		 * @param 	document		The new <CODE>Document</CODE> instance.
 		 * @param 	parent			The new parent <CODE>Node</CODE>.
@@ -360,8 +358,8 @@ public final class Conversions
 			case Node.ELEMENT_NODE:
 				{
 					Element			element = (Element) context;
-					Element 		clone 	= document.createElementNS (null, element.getLocalName ());
-					
+					Element 		clone;
+
 					// Cache the <calculationAgentPartyReference> element
 					if (caching &&
 						element.getLocalName ().equals ("calculationAgentPartyReference") &&
@@ -373,14 +371,14 @@ public final class Conversions
 					// Handle the restructuring of the equityOption element components
 					if (element.getLocalName ().equals ("buyerParty")) {
 						clone = document.createElement ("buyerPartyReference");
-						
+
 						clone.setAttribute ("href", DOM.getElementByLocalName (element, "partyReference").getAttribute ("href"));
 						parent.appendChild (clone);
 						break;
 					}
 					if (element.getLocalName ().equals ("sellerParty")) {
 						clone = document.createElement ("sellerPartyReference");
-							
+
 						clone.setAttribute ("href", DOM.getElementByLocalName (element, "partyReference").getAttribute ("href"));
 						parent.appendChild (clone);
 						break;
@@ -394,7 +392,7 @@ public final class Conversions
 							underlyingAsset = document.createElement ("index");
 						else
 							underlyingAsset = document.createElement ("equity");
-		
+
 						NodeList	list = element.getElementsByTagName ("instrumentId");
 						for (int index = 0; index < list.getLength (); ++index)
 							transcribe ((Element) list.item (index), document, underlyingAsset, cache, caching);
@@ -419,7 +417,7 @@ public final class Conversions
 						parent.appendChild (clone);
 						break;
 					}
-					
+
 					if (element.getLocalName ().equals ("settlementDate")) {
 						clone = document.createElement ("settlementDate");
 						Element relativeDate = document.createElement ("relativeDate");
@@ -432,14 +430,14 @@ public final class Conversions
 						parent.appendChild (clone);
 						break;
 					}
-					
+
 					// Handle restructuring of FX components
 					if (element.getLocalName ().equals ("fixing")) {
 						clone = document.createElement ("fixing");
 
 						Element target;
 
-						if ((target = XPath.path (element, "primaryRateSource")) != null) 
+						if ((target = XPath.path (element, "primaryRateSource")) != null)
 							transcribe (target, document, clone, cache, caching);
 						if ((target = XPath.path (element, "secondaryRateSource")) != null)
 							transcribe (target, document, clone, cache, caching);
@@ -484,7 +482,7 @@ public final class Conversions
 							DOM.setInnerText (clone, "ISDA");
 						else
 							DOM.setInnerText (clone, "NONE");
-						
+
 						break;
 					}
 
@@ -498,7 +496,7 @@ public final class Conversions
 							DOM.setInnerText (clone, "Currency2PerCurrency1");
 						else
 							DOM.setInnerText (clone, DOM.getInnerText (element).trim ());
-						
+
 						break;
 					}
 					if (element.getLocalName ().equals ("sideRateBasis")) {
@@ -514,7 +512,7 @@ public final class Conversions
 							DOM.setInnerText (clone, "BaseCurrencyPerCurrency2");
 						else
 							DOM.setInnerText (clone, DOM.getInnerText (element).trim ());
-						
+
 						break;
 					}
 					if (element.getLocalName ().equals ("premiumQuoteBasis")) {
@@ -545,7 +543,7 @@ public final class Conversions
 							DOM.setInnerText (clone, "PutCurrencyPerCallCurrency");
 						else
 							DOM.setInnerText (clone, DOM.getInnerText (element).trim ());
-						
+
 						break;
 					}
 					if (element.getLocalName ().equals ("fxBarrierType")) {
@@ -588,24 +586,35 @@ public final class Conversions
 							clone.setAttribute (name, attr.getValue ());
 					}
 
-					// Ignore text string under dateRelativeTo
-					if (element.getLocalName ().equals ("dateRelativeTo")) break;
-
-					// Fix up id and href on cash settlement dateRelativeTo definitions
-					if (element.getLocalName ().equals ("cashSettlementPaymentDate") &&
-						element.getParentNode ().getParentNode ().getLocalName ().equals ("optionalEarlyTermination")) {
-						String		id;
-
-						for (int count = 1;;) {
-							id = "AutoRef" + (count++);
-							if (document.getElementById (id) == null) break;
-						}
-
-						clone.setAttribute ("id", id);
-						
-						XPath.path ((Element) parent, "cashSettlementValuationDate", "dateRelativeTo").setAttribute ("href", id);
+					if (element.getLocalName ().equals ("mandatoryEarlyTermination")) {
+						cache.put ("dateRelativeToId", element.getAttribute ("id"));
+						clone.removeAttribute ("id");
 					}
-					
+					if (element.getLocalName ().equals ("mandatoryEarlyTerminationDate")) {
+						clone.setAttribute ("id", (String) cache.get ("dateRelativeToId"));
+					}
+
+					// Fix up href on cash settlement dateRelativeTo definitions
+					if (element.getLocalName ().equals ("dateRelativeTo")) {
+						if (element.getParentNode ().getLocalName ().equals ("cashSettlementValuationDate")) {
+							if (!element.getParentNode ().getParentNode ().getParentNode ().getLocalName().equals ("mandatoryEarlyTermination")) {
+								String		id;
+
+								for (int count = 1;;) {
+									id = "AutoRef" + (count++);
+									if (document.getElementById (id) == null) break;
+								}
+								cache.put ("dateRelativeToId", id);
+							}
+							clone.setAttribute ("href", (String) cache.get ("dateRelativeToId"));
+						}
+						break;
+					}
+
+					if (element.getLocalName ().equals ("cashSettlementPaymentDate")) {
+						clone.setAttribute ("id", (String) cache.get ("dateRelativeToId"));
+					}
+
 					// Recursively copy the child node across
 					NodeList	list = element.getChildNodes ();
 					for (int index = 0; index < list.getLength (); ++index)
@@ -626,28 +635,28 @@ public final class Conversions
 					}
 					break;
 				}
-		
+
 			default:
 				parent.appendChild (document.importNode (context, false));
 				break;
 			}
-		}		
+		}
 	};
-	
+
 	/**
 	 * The <CODE>R4_0__R4_1</CODE> class contains the logic to migrate
-	 * the content of a FpML 4.0 schema based document to 4.1 
-	 * 
+	 * the content of a FpML 4.0 schema based document to 4.1
+	 *
 	 * @since	TFP 1.0
 	 */
-	public static class R4_0__R4_1 extends DirectConversion 
+	public static class R4_0__R4_1 extends DirectConversion
 	{
 		public interface Helper extends com.handcoded.meta.Helper
 		{
 			/**
 			 * Uses the context information provided to determine the reference
 			 * currency of the trade or throws a <CODE>ConversionException</CODE>.
-			 * 
+			 *
 			 * @param	context		The <CODE>Element</CODE> of the fxFeature.
 			 * @return	The reference currency code value (e.g. GBP).
 			 */
@@ -656,7 +665,7 @@ public final class Conversions
 			/**
 			 * Uses the context information provided to determine the first quanto
 			 * currency of the trade or throws a <CODE>ConversionException</CODE>.
-			 * 
+			 *
 			 * @param 	context		The <CODE>Element</CODE> of the fxFeature
 			 * @return	The reference currency code value (e.g. GBP).
 			 */
@@ -665,27 +674,27 @@ public final class Conversions
 			/**
 			 * Uses the context information provided to determine the second quanto
 			 * currency of the trade or throws a <CODE>ConversionException</CODE>.
-			 * 
+			 *
 			 * @param 	context		The <CODE>Element</CODE> of the fxFeature
 			 * @return	The reference currency code value (e.g. GBP).
 			 */
 			public String getQuantoCurrency2 (final Element context);
-			
+
 			/**
 			 * Uses the context information provided to determine the quanto
 			 * currency basis or throws a <CODE>ConversionException</CODE>.
-			 * 
+			 *
 			 * @param 	context		The <CODE>Element</CODE> of the fxFeature
 			 * @return	The quanto currency basis.
 			 */
 			public String getQuantoCurrencyBasis (final Element context);
 		}
-		
+
 		public R4_0__R4_1 ()
 		{
 			super (Releases.R4_0, Releases.R4_1);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 * @since	TFP 1.0
@@ -696,16 +705,17 @@ public final class Conversions
 			Document		target = getTargetRelease ().newInstance ("FpML");
 			Element			oldRoot = source.getDocumentElement ();
 			Element			newRoot	= target.getDocumentElement ();
-			
-			// Transfer the attributes
-			newRoot.setAttributeNS (Schema.INSTANCE_URL, "xsi:type", "DataDocument");
-			
+
+			// Transfer the message type
+			newRoot.setAttributeNS (Schema.INSTANCE_URL, "xsi:type",
+				oldRoot.getAttributeNS (Schema.INSTANCE_URL, "type"));
+
 			// Transcribe each of the first level child elements
 			for (Node node = oldRoot.getFirstChild (); node != null;) {
 				transcribe (node, target, newRoot, helper);
 				node = node.getNextSibling ();
 			}
-	
+
 			return (target);
 		}
 
@@ -713,7 +723,7 @@ public final class Conversions
 		 * Recursively copies the structure of the old FpML 4-0 document
 		 * into a new FpML 4-1 document adjusting the elements and attributes
 		 * as necessary.
-		 * 
+		 *
 		 * @param 	context			The <CODE>node</CODE> to be copied.
 		 * @param 	document		The new <CODE>Document</CODE> instance.
 		 * @param 	parent			The new parent <CODE>Node</CODE>.
@@ -728,12 +738,12 @@ public final class Conversions
 			case Node.ELEMENT_NODE:
 				{
 					Element			element = (Element) context;
-					Element 		clone = document.createElementNS (null, element.getLocalName ());
+					Element 		clone;
 
 					// Ignore failureToDeliverApplication
 					if (element.getLocalName ().equals ("failureToDeliverApplicable"))
 						break;
-				
+
 					// Handle elements that get renamed.
 					if (element.getLocalName ().equals ("equityOptionFeatures"))
 						clone = document.createElement ("equityFeatures");
@@ -758,7 +768,7 @@ public final class Conversions
 						clone = document.createElement (element.getLocalName ());
 
 					parent.appendChild (clone);
-					
+
 					// Handle renaming for clearanceSystemIdScheme attribute
 					if (element.getLocalName ().equals ("clearanceSystem")) {
 						clone.setAttribute ("clearanceSystemScheme", element.getAttribute ("clearanceSystemIdScheme"));
@@ -776,10 +786,10 @@ public final class Conversions
 					NamedNodeMap	attrs	= element.getAttributes ();
 					for (int index = 0; index < attrs.getLength (); ++index) {
 						Attr		attr 	= (Attr) attrs.item (index);
-						
+
 						clone.setAttribute (attr.getName (), attr.getValue ());
 					}
-					
+
 					// Handle the restructuring of equityOption
 					if (element.getLocalName ().equals ("equityOption")) {
 						Element target;
@@ -816,7 +826,7 @@ public final class Conversions
 						else {
 							Element	child = document.createElement ("extraordinaryEvents");
 							Element	failure = document.createElement ("failureToDeliver");
-						
+
 							if ((target = XPath.path (element, "equityExercise", "failureToDeliverApplicable")) != null)
 								DOM.setInnerText (failure, DOM.getInnerText (target));
 							else
@@ -825,7 +835,7 @@ public final class Conversions
 							child.appendChild (failure);
 							clone.appendChild (child);
 						}
-						
+
 						if ((target = XPath.path (element, "equityOptionFeatures")) != null)
 							transcribe (target, document, clone, helper);
 						if ((target = XPath.path (element, "strike")) != null)
@@ -838,7 +848,7 @@ public final class Conversions
 							transcribe (target, document, clone, helper);
 
 						premium.appendChild (payer);
-						premium.appendChild (receiver);			
+						premium.appendChild (receiver);
 						clone.appendChild (premium);
 
 						break;
@@ -867,7 +877,7 @@ public final class Conversions
 							transcribe (target, document, clone, helper);
 						if ((target = XPath.path (element, "exerciseProcedure")) != null)
 							transcribe (target, document, clone, helper);
-	
+
 						clone.appendChild (agent);
 
 						list = element.getElementsByTagName ("calculationAgentPartyReference");
@@ -926,7 +936,7 @@ public final class Conversions
 							}
 							else
 								throw new ConversionException ("Cannot determine fxFeature quanto currencies");
-							
+
 							if ((target = XPath.path (element, "fxRate")) != null)
 								DOM.setInnerText (value, DOM.getInnerText (target));
 							else
@@ -941,11 +951,11 @@ public final class Conversions
 								transcribe (target, document, child, helper);
 						}
 						clone.appendChild (child);
-				
+
 						break;
 					}
 
-					// Handle restucturing of fxTerms
+					// Handle restructuring of fxTerms
 					if (element.getLocalName ().equals ("fxTerms")) {
 						Element	kind;
 						Element	child;
@@ -987,7 +997,7 @@ public final class Conversions
 
 						if ((target = XPath.path (element, "productType")) != null)
 							transcribe (target, document, clone, helper);
-	
+
 						list = element.getElementsByTagName ("productId");
 						for (int index = 0; index < list.getLength (); ++index)
 							transcribe (list.item (index), document, clone, helper);
@@ -1003,7 +1013,7 @@ public final class Conversions
 						clone.appendChild (buyer);
 						clone.appendChild (seller);
 
-						
+
 						list = element.getElementsByTagName ("equityLeg");
 						for (int index = 0; index < list.getLength (); ++index)
 							transcribe (list.item (index), document, clone, helper);
@@ -1106,16 +1116,16 @@ public final class Conversions
 
 						if ((target = XPath.path (element, "mergerEvents")) != null)
 							transcribe (target, document, clone, helper);
-						
+
 						Element	failure = document.createElement ("failureToDeliver");
-						
+
 						if ((target = XPath.path (element, "..", "equityExercise", "failureToDeliverApplicable")) != null)
 							DOM.setInnerText (failure, DOM.getInnerText (target));
 						else
 							DOM.setInnerText (failure, "false");
 
 						clone.appendChild (failure);
-						
+
 						if ((target = XPath.path (element, "nationalisationOrInsolvency")) != null)
 							transcribe (target, document, clone, helper);
 						if ((target = XPath.path (element, "delisting")) != null)
@@ -1123,15 +1133,15 @@ public final class Conversions
 
 						break;
 					}
-					
-					// Recursively copy the child node across 
+
+					// Recursively copy the child node across
 					for (Node node = element.getFirstChild (); node != null;) {
 						transcribe (node, document, clone, helper);
 						node = node.getNextSibling ();
 					}
 					break;
 				}
-				
+
 			default:
 				parent.appendChild (document.importNode (context, false));
 			}
@@ -1140,17 +1150,17 @@ public final class Conversions
 
 	/**
 	 * The <CODE>R4_1__R4_2</CODE> class contains the logic to migrate
-	 * the content of a FpML 4.1 schema based document to 4.2 
-	 * 
+	 * the content of a FpML 4.1 schema based document to 4.2
+	 *
 	 * @since	TFP 1.0
 	 */
-	public static class R4_1__R4_2 extends DirectConversion 
+	public static class R4_1__R4_2 extends DirectConversion
 	{
 		public R4_1__R4_2 ()
 		{
 			super (Releases.R4_1, Releases.R4_2);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 * @since	TFP 1.0
@@ -1160,21 +1170,25 @@ public final class Conversions
 			Document		target = getTargetRelease ().newInstance ("FpML");
 			Element			oldRoot = source.getDocumentElement ();
 			Element			newRoot	= target.getDocumentElement ();
-			
+
+			// Transfer the message type
+			newRoot.setAttributeNS (Schema.INSTANCE_URL, "xsi:type",
+				oldRoot.getAttributeNS (Schema.INSTANCE_URL, "type"));
+
 			// Transcribe each of the first level child elements
 			for (Node node = oldRoot.getFirstChild (); node != null;) {
 				transcribe (node, target, newRoot);
 				node = node.getNextSibling ();
 			}
-	
+
 			return (target);
 		}
-		
+
 		/**
 		 * Recursively copies the structure of the old FpML 4-1 document
 		 * into a new FpML 4-2 document adjusting the elements and attributes
 		 * as necessary.
-		 * 
+		 *
 		 * @param 	context			The <CODE>node</CODE> to be copied.
 		 * @param 	document		The new <CODE>Document</CODE> instance.
 		 * @param 	parent			The new parent <CODE>Node</CODE>.
@@ -1187,19 +1201,18 @@ public final class Conversions
 				{
 					Element		element = (Element) context;
 					Element		clone;
-					
-					clone = document.createElementNS (
-							((SchemaRelease) getTargetRelease ()).getNamespaceUri(), element.getLocalName ());
-					
+
+					clone = document.createElement (element.getLocalName ());
+
 					parent.appendChild (clone);
-				
+
 					NamedNodeMap	attrs = element.getAttributes ();
 					for (int index = 0; index < attrs.getLength (); ++index) {
 						Attr attr 	= (Attr) attrs.item (index);
-						
+
 						clone.setAttribute (attr.getName (), attr.getValue ());
 					}
-					
+
 					// Recursively copy the child node across
 					for (Node node = element.getFirstChild (); node != null;) {
 						transcribe (node, document, clone);
@@ -1207,26 +1220,26 @@ public final class Conversions
 					}
 					break;
 				}
-				
+
 			default:
 				parent.appendChild (document.importNode (context, false));
 			}
 		}
 	}
-	
+
 	/**
 	 * The <CODE>R4_2__R4_3</CODE> class contains the logic to migrate
-	 * the content of a FpML 4.2 schema based document to 4.3 
-	 * 
+	 * the content of a FpML 4.2 schema based document to 4.3
+	 *
 	 * @since	TFP 1.2
 	 */
-	public static class R4_2__R4_3 extends DirectConversion 
+	public static class R4_2__R4_3 extends DirectConversion
 	{
 		public R4_2__R4_3 ()
 		{
 			super (Releases.R4_2, Releases.R4_3);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 * @since	TFP 1.2
@@ -1236,20 +1249,24 @@ public final class Conversions
 			Document		target = getTargetRelease ().newInstance ("FpML");
 			Element			oldRoot = source.getDocumentElement ();
 			Element			newRoot	= target.getDocumentElement ();
-			
+
+			// Transfer the message type
+			newRoot.setAttributeNS (Schema.INSTANCE_URL, "xsi:type",
+				oldRoot.getAttributeNS (Schema.INSTANCE_URL, "type"));
+
 			// Transcribe each of the first level child elements
 			for (Node node = oldRoot.getFirstChild (); node != null;) {
 				transcribe (node, target, newRoot);
 				node = node.getNextSibling ();
 			}
-	
+
 			return (target);
 		}
-		
+
 		/**
 		 * Recursively copies the structure of the old document into a new
 		 * document adjusting the elements and attributes as necessary.
-		 * 
+		 *
 		 * @param 	context			The <CODE>node</CODE> to be copied.
 		 * @param 	document		The new <CODE>Document</CODE> instance.
 		 * @param 	parent			The new parent <CODE>Node</CODE>.
@@ -1262,18 +1279,18 @@ public final class Conversions
 				{
 					Element		element = (Element) context;
 					Element		clone;
-					
-					clone = document.createElementNS (null, element.getLocalName ());
-					
+
+					clone = document.createElement (element.getLocalName ());
+
 					parent.appendChild (clone);
-				
+
 					NamedNodeMap	attrs = element.getAttributes ();
 					for (int index = 0; index < attrs.getLength (); ++index) {
 						Attr attr 	= (Attr) attrs.item (index);
-						
+
 						clone.setAttribute (attr.getName (), attr.getValue ());
 					}
-					
+
 					// Recursively copy the child node across
 					for (Node node = element.getFirstChild (); node != null;) {
 						transcribe (node, document, clone);
@@ -1281,7 +1298,7 @@ public final class Conversions
 					}
 					break;
 				}
-				
+
 			default:
 				parent.appendChild (document.importNode (context, false));
 			}
@@ -1290,17 +1307,17 @@ public final class Conversions
 
 	/**
 	 * The <CODE>R4_3__TR4_4</CODE> class contains the logic to migrate
-	 * the content of a FpML 4.3 schema based document to 4.4 
-	 * 
+	 * the content of a FpML 4.3 schema based document to 4.4
+	 *
 	 * @since	TFP 1.2
 	 */
-	public static class R4_3__R4_4 extends DirectConversion 
+	public static class R4_3__R4_4 extends DirectConversion
 	{
 		public R4_3__R4_4 ()
 		{
 			super (Releases.R4_3, Releases.R4_4);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 * @since	TFP 1.2
@@ -1310,20 +1327,24 @@ public final class Conversions
 			Document		target = getTargetRelease ().newInstance ("FpML");
 			Element			oldRoot = source.getDocumentElement ();
 			Element			newRoot	= target.getDocumentElement ();
-			
+
+			// Transfer the message type
+			newRoot.setAttributeNS (Schema.INSTANCE_URL, "xsi:type",
+				oldRoot.getAttributeNS (Schema.INSTANCE_URL, "type"));
+
 			// Transcribe each of the first level child elements
 			for (Node node = oldRoot.getFirstChild (); node != null;) {
 				transcribe (node, target, newRoot);
 				node = node.getNextSibling ();
 			}
-	
+
 			return (target);
 		}
-		
+
 		/**
-		 * Recursively copies the structure of the old document into a new 
+		 * Recursively copies the structure of the old document into a new
 		 * document adjusting the elements and attributes as necessary.
-		 * 
+		 *
 		 * @param 	context			The <CODE>node</CODE> to be copied.
 		 * @param 	document		The new <CODE>Document</CODE> instance.
 		 * @param 	parent			The new parent <CODE>Node</CODE>.
@@ -1336,18 +1357,18 @@ public final class Conversions
 				{
 					Element		element = (Element) context;
 					Element		clone;
-					
-					clone = document.createElementNS (null, element.getLocalName ());
-					
+
+					clone = document.createElement (element.getLocalName ());
+
 					parent.appendChild (clone);
-				
+
 					NamedNodeMap	attrs = element.getAttributes ();
 					for (int index = 0; index < attrs.getLength (); ++index) {
 						Attr attr 	= (Attr) attrs.item (index);
-						
+
 						clone.setAttribute (attr.getName (), attr.getValue ());
 					}
-					
+
 					// Recursively copy the child node across
 					for (Node node = element.getFirstChild (); node != null;) {
 						transcribe (node, document, clone);
@@ -1355,7 +1376,7 @@ public final class Conversions
 					}
 					break;
 				}
-				
+
 			default:
 				parent.appendChild (document.importNode (context, false));
 			}
@@ -1364,17 +1385,17 @@ public final class Conversions
 
 	/**
 	 * The <CODE>R4_4__R4_5</CODE> class contains the logic to migrate
-	 * the content of a FpML 4.4 schema based document to 4.5 
-	 * 
+	 * the content of a FpML 4.4 schema based document to 4.5
+	 *
 	 * @since	TFP 1.2
 	 */
-	public static class R4_4__R4_5 extends DirectConversion 
+	public static class R4_4__R4_5 extends DirectConversion
 	{
 		public R4_4__R4_5 ()
 		{
 			super (Releases.R4_4, Releases.R4_5);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 * @since	TFP 1.2
@@ -1384,20 +1405,24 @@ public final class Conversions
 			Document		target = getTargetRelease ().newInstance ("FpML");
 			Element			oldRoot = source.getDocumentElement ();
 			Element			newRoot	= target.getDocumentElement ();
-			
+
+			// Transfer the message type
+			newRoot.setAttributeNS (Schema.INSTANCE_URL, "xsi:type",
+				oldRoot.getAttributeNS (Schema.INSTANCE_URL, "type"));
+
 			// Transcribe each of the first level child elements
 			for (Node node = oldRoot.getFirstChild (); node != null;) {
 				transcribe (node, target, newRoot);
 				node = node.getNextSibling ();
 			}
-	
+
 			return (target);
 		}
-		
+
 		/**
-		 * Recursively copies the structure of the old document into a new 
+		 * Recursively copies the structure of the old document into a new
 		 * document adjusting the elements and attributes as necessary.
-		 * 
+		 *
 		 * @param 	context			The <CODE>node</CODE> to be copied.
 		 * @param 	document		The new <CODE>Document</CODE> instance.
 		 * @param 	parent			The new parent <CODE>Node</CODE>.
@@ -1410,18 +1435,18 @@ public final class Conversions
 				{
 					Element		element = (Element) context;
 					Element		clone;
-					
-					clone = document.createElementNS (null, element.getLocalName ());
-					
+
+					clone = document.createElement (element.getLocalName ());
+
 					parent.appendChild (clone);
-				
+
 					NamedNodeMap	attrs = element.getAttributes ();
 					for (int index = 0; index < attrs.getLength (); ++index) {
 						Attr attr 	= (Attr) attrs.item (index);
-						
+
 						clone.setAttribute (attr.getName (), attr.getValue ());
 					}
-					
+
 					// Recursively copy the child node across
 					for (Node node = element.getFirstChild (); node != null;) {
 						transcribe (node, document, clone);
@@ -1429,7 +1454,7 @@ public final class Conversions
 					}
 					break;
 				}
-				
+
 			default:
 				parent.appendChild (document.importNode (context, false));
 			}
@@ -1438,17 +1463,17 @@ public final class Conversions
 
 	/**
 	 * The <CODE>R4_5__R4_6</CODE> class contains the logic to migrate
-	 * the content of a FpML 4.5 schema based document to 4.6 
-	 * 
+	 * the content of a FpML 4.5 schema based document to 4.6
+	 *
 	 * @since	TFP 1.3
 	 */
-	public static class R4_5__R4_6 extends DirectConversion 
+	public static class R4_5__R4_6 extends DirectConversion
 	{
 		public R4_5__R4_6 ()
 		{
 			super (Releases.R4_5, Releases.R4_6);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 * @since	TFP 1.2
@@ -1458,20 +1483,24 @@ public final class Conversions
 			Document		target = getTargetRelease ().newInstance ("FpML");
 			Element			oldRoot = source.getDocumentElement ();
 			Element			newRoot	= target.getDocumentElement ();
-			
+
+			// Transfer the message type
+			newRoot.setAttributeNS (Schema.INSTANCE_URL, "xsi:type",
+				oldRoot.getAttributeNS (Schema.INSTANCE_URL, "type"));
+
 			// Transcribe each of the first level child elements
 			for (Node node = oldRoot.getFirstChild (); node != null;) {
 				transcribe (node, target, newRoot);
 				node = node.getNextSibling ();
 			}
-	
+
 			return (target);
 		}
-		
+
 		/**
-		 * Recursively copies the structure of the old document into a new 
+		 * Recursively copies the structure of the old document into a new
 		 * document adjusting the elements and attributes as necessary.
-		 * 
+		 *
 		 * @param 	context			The <CODE>node</CODE> to be copied.
 		 * @param 	document		The new <CODE>Document</CODE> instance.
 		 * @param 	parent			The new parent <CODE>Node</CODE>.
@@ -1484,18 +1513,18 @@ public final class Conversions
 				{
 					Element		element = (Element) context;
 					Element		clone;
-					
-					clone = document.createElementNS (null, element.getLocalName ());
-					
+
+					clone = document.createElement (element.getLocalName ());
+
 					parent.appendChild (clone);
-				
+
 					NamedNodeMap	attrs = element.getAttributes ();
 					for (int index = 0; index < attrs.getLength (); ++index) {
 						Attr attr 	= (Attr) attrs.item (index);
-						
+
 						clone.setAttribute (attr.getName (), attr.getValue ());
 					}
-					
+
 					// Recursively copy the child node across
 					for (Node node = element.getFirstChild (); node != null;) {
 						transcribe (node, document, clone);
@@ -1503,26 +1532,26 @@ public final class Conversions
 					}
 					break;
 				}
-				
+
 			default:
 				parent.appendChild (document.importNode (context, false));
 			}
 		}
 	}
-	
+
 	/**
 	 * The <CODE>R4_6__R4_7</CODE> class contains the logic to migrate
-	 * the content of a FpML 4.6 schema based document to 4.7 
-	 * 
+	 * the content of a FpML 4.6 schema based document to 4.7
+	 *
 	 * @since	TFP 1.4
 	 */
-	public static class R4_6__R4_7 extends DirectConversion 
+	public static class R4_6__R4_7 extends DirectConversion
 	{
 		public R4_6__R4_7 ()
 		{
 			super (Releases.R4_6, Releases.R4_7);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 * @since	TFP 1.4
@@ -1532,20 +1561,24 @@ public final class Conversions
 			Document		target = getTargetRelease ().newInstance ("FpML");
 			Element			oldRoot = source.getDocumentElement ();
 			Element			newRoot	= target.getDocumentElement ();
-			
+
+			// Transfer the message type
+			newRoot.setAttributeNS (Schema.INSTANCE_URL, "xsi:type",
+				oldRoot.getAttributeNS (Schema.INSTANCE_URL, "type"));
+
 			// Transcribe each of the first level child elements
 			for (Node node = oldRoot.getFirstChild (); node != null;) {
 				transcribe (node, target, newRoot);
 				node = node.getNextSibling ();
 			}
-	
+
 			return (target);
 		}
-		
+
 		/**
-		 * Recursively copies the structure of the old document into a new 
+		 * Recursively copies the structure of the old document into a new
 		 * document adjusting the elements and attributes as necessary.
-		 * 
+		 *
 		 * @param 	context			The <CODE>node</CODE> to be copied.
 		 * @param 	document		The new <CODE>Document</CODE> instance.
 		 * @param 	parent			The new parent <CODE>Node</CODE>.
@@ -1558,18 +1591,18 @@ public final class Conversions
 				{
 					Element		element = (Element) context;
 					Element		clone;
-					
-					clone = document.createElementNS (null, element.getLocalName ());
-					
+
+					clone = document.createElement (element.getLocalName ());
+
 					parent.appendChild (clone);
-				
+
 					NamedNodeMap	attrs = element.getAttributes ();
 					for (int index = 0; index < attrs.getLength (); ++index) {
 						Attr attr 	= (Attr) attrs.item (index);
-						
+
 						clone.setAttribute (attr.getName (), attr.getValue ());
 					}
-					
+
 					// Recursively copy the child node across
 					for (Node node = element.getFirstChild (); node != null;) {
 						transcribe (node, document, clone);
@@ -1577,26 +1610,26 @@ public final class Conversions
 					}
 					break;
 				}
-				
+
 			default:
 				parent.appendChild (document.importNode (context, false));
 			}
 		}
 	}
-	
+
 	/**
 	 * The <CODE>R4_7__R4_8</CODE> class contains the logic to migrate
-	 * the content of a FpML 4.7 schema based document to 4.8 
-	 * 
+	 * the content of a FpML 4.7 schema based document to 4.8
+	 *
 	 * @since	TFP 1.4
 	 */
-	public static class R4_7__R4_8 extends DirectConversion 
+	public static class R4_7__R4_8 extends DirectConversion
 	{
 		public R4_7__R4_8 ()
 		{
 			super (Releases.R4_7, Releases.R4_8);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 * @since	TFP 1.4
@@ -1606,20 +1639,24 @@ public final class Conversions
 			Document		target = getTargetRelease ().newInstance ("FpML");
 			Element			oldRoot = source.getDocumentElement ();
 			Element			newRoot	= target.getDocumentElement ();
-			
+
+			// Transfer the message type
+			newRoot.setAttributeNS (Schema.INSTANCE_URL, "xsi:type",
+				oldRoot.getAttributeNS (Schema.INSTANCE_URL, "type"));
+
 			// Transcribe each of the first level child elements
 			for (Node node = oldRoot.getFirstChild (); node != null;) {
 				transcribe (node, target, newRoot);
 				node = node.getNextSibling ();
 			}
-	
+
 			return (target);
 		}
-		
+
 		/**
-		 * Recursively copies the structure of the old document into a new 
+		 * Recursively copies the structure of the old document into a new
 		 * document adjusting the elements and attributes as necessary.
-		 * 
+		 *
 		 * @param 	context			The <CODE>node</CODE> to be copied.
 		 * @param 	document		The new <CODE>Document</CODE> instance.
 		 * @param 	parent			The new parent <CODE>Node</CODE>.
@@ -1632,18 +1669,18 @@ public final class Conversions
 				{
 					Element		element = (Element) context;
 					Element		clone;
-					
-					clone = document.createElementNS (null, element.getLocalName ());
-					
+
+					clone = document.createElement (element.getLocalName ());
+
 					parent.appendChild (clone);
-				
+
 					NamedNodeMap	attrs = element.getAttributes ();
 					for (int index = 0; index < attrs.getLength (); ++index) {
 						Attr attr 	= (Attr) attrs.item (index);
-						
+
 						clone.setAttribute (attr.getName (), attr.getValue ());
 					}
-					
+
 					// Recursively copy the child node across
 					for (Node node = element.getFirstChild (); node != null;) {
 						transcribe (node, document, clone);
@@ -1651,54 +1688,57 @@ public final class Conversions
 					}
 					break;
 				}
-				
+
 			default:
 				parent.appendChild (document.importNode (context, false));
 			}
 		}
 	}
-	
+
 	/**
+	 * The <CODE>R4_8__R4_9</CODE> class contains the logic to migrate
+	 * the content of a FpML 4.8 schema based document to 4.9
 	 *
+	 * @since	TFP 1.4
 	 */
-	private static class R5_0 extends DirectConversion
+	public static class R4_8__R4_9 extends DirectConversion
 	{
-		public R5_0 (Release source, Release target)
+		public R4_8__R4_9 ()
 		{
-			super (source, target);
+			super (Releases.R4_8, Releases.R4_9);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
-		 * @since	TFP 1.2
+		 * @since	TFP 1.6
 		 */
 		public Document convert (Document source, Helper helper)
 		{
+			Document		target = getTargetRelease ().newInstance ("FpML");
 			Element			oldRoot = source.getDocumentElement ();
-			String			msgType = oldRoot.getAttribute("xsi:type");
-		
-			MessageType		newType = (MessageType) messageMap.get (new MessageType (this.getSourceRelease(), msgType));
-				
-			Document		target = getTargetRelease ().newInstance (newType.getMessage ());
 			Element			newRoot	= target.getDocumentElement ();
-			
+
+			// Transfer the message type
+			newRoot.setAttributeNS (Schema.INSTANCE_URL, "xsi:type",
+				oldRoot.getAttributeNS (Schema.INSTANCE_URL, "type"));
+
 			// Transcribe each of the first level child elements
 			for (Node node = oldRoot.getFirstChild (); node != null;) {
 				transcribe (node, target, newRoot);
 				node = node.getNextSibling ();
 			}
-	
+
 			return (target);
 		}
-		
+
 		/**
-		 * Recursively copies the structure of the old document into a new 
+		 * Recursively copies the structure of the old document into a new
 		 * document adjusting the elements and attributes as necessary.
-		 * 
+		 *
 		 * @param 	context			The <CODE>node</CODE> to be copied.
 		 * @param 	document		The new <CODE>Document</CODE> instance.
 		 * @param 	parent			The new parent <CODE>Node</CODE>.
-		 * @since	TFP 1.2
+		 * @since	TFP 1.4
 		 */
 		private void transcribe (Node context, Document document, Node parent)
 		{
@@ -1707,18 +1747,18 @@ public final class Conversions
 				{
 					Element		element = (Element) context;
 					Element		clone;
-					
-					clone = document.createElementNS (null, element.getLocalName ());
-					
+
+					clone = document.createElement (element.getLocalName ());
+
 					parent.appendChild (clone);
-				
+
 					NamedNodeMap	attrs = element.getAttributes ();
 					for (int index = 0; index < attrs.getLength (); ++index) {
 						Attr attr 	= (Attr) attrs.item (index);
-						
+
 						clone.setAttribute (attr.getName (), attr.getValue ());
 					}
-					
+
 					// Recursively copy the child node across
 					for (Node node = element.getFirstChild (); node != null;) {
 						transcribe (node, document, clone);
@@ -1726,74 +1766,234 @@ public final class Conversions
 					}
 					break;
 				}
-				
+
 			default:
 				parent.appendChild (document.importNode (context, false));
 			}
-		}		
-	}
-	
-	/**
-	 * The <CODE>R4_7__R5_0_CONFIRMATION</CODE> class contains the logic to migrate
-	 * the content of a FpML 4.7 schema based document to 5.0 
-	 * 
-	 * @since	TFP 1.4
-	 */
-	public static class R4_7__R5_0_CONFIRMATION extends R5_0 
-	{
-		public R4_7__R5_0_CONFIRMATION ()
-		{
-			super (Releases.R4_7, Releases.R5_0_CONFIRMATION);
 		}
 	}
 
 	/**
-	 * The <CODE>R4_7__R5_0_REPORTING</CODE> class contains the logic to migrate
-	 * the content of a FpML 4.7 schema based document to 5.0 
-	 * 
-	 * @since	TFP 1.4
+	 * The <CODE>R5_0__R5_1_CONFIRMATION</CODE> class contains the logic to migrate
+	 * the content of a FpML 5.0 schema based document to 5.1
+	 *
+	 * @since	TFP 1.6
 	 */
-	public static class R4_7__R5_0_REPORTING extends R5_0 
+	public static class R5_0__R5_1_CONFIRMATION extends DirectConversion
 	{
-		public R4_7__R5_0_REPORTING ()
+		public R5_0__R5_1_CONFIRMATION ()
 		{
-			super (Releases.R4_7, Releases.R5_0_REPORTING);
+			super (Releases.R5_0_CONFIRMATION, Releases.R5_1_CONFIRMATION);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * @since	TFP 1.6
+		 */
+		public Document convert (Document source, Helper helper)
+		{
+			Element			oldRoot = source.getDocumentElement ();
+			Document		target = getTargetRelease ().newInstance (oldRoot.getLocalName ());
+			Element			newRoot	= target.getDocumentElement ();
+
+			// Transcribe each of the first level child elements
+			for (Node node = oldRoot.getFirstChild (); node != null;) {
+				transcribe (node, target, newRoot);
+				node = node.getNextSibling ();
+			}
+
+			return (target);
+		}
+
+		/**
+		 * Recursively copies the structure of the old document into a new
+		 * document adjusting the elements and attributes as necessary.
+		 *
+		 * @param 	context			The <CODE>node</CODE> to be copied.
+		 * @param 	document		The new <CODE>Document</CODE> instance.
+		 * @param 	parent			The new parent <CODE>Node</CODE>.
+		 * @since	TFP 1.6
+		 */
+		private void transcribe (Node context, Document document, Node parent)
+		{
+			switch (context.getNodeType ()) {
+			case Node.ELEMENT_NODE:
+				{
+					Element		element = (Element) context;
+					Element		clone;
+
+					clone = document.createElement (element.getLocalName ());
+
+					parent.appendChild (clone);
+
+					NamedNodeMap	attrs = element.getAttributes ();
+					for (int index = 0; index < attrs.getLength (); ++index) {
+						Attr attr 	= (Attr) attrs.item (index);
+
+						clone.setAttribute (attr.getName (), attr.getValue ());
+					}
+
+					// Recursively copy the child node across
+					for (Node node = element.getFirstChild (); node != null;) {
+						transcribe (node, document, clone);
+						node = node.getNextSibling ();
+					}
+					break;
+				}
+
+			default:
+				parent.appendChild (document.importNode (context, false));
+			}
 		}
 	}
 
 	/**
-	 * Attempts to determine the message type a document should use then converted
-	 * to the indicated FpML schema version.
-	 * 
-	 * @param	targetVersion	The target FpML version number.
-	 * @param	source			The <CODE>Release</CODE> instance describing the source.
-	 * @param	document		The DOM <CODE>Document</CODE> for the source.
-	 * @return	The name of the message type or root element that should be used
-	 * 			when translating to the new version.
-	 * @since	TFP 1.5
+	 * The <CODE>R5_1__R5_2_CONFIRMATION</CODE> class contains the logic to migrate
+	 * the content of a FpML 5.1 schema based document to 5.2
+	 *
+	 * @since	TFP 1.6
 	 */
-	public static MessageType suggestMessage (final String targetVersion, Release source, Document document)
+	public static class R5_1__R5_2_CONFIRMATION extends DirectConversion
 	{
-		String			messageType	= "DataDocument";
-		
-		if (targetVersion.startsWith ("1-")) return (new MessageType (Releases.R1_0, null));
-		if (targetVersion.startsWith ("2-")) return (new MessageType (Releases.R2_0, null));
-		if (targetVersion.startsWith ("3-")) return (new MessageType (Releases.R3_0, null));
+		public R5_1__R5_2_CONFIRMATION ()
+		{
+			super (Releases.R5_1_CONFIRMATION, Releases.R5_2_CONFIRMATION);
+		}
 
-		if (source.getVersion ().startsWith ("4-"))
-			messageType = document.getDocumentElement().getAttribute("xsi:type");
-			
-		if (targetVersion.startsWith ("4-"))
-			return (new MessageType (Releases.FPML.getReleaseForVersion (targetVersion), messageType));
-	
-		if (targetVersion.startsWith ("5-"))
-			return ((MessageType) messageMap.get (messageType));
-		
-		return (null);
+		/**
+		 * {@inheritDoc}
+		 * @since	TFP 1.6
+		 */
+		public Document convert (Document source, Helper helper)
+		{
+			Element			oldRoot = source.getDocumentElement ();
+			Document		target = getTargetRelease ().newInstance (oldRoot.getLocalName ());
+			Element			newRoot	= target.getDocumentElement ();
+
+			// Transcribe each of the first level child elements
+			for (Node node = oldRoot.getFirstChild (); node != null;) {
+				transcribe (node, target, newRoot);
+				node = node.getNextSibling ();
+			}
+
+			return (target);
+		}
+
+		/**
+		 * Recursively copies the structure of the old document into a new
+		 * document adjusting the elements and attributes as necessary.
+		 *
+		 * @param 	context			The <CODE>node</CODE> to be copied.
+		 * @param 	document		The new <CODE>Document</CODE> instance.
+		 * @param 	parent			The new parent <CODE>Node</CODE>.
+		 * @since	TFP 1.6
+		 */
+		private void transcribe (Node context, Document document, Node parent)
+		{
+			switch (context.getNodeType ()) {
+			case Node.ELEMENT_NODE:
+				{
+					Element		element = (Element) context;
+					Element		clone;
+
+					clone = document.createElement (element.getLocalName ());
+
+					parent.appendChild (clone);
+
+					NamedNodeMap	attrs = element.getAttributes ();
+					for (int index = 0; index < attrs.getLength (); ++index) {
+						Attr attr 	= (Attr) attrs.item (index);
+
+						clone.setAttribute (attr.getName (), attr.getValue ());
+					}
+
+					// Recursively copy the child node across
+					for (Node node = element.getFirstChild (); node != null;) {
+						transcribe (node, document, clone);
+						node = node.getNextSibling ();
+					}
+					break;
+				}
+
+			default:
+				parent.appendChild (document.importNode (context, false));
+			}
+		}
 	}
-	
-	private static Hashtable<String, MessageType> messageMap
-		= new Hashtable<String, MessageType> ();
+
+	/**
+	 * The <CODE>R5_2__R5_3_CONFIRMATION</CODE> class contains the logic to migrate
+	 * the content of a FpML 5.2 schema based document to 5.3
+	 *
+	 * @since	TFP 1.6
+	 */
+	public static class R5_2__R5_3_CONFIRMATION extends DirectConversion
+	{
+		public R5_2__R5_3_CONFIRMATION ()
+		{
+			super (Releases.R5_2_CONFIRMATION, Releases.R5_3_CONFIRMATION);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * @since	TFP 1.6
+		 */
+		public Document convert (Document source, Helper helper)
+		{
+			Element			oldRoot = source.getDocumentElement ();
+			Document		target = getTargetRelease ().newInstance (oldRoot.getLocalName ());
+			Element			newRoot	= target.getDocumentElement ();
+
+			// Transcribe each of the first level child elements
+			for (Node node = oldRoot.getFirstChild (); node != null;) {
+				transcribe (node, target, newRoot);
+				node = node.getNextSibling ();
+			}
+
+			return (target);
+		}
+
+		/**
+		 * Recursively copies the structure of the old document into a new
+		 * document adjusting the elements and attributes as necessary.
+		 *
+		 * @param 	context			The <CODE>node</CODE> to be copied.
+		 * @param 	document		The new <CODE>Document</CODE> instance.
+		 * @param 	parent			The new parent <CODE>Node</CODE>.
+		 * @since	TFP 1.6
+		 */
+		private void transcribe (Node context, Document document, Node parent)
+		{
+			switch (context.getNodeType ()) {
+			case Node.ELEMENT_NODE:
+				{
+					Element		element = (Element) context;
+					Element		clone;
+
+					clone = document.createElement (element.getLocalName ());
+
+					parent.appendChild (clone);
+
+					NamedNodeMap	attrs = element.getAttributes ();
+					for (int index = 0; index < attrs.getLength (); ++index) {
+						Attr attr 	= (Attr) attrs.item (index);
+
+						clone.setAttribute (attr.getName (), attr.getValue ());
+					}
+
+					// Recursively copy the child node across
+					for (Node node = element.getFirstChild (); node != null;) {
+						transcribe (node, document, clone);
+						node = node.getNextSibling ();
+					}
+					break;
+				}
+
+			default:
+				parent.appendChild (document.importNode (context, false));
+			}
+		}
+	}
 
 	/**
 	 * Ensures no instances can be constructed.
@@ -1801,15 +2001,4 @@ public final class Conversions
 	 */
 	private Conversions ()
 	{ }
-	
-	/**
-	 * Initialises the message mapping tables.
-	 */
-	static {
-		messageMap.put ("DataDocument",
-			new MessageType (Releases.R5_0_CONFIRMATION, "dataDocument"));
-	
-		messageMap.put ("ContractCreated",
-			new MessageType (Releases.R5_0_CONFIRMATION, "tradeExecutedAdvice"));
-	}
 }

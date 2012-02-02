@@ -1,4 +1,4 @@
-// Copyright (C),2005-2010 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -354,27 +354,71 @@ public final class Releases
 		= new Conversions.R4_5__R4_6 ();
 	
 	/**
-	 * A <CODE>Conversion</CODE> instance configured for FpML 4-7 to 5-0
-	 * confirmation transformation. The specific changes needed are:
+	 * A <CODE>Conversion</CODE> instance configured for FpML 4-6 to 4-7
+	 * transformation. The specific changes needed are:
 	 * <UL>
 	 * <LI>The FpML XML schema namespace URI is updated.</LI>
 	 * </UL>
-	 * @since	TFP 1.4
+	 * @since	TFP 1.6
 	 */
-	public static final Conversion R4_7__R5_0_CONFIRMATION
-		= new Conversions.R4_7__R5_0_CONFIRMATION ();
+	public static final Conversion R4_6__R4_7
+		= new Conversions.R4_6__R4_7 ();
 	
 	/**
-	 * A <CODE>Conversion</CODE> instance configured for FpML 4-7 to 5-0
-	 * reporting transformation. The specific changes needed are:
+	 * A <CODE>Conversion</CODE> instance configured for FpML 4-7 to 4-8
+	 * transformation. The specific changes needed are:
 	 * <UL>
 	 * <LI>The FpML XML schema namespace URI is updated.</LI>
 	 * </UL>
-	 * @since	TFP 1.4
+	 * @since	TFP 1.6
 	 */
-	public static final Conversion R4_7__R5_0_REPORTING
-		= new Conversions.R4_7__R5_0_REPORTING ();
+	public static final Conversion R4_7__R4_8
+		= new Conversions.R4_7__R4_8 ();
 	
+	/**
+	 * A <CODE>Conversion</CODE> instance configured for FpML 4-8 to 4-9
+	 * transformation. The specific changes needed are:
+	 * <UL>
+	 * <LI>The FpML XML schema namespace URI is updated.</LI>
+	 * </UL>
+	 * @since	TFP 1.6
+	 */
+	public static final Conversion R4_8__R4_9
+		= new Conversions.R4_8__R4_9 ();
+	
+	/**
+	 * A <CODE>Conversion</CODE> instance configured for FpML 5-0 to 5-1
+	 * confirmation view transformation. The specific changes needed are:
+	 * <UL>
+	 * <LI>The FpML XML schema namespace URI is updated.</LI>
+	 * </UL>
+	 * @since	TFP 1.6
+	 */
+	public static final Conversion R5_0__R5_1_CONFIRMATION
+		= new Conversions.R5_0__R5_1_CONFIRMATION ();
+	
+	/**
+	 * A <CODE>Conversion</CODE> instance configured for FpML 5-1 to 5-2
+	 * confirmation view transformation. The specific changes needed are:
+	 * <UL>
+	 * <LI>The FpML XML schema namespace URI is updated.</LI>
+	 * </UL>
+	 * @since	TFP 1.6
+	 */
+	public static final Conversion R5_1__R5_2_CONFIRMATION
+		= new Conversions.R5_1__R5_2_CONFIRMATION ();
+	
+	/**
+	 * A <CODE>Conversion</CODE> instance configured for FpML 5-2 to 5-3
+	 * confirmation view transformation. The specific changes needed are:
+	 * <UL>
+	 * <LI>The FpML XML schema namespace URI is updated.</LI>
+	 * </UL>
+	 * @since	TFP 1.6
+	 */
+	public static final Conversion R5_2__R5_3_CONFIRMATION
+		= new Conversions.R5_2__R5_3_CONFIRMATION ();
+		
 	/**
 	 * Examines the provided <CODE>Document</CODE> to determine the associated
 	 * FpML <CODE>Release</CODE> instance.

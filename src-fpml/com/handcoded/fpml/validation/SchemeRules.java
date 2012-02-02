@@ -293,7 +293,7 @@ public final class SchemeRules
 	 * @since	TFP 1.5	
 	 */
 	public static final Rule	RULE24B
-		= new SchemeRule (Preconditions.R4_0, "scheme-24b", "clearanceSystem", "clearanceSystemScheme");
+		= new SchemeRule (Preconditions.R4_0, "scheme-24b", "clearanceSystem", "clearanceSystemIdScheme");
 		
 	/**
 	 * Rule 25: The value of any <CODE>contractualDefinitions</CODE> element must
