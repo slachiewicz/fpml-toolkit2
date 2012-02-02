@@ -10,18 +10,18 @@
 <body>
     <p>
         <font size="6">Toolkit for FpML Processing<br>
-            Java Open Source Release 1.5.1</font></p>
+            Java Open Source Release 1.5.2</font></p>
     <p>
-        <font size="5">March, 2011</font></p>
+        <font size="5">February, 2012</font></p>
     <p>
-        <font size="5">Copyright (C),2006-2011 HandCoded Software Ltd.<br>
+        <font size="5">Copyright (C),2006-2012 HandCoded Software Ltd.<br>
             All rights reserved.</font></p>
     <p>
     </p>
     <h1>
         Introduction</h1>
     <p>
-        This document accompanies Java 1.5.1 release of the 'HandCoded Toolkit for FpML Processing'
+        This document accompanies Java 1.5.2 release of the 'HandCoded Toolkit for FpML Processing'
         and describes the contents of the release area. The source code for this release
         is not included but is available from the SVN repository on SourceForge.</p>
     <h2>
@@ -121,36 +121,6 @@
         checking) or to use a more streamlined XML parsing technique that only supports
         schema based instances from FpML 4.0 or later. The default configuration is to process
         both DTD and schema based instances which is less efficient.</p>
-    <h3>
-        Classification</h3>
-    <p>
-        The classification scripts (e.g. Classify1-0.bat, etc.) execute a simple application
-        that uses the toolkit to determine the type of financial product used within a trade
-        or contract.</p>
-    <pre>&gt;&gt; files\examples\fpml1-0\FRAExample8.xml:
-= FpML 1-0
-: Trade(FORWARD RATE AGREEMENT)
-&gt;&gt; files\examples\fpml1-0\IRSExample1.xml:
-= FpML 1-0
-: Trade(INTEREST RATE SWAP)
-&gt;&gt; files\examples\fpml1-0\IRSExample2.xml: 
-= FpML 1-0 
-: Trade(INTEREST RATE SWAP) 
-&gt;&gt; files\examples\fpml1-0\IRSExample3.xml: 
-= FpML 1-0 
-: Trade(INTEREST RATE SWAP) 
-&gt;&gt; files\examples\fpml1-0\IRSExample4.xml: 
-= FpML 1-0 
-: Trade(INTEREST RATE SWAP) 
-&gt;&gt; files\examples\fpml1-0\IRSExample5.xml: 
-= FpML 1-0 
-: Trade(INTEREST RATE SWAP) 
-&gt;&gt; files\examples\fpml1-0\IRSExample6.xml: 
-= FpML 1-0 
-: Trade(CROSS CURRENCY SWAP) 
-&gt;&gt; files\examples\fpml1-0\IRSExample7.xml: 
-= FpML 1-0 
-: Trade(INTEREST RATE SWAP)</pre>
     <p>
         Futures releases will add further demonstration applications.</p>
     <h2>
@@ -196,5 +166,11 @@
         <li>Release meta data has been moved from Java code into an XML data file</li>
         <li>The Java and C# rule sets have been partially resynchronised.</li>
     </ul>
+   <p>
+        Changes in 1.5.2:</p>
+    <ul>
+        <li>Support for FpML 5.2 and 5.3</li>
+        <li>Classification has been removed from the open source version of the toolkit.</li>
+     </ul>
 </body>
 </html>
