@@ -61,7 +61,7 @@ public final class Transformation
 	 * Applies the XSL transformation to the indicated DOM <CODE>Node</CODE>
 	 * and returns the resulting document.
 	 * 
-	 * @param	document		The source DOM <CODE>Node</CODE>.
+	 * @param	node			The source DOM <CODE>Node</CODE>.
 	 * @return	A new DOM <CODE>Document</CODE> containing the result of the
 	 * 			XSL transformation.
 	 * @since	TFP 1.6
