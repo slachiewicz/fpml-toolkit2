@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -367,7 +367,7 @@ public final class IrdRules extends FpMLRuleSet
 					Element	payment	  = XPath.path (context, "paymentDates", "firstPaymentDate");
 					Element	effective = XPath.path (context, "calculationPeriodDates", "effectiveDate", "unadjustedDate");
 
-					if ((payment == null) || (effective == null) || greater (payment, effective))
+					if ((payment == null) || (effective == null) || greater (toDate (payment), toDate (effective)))
 						continue;
 
 					errorHandler.error ("305", context,
