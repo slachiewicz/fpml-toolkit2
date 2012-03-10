@@ -14,6 +14,7 @@
 package demo.com.handcoded.fpml;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,6 +61,16 @@ public final class Validate extends Application
 	{
 		super.startUp ();
 		
+		if (outputOption.isPresent ()) {
+			try {
+				stream = new PrintStream (new File (outputOption.getValue ()));
+			}
+			catch (Exception error) {
+				logger.severe ("Failed to create output file");
+				System.exit (1);
+			}
+		}
+		
 		if (repeatOption.isPresent ()) {
 			repeat = Integer.parseInt (repeatOption.getValue ());
 			if (repeat <= 0) {
@@ -75,8 +86,8 @@ public final class Validate extends Application
 		}
 		
 		if (reportOption.isPresent ()) {
-			System.out.println ("<?xml version=\"1.0\"?>");
-			System.out.println ("<report>");			
+			stream.println ("<?xml version=\"1.0\"?>");
+			stream.println ("<report>");			
 		}
 		
 		XmlUtility.getDefaultSchemaSet ().getSchema ();
@@ -92,8 +103,9 @@ public final class Validate extends Application
 		super.cleanUp ();
 		
 		if (reportOption.isPresent ()) {
-			System.out.println ("</report>");			
+			stream.println ("</report>");			
 		}
+		stream.close ();
 	}
 	
 	/**
@@ -119,12 +131,13 @@ public final class Validate extends Application
 				for (int index = 0; index < arguments.length; ++index) {
 					int		which = random ? (int)(Math.random () * arguments.length ) : index;
 					
-					if (reportOption.isPresent ())
-						System.out.println ("\t<file name=\"" + arguments [which] + "\">");
-					else
-						System.err.println (">> " + arguments [which]);
-					
 					File file = new File (arguments [which]);
+					
+					if (reportOption.isPresent ())
+						stream.println ("\t<file name=\"" + file.getName () + "\">");
+					else
+						stream.println (">> " + arguments [which]);
+					
 					if (noValidationOption.isPresent ()) {
 						Document document = XmlUtility.nonValidatingParse (file);
 						FpMLUtility.validate (document, validationErrorHandler);
@@ -133,7 +146,7 @@ public final class Validate extends Application
 						FpMLUtility.parseAndValidate (schemaOnly, file, rules, parserErrorHandler, validationErrorHandler);
 					
 					if (reportOption.isPresent ())
-						System.out.println ("\t</file>");
+						stream.println ("\t</file>");
 
 					++count;
 				}
@@ -142,14 +155,14 @@ public final class Validate extends Application
 			long end = System.currentTimeMillis ();
 			
 			if (reportOption.isPresent ())
-				System.out.println ("\t<statistics count=\"" + count
+				stream.println ("\t<statistics count=\"" + count
 						+ "\" time=\"" + (end - start)
 						+ "\" rate=\"" + ((1000.0 * count) / (end - start))
 						+ "\" rules=\"" + rules.size () + "\"/>");
 			else {
-				System.err.println ("== Processed " + count + " files in "
+				stream.println ("== Processed " + count + " files in "
 					+ (end - start) + " milliseconds");
-				System.err.println ("== " + ((1000.0 * count) / (end - start))
+				stream.println ("== " + ((1000.0 * count) / (end - start))
 					+ " files/sec checking " + rules.size () + " rules");
 			}
 		}
@@ -181,17 +194,26 @@ public final class Validate extends Application
 	{
 		public void warning (SAXParseException error)
 		{
-			System.err.println (error.getMessage ());
+			if (reportOption.isPresent ())
+				stream.println ("\t\t<syntaxError>" + error.getMessage () + "</syntaxError>");
+			else
+				stream.println (error.getMessage ());
 		}	
 		
 		public void error (SAXParseException error)
 		{
-			System.err.println (error.getMessage ());
+			if (reportOption.isPresent ())
+				stream.println ("\t\t<syntaxError>" + error.getMessage () + "</syntaxError>");
+			else
+				stream.println (error.getMessage ());
 		}	
 
 		public void fatalError (SAXParseException error)
 		{
-			System.err.println (error.getMessage ());
+			if (reportOption.isPresent ())
+				stream.println ("\t\t<syntaxError>" + error.getMessage () + "</syntaxError>");
+			else
+				stream.println (error.getMessage ());
 		}	
 	}
 	
@@ -206,16 +228,16 @@ public final class Validate extends Application
 		public void error (String code, Node context, String description, String ruleName, String additionalData)
 		{
 			if (reportOption.isPresent ()) {
-				System.out.println ("\t\t<validationError rule=\"" + ruleName
+				stream.println ("\t\t<validationError rule=\"" + ruleName
 						+ "\" context=\"" + XPath.forNode (context)
 						+ "\"" + ((additionalData != null) ? (" additionalData=\"" + additionalData + "\"") : "")
 						+ ">" + description + "</validationError>");
 			}
 			else {
 				if (additionalData != null)
-					System.err.println (ruleName + " " + XPath.forNode(context) + " " + description + " [" + additionalData + "]");
+					stream.println (ruleName + " " + XPath.forNode(context) + " " + description + " [" + additionalData + "]");
 				else
-					System.err.println (ruleName + " " + XPath.forNode(context) + " " + description);
+					stream.println (ruleName + " " + XPath.forNode(context) + " " + description);
 			}
 		}
 	}
@@ -228,14 +250,14 @@ public final class Validate extends Application
 		= Logger.getLogger ("demo.com.handcoded.fpml.Validate");
 
 	/**
-	 * The <CODE>Option</CODE> instance use to detect <CODE>-repeat count</CODE>
+	 * The <CODE>Option</CODE> instance used to detect <CODE>-repeat count</CODE>
 	 * @since	TFP 1.0
 	 */
 	private Option			repeatOption
 		= new Option ("-repeat", "Number of times to processes the files", "count");
 	
 	/**
-	 * The <CODE>Option</CODE> instance use to detect <CODE>-random</CODE>
+	 * The <CODE>Option</CODE> instance used to detect <CODE>-random</CODE>
 	 * @since	TFP 1.0
 	 */
 	private Option			randomOption
@@ -243,25 +265,32 @@ public final class Validate extends Application
 	
 	
 	/**
-	 * The <CODE>Option</CODE> instance use to detect <CODE>-strict</CODE>
+	 * The <CODE>Option</CODE> instance used to detect <CODE>-strict</CODE>
 	 * @since	TFP 1.0
 	 */
 	private Option			strictOption
 		= new Option ("-strict", "Use only FpML defined rules (no extensions)");
 	
 	/**
-	 * The <CODE>Option</CODE> instance use to detect <CODE>-strict</CODE>
+	 * The <CODE>Option</CODE> instance used to detect <CODE>-strict</CODE>
 	 * @since	TFP 1.0
 	 */
 	private Option			schemaOnlyOption
 		= new Option ("-schemaOnly", "Only accept schema based documents");
 	
 	/**
-	 * The <CODE>Option</CODE> instance use to detect <CODE>-report</CODE>
+	 * The <CODE>Option</CODE> instance used to detect <CODE>-report</CODE>
 	 * @since	TFP 1.5
 	 */
 	private Option			reportOption
 		= new Option ("-report", "Generate an XML report of the results");
+	
+	/**
+	 * The <CODE>Option</CODE> instance used to detect <CODE>-output</CODE>
+	 * @since	TFP 1.6
+	 */
+	private Option			outputOption
+		= new Option ("-output", "Write output to file", "file");
 	
 	/**
 	 * The <CODE>Option</CODE> instance use to detect <CODE>-report</CODE>
@@ -269,6 +298,12 @@ public final class Validate extends Application
 	 */
 	private Option			noValidationOption
 		= new Option ("-noValidation", "Don't perform XML validation");
+	
+	/**
+	 * The <CODE>PrintStream</CODE> instance to output to.
+	 * @since	TFP 1.6
+	 */
+	private PrintStream		stream = System.out;
 	
 	/**
 	 * A counter for the number of time to re-process the files.
