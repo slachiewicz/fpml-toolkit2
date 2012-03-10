@@ -127,8 +127,8 @@ public final class DOM
 	 * <CODE>Element</CODE>.
 	 * 
 	 * @param 	context		The context <CODE>Element</CODE>.
-	 * @return	The parent <CODE>Element</CODE> or <CODE>null</CODE> if the
-	 * 			context <CODE>Element</CODE> was the root element.
+	 * @return	The grand parent <CODE>Element</CODE> or <CODE>null</CODE> if
+	 * 			the context <CODE>Element</CODE> was the near the root element.
 	 * @since	TFP 1.0
 	 */
 	public static Element getGrandParent (Element context)
