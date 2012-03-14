@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -27,7 +27,6 @@ import com.handcoded.validation.Rule;
 import com.handcoded.validation.RuleSet;
 import com.handcoded.validation.ValidationErrorHandler;
 import com.handcoded.xml.DOM;
-import com.handcoded.xml.Logic;
 import com.handcoded.xml.NodeIndex;
 import com.handcoded.xml.XPath;
 
@@ -40,7 +39,7 @@ import com.handcoded.xml.XPath;
  * @version	$Id$
  * @since	TFP 1.0
  */
-public final class CdsRules extends Logic
+public final class CdsRules extends FpMLRuleSet
 {
 	/**
 	 * A <CODE>Precondition</CODE> instance that detect documents containing
@@ -48,20 +47,50 @@ public final class CdsRules extends Logic
 	 * @since	TFP 1.6
 	 */
 	private static final Precondition	CDS_PRODUCT
-//		= new ProductPrecondition (ProductType.FOREIGN_EXCHANGE);
 		= new ContentPrecondition (
-				new String [] { "creditDefaultSwap" },
-				new String [] { "CreditDefaultSwap" });
+				new String [] { "creditDefaultSwap", "creditDefaultSwapOption" },
+				new String [] { "CreditDefaultSwap", "CreditDeafultSwapOption" });
 	
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 4.0 or later
+	 * documents containing at least one credit product.
+	 * @since	TFP 1.6
+	 */
 	private static final Precondition	R4_0__LATER
 		= Precondition.and (CDS_PRODUCT, Preconditions.R4_0__LATER);
 	
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 4.x
+	 * documents containing at least one credit product.
+	 * @since	TFP 1.6
+	 */
+	private static final Precondition	R4_0__R4_X
+		= Precondition.and (CDS_PRODUCT, Preconditions.R4_0__R4_X);
+	
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 4.2 or later
+	 * documents containing at least one credit product.
+	 * @since	TFP 1.6
+	 */
 	private static final Precondition	R4_2__LATER
 	= Precondition.and (CDS_PRODUCT, Preconditions.R4_2__LATER);
 
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 4.3 or later
+	 * documents containing at least one credit product.
+	 * @since	TFP 1.6
+	 */
 	private static final Precondition	R4_3__LATER
 	= Precondition.and (CDS_PRODUCT, Preconditions.R4_3__LATER);
 
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5.0 or later
+	 * documents containing at least one credit product.
+	 * @since	TFP 1.6
+	 */
+	private static final Precondition	R5_0__LATER
+		= Precondition.and (CDS_PRODUCT, Preconditions.R5_0__LATER);
+	
 	/**
 	 * A <CODE>Rule</CODE> that ensures <CODE>tradeHeader/tradeDate</CODE> is before
 	 * <CODE>creditDefaultSwap/generalTerms/effectiveDate/unadjustedDate</CODE>.
@@ -77,6 +106,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -88,17 +122,15 @@ public final class CdsRules extends Logic
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
+					Element		cds	= XPath.path (context, "creditDefaultSwap");
 
-					Element		creditDefaultSwap
-						= DOM.getElementByLocalName (context, "creditDefaultSwap");
-
-					if ((creditDefaultSwap == null) || !isSingleName (creditDefaultSwap)) continue;
+					if ((cds == null) || !isSingleName (cds)) continue;
 
 					try {
-						Date tradeDate		= Date.parse (DOM.getInnerText (DOM.getElementByLocalName (context, "tradeHeader", "tradeDate")));
-						Date effectiveDate	= Date.parse (DOM.getInnerText (DOM.getElementByLocalName (creditDefaultSwap, "generalTerms", "effectiveDate", "unadjustedDate")));
+						Element tradeDate		= XPath.path (context, "tradeHeader", "tradeDate");
+						Element effectiveDate	= XPath.path (cds, "generalTerms", "effectiveDate", "unadjustedDate");
 
-						if (tradeDate.compareTo (effectiveDate) < 0) continue;
+						if ((tradeDate == null) || (effectiveDate == null) || less (toDate (tradeDate), toDate (effectiveDate))) continue;
 
 						errorHandler.error ("305", context,
 								"The tradeHeader/tradeDate must be before creditDefaultSwap/generalTerms/effectiveDate/unadjustedDate",
@@ -128,6 +160,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -139,17 +176,15 @@ public final class CdsRules extends Logic
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
+					Element		cds		= XPath.path (context, "creditDefaultSwap");
 
-					Element		creditDefaultSwap
-						= DOM.getElementByLocalName (context, "creditDefaultSwap");
-
-					if ((creditDefaultSwap == null) || !isCreditIndex (creditDefaultSwap)) continue;
+					if ((cds == null) || !isCreditIndex (cds)) continue;
 
 					try {
-						Date tradeDate		= Date.parse (DOM.getInnerText (DOM.getElementByLocalName (context, "tradeHeader", "tradeDate")));
-						Date effectiveDate	= Date.parse (DOM.getInnerText (DOM.getElementByLocalName (creditDefaultSwap, "generalTerms", "effectiveDate", "unadjustedDate")));
+						Element tradeDate		= XPath.path (context, "tradeHeader", "tradeDate");
+						Element effectiveDate	= XPath.path (cds, "generalTerms", "effectiveDate", "unadjustedDate");
 
-						if (tradeDate.compareTo (effectiveDate) >= 0) continue;
+						if ((tradeDate == null) || (effectiveDate == null) || !less (toDate (tradeDate), toDate (effectiveDate))) continue;
 
 						errorHandler.error ("305", context,
 								"The tradeHeader/tradeDate must not be before creditDefaultSwap/generalTerms/effectiveDate/unadjustedDate",
@@ -179,6 +214,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -190,11 +230,6 @@ public final class CdsRules extends Logic
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
-
-					Element		creditDefaultSwap
-						= DOM.getElementByLocalName (context, "creditDefaultSwap");
-
-					if (creditDefaultSwap == null) continue;
 
 					Element		calculationAgent
 						= DOM.getElementByLocalName (context, "calculationAgent");
@@ -244,6 +279,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -292,6 +332,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -341,6 +386,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -389,6 +439,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -438,8 +493,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "GeneralTerms"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("generalTerms"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("generalTerms");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -483,8 +545,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "GeneralTerms"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("generalTerms"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("generalTerms");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -524,8 +593,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "GeneralTerms"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("generalTerms"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("generalTerms");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -555,19 +631,26 @@ public final class CdsRules extends Logic
 	 * A <CODE>Rule</CODE> that ensures long form contracts contain termination
 	 * date adjustments.
 	 * <P>
-	 * Applies to FpML 4.0 and later.
+	 * Applies to FpML 4.x.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE08
-		= new Rule (R4_0__LATER, "cd-8")
+	public static final Rule	RULE08_OLD
+		= new Rule (R4_0__R4_X, "cd-8[OLD]")
 		{
 			/**
 			 * {@inheritDoc}
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "GeneralTerms"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("generalTerms"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("generalTerms");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -575,15 +658,61 @@ public final class CdsRules extends Logic
 					if (!isLongForm (DOM.getGrandParent (context)))
 						continue;
 
-					Element		adjustable
-						= DOM.getElementByLocalName (context, "scheduledTerminationDate", "adjustableDate");
-
-					if (adjustable == null) continue;
+					if (!exists (XPath.path (context, "scheduledTerminationDate"))) continue;
 
 					Element		def
-						= DOM.getElementByLocalName (adjustable, "dateAdjustments");
+						= XPath.path (context, "scheduledTerminationDate", "adjustableDate", "dateAdjustments");
 					Element		ref
-						= DOM.getElementByLocalName (adjustable, "dateAdjustmentsReference");
+						= XPath.path (context, "scheduledTerminationDate", "adjustableDate", "dateAdjustmentsReference");
+
+					if (((def == null) && (ref == null)) || ((def != null) && (ref != null))) {
+						errorHandler.error ("305", context,
+							"A date adjustment for the scheduled termination date must either be specified or referenced",
+							getName (), null);
+						result = false;
+					}
+				}
+				return (result);
+			}
+		};
+
+	/**
+	 * A <CODE>Rule</CODE> that ensures long form contracts contain termination
+	 * date adjustments.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule	RULE08
+		= new Rule (R5_0__LATER, "cd-8")
+		{
+			/**
+			 * {@inheritDoc}
+			 */
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "GeneralTerms"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("generalTerms"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result 	= true;
+
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context = (Element) list.item (index);
+
+					if (!isLongForm (DOM.getGrandParent (context)))
+						continue;
+
+					if (!exists (XPath.path (context, "scheduledTerminationDate"))) continue;
+
+					Element		def
+						= XPath.path (context, "scheduledTerminationDate", "dateAdjustments");
+					Element		ref
+						= XPath.path (context, "scheduledTerminationDate", "dateAdjustmentsReference");
 
 					if (((def == null) && (ref == null)) || ((def != null) && (ref != null))) {
 						errorHandler.error ("305", context,
@@ -611,8 +740,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "ReferenceInformation"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("referenceInformation"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("referenceInformation");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -653,8 +789,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "ReferenceInformation"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("referenceInformation"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("referenceInformation");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -695,23 +838,29 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "ReferenceInformation"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("referenceInformation"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("referenceInformation");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
 					Element		trade 	= DOM.getGreatGrandParent (context);
 
-					if (!isLongForm (trade) || !isIsda2003 (trade))
-						continue;
+					if (isLongForm (trade) && isIsda2003 (trade)) {
+						Element 	guarantees = DOM.getElementByLocalName (context, "allGuarantees");
 
-					Element 	guarantees = DOM.getElementByLocalName (context, "allGuarantees");
-
-					if (guarantees == null) {
-						errorHandler.error ("305", context,
-							"The allGuarantees element must be present",
-							getName (), null);
-						result = false;
+						if (guarantees == null) {
+							errorHandler.error ("305", context,
+								"The allGuarantees element must be present",
+								getName (), null);
+							result = false;
+						}
 					}
 				}
 				return (result);
@@ -733,8 +882,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "ReferenceInformation"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("referenceInformation"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("referenceInformation");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -771,8 +927,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("creditDefaultSwap");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -814,8 +977,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("creditDefaultSwap");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -853,8 +1023,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+				{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("creditDefaultSwap");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -901,8 +1078,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("creditDefaultSwap");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -953,8 +1137,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("creditDefaultSwap");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -1001,8 +1192,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("creditDefaultSwap");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -1049,6 +1247,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -1105,6 +1308,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -1149,6 +1357,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -1164,7 +1377,7 @@ public final class CdsRules extends Logic
 					if (isShortForm (trade)) {
 						Element context = XPath.path (trade, "creditDefaultSwap");
 
-						if (!isSingleName (context)) continue;
+						if ((context == null) || !isSingleName (context)) continue;
 
 						result &=
 							  validate (context, XPath.path (context, "cashSettlementTerms", "settlementCurrency"), errorHandler)
@@ -1206,67 +1419,72 @@ public final class CdsRules extends Logic
 			}
 		};
 
-		/**
-		 * A <CODE>Rule</CODE> that ensures a short form contract does not
-		 * contain invalid elements.
-		 * <P>
-		 * Applies to FpML 4.0 and later.
-		 * @since	TFP 1.0
-		 */
-		public static final Rule	RULE21B
-			= new Rule (R4_0__LATER, "cd-21b")
+	/**
+	 * A <CODE>Rule</CODE> that ensures a short form contract does not
+	 * contain invalid elements.
+	 * <P>
+	 * Applies to FpML 4.0 and later.
+	 * @since	TFP 1.0
+	 */
+	public static final Rule	RULE21B
+		= new Rule (R4_0__LATER, "cd-21b")
+		{
+			/**
+			 * {@inheritDoc}
+			 */
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
-				/**
-				 * {@inheritDoc}
-				 */
-				public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
-				{
+				if (nodeIndex.hasTypeInformation ())
 					return (
-						  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
-						& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
-				}
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
+				return (
+					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
+					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
+			}
 
-				private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
-				{
-					boolean		result 	= true;
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result 	= true;
 
-					for (int index = 0; index < list.getLength (); ++index) {
-						Element		trade = (Element) list.item (index);
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		trade = (Element) list.item (index);
 
-						if (isShortForm (trade)) {
-							Element context = XPath.path (trade, "creditDefaultSwap");
+					if (isShortForm (trade)) {
+						Element context = XPath.path (trade, "creditDefaultSwap");
 
-							if (!isCreditIndex (context)) continue;
+						if (!isCreditIndex (context)) continue;
 
-							result &=
-								  validate (context, XPath.path (context, "cashSettlementTerms"), errorHandler)
-								& validate (context, XPath.path (context, "physicalSettlementTerms"), errorHandler)
-								& validate (context, XPath.path (context, "feeLeg", "periodicPayment", "fixedAmountCalculation", "calculationAmount"), errorHandler)
-								& validate (context, XPath.path (context, "feeLeg", "periodicPayment", "fixedAmountCalculation", "dayCountFraction"), errorHandler)
-								& validate (context, XPath.path (context, "protectionTerms", "obligations"), errorHandler)
-								& validate (context, XPath.path (context, "protectionTerms", "creditEvents"), errorHandler)
-								& validate (context, XPath.path (context, "generalTerms", "effectiveDate", "dateAdjustments"), errorHandler)
-								& validate (context, XPath.path (context, "generalTerms", "effectiveDate", "dateAdjustmentsReference"), errorHandler)
-								& validate (context, XPath.path (context, "generalTerms", "scheduledTerminationDate", "adjustableDate", "dateAdjustments"), errorHandler)
-								& validate (context, XPath.path (context, "generalTerms", "scheduledTerminationDate", "adjustableDate", "dateAdjustmentsReference"), errorHandler)
-								& validate (context, XPath.path (context, "generalTerms", "dateAdjustments"), errorHandler);
-						}
+						result &=
+							  validate (context, XPath.path (context, "cashSettlementTerms"), errorHandler)
+							& validate (context, XPath.path (context, "physicalSettlementTerms"), errorHandler)
+							& validate (context, XPath.path (context, "feeLeg", "periodicPayment", "fixedAmountCalculation", "calculationAmount"), errorHandler)
+							& validate (context, XPath.path (context, "feeLeg", "periodicPayment", "fixedAmountCalculation", "dayCountFraction"), errorHandler)
+							& validate (context, XPath.path (context, "protectionTerms", "obligations"), errorHandler)
+							& validate (context, XPath.path (context, "protectionTerms", "creditEvents"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "effectiveDate", "dateAdjustments"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "effectiveDate", "dateAdjustmentsReference"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "scheduledTerminationDate", "adjustableDate", "dateAdjustments"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "scheduledTerminationDate", "adjustableDate", "dateAdjustmentsReference"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "dateAdjustments"), errorHandler);
 					}
-					return (result);
 				}
+				return (result);
+			}
 
-				private boolean validate (final Element context, final Element illegal, ValidationErrorHandler errorHandler)
-				{
-					if (illegal != null) {
-						errorHandler.error ("305", context,
-							"Illegal element found in short form credit default swap",
-							getName (), XPath.forNode (illegal));
+			private boolean validate (final Element context, final Element illegal, ValidationErrorHandler errorHandler)
+			{
+				if (illegal != null) {
+					errorHandler.error ("305", context,
+						"Illegal element found in short form credit default swap",
+						getName (), XPath.forNode (illegal));
 
-						return (false);
-					}
-					return (true);
+					return (false);
 				}
-			};
+				return (true);
+			}
+		};
 
 	/**
 	 * A <CODE>Rule</CODE> that ensures short form contracts can only contain
@@ -1283,6 +1501,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -1341,6 +1564,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -1387,6 +1615,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -1446,6 +1679,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -1516,8 +1754,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("creditDefaultSwap");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -1546,19 +1791,26 @@ public final class CdsRules extends Logic
 	 * A <CODE>Rule</CODE> that ensures if a payment date is defined it falls
 	 * before the termination date.
 	 * <P>
-	 * Applies to FpML 4.0 and later.
+	 * Applies to FpML 4.0 until 4.x.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE27
-		= new Rule (R4_0__LATER, "cd-27")
+	public static final Rule	RULE27_OLD
+		= new Rule (R4_0__R4_X, "cd-27[OLD]")
 		{
 			/**
 			 * {@inheritDoc}
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("creditDefaultSwap");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -1568,7 +1820,54 @@ public final class CdsRules extends Logic
 					if (and (
 						exists (feeDate = XPath.path (context, "feeLeg", "singlePayment", "adjustablePaymentDate")),
 						exists (termDate = XPath.path (context, "generalTerms", "scheduledTerminationDate", "adjustableDate", "unadjustedDate")))) {
-						if (less (feeDate, termDate)) continue;
+						if (less (toDate (feeDate), toDate (termDate))) continue;
+
+						errorHandler.error ("305", context,
+							"Single payment date '" + DOM.getInnerText (feeDate) + "' must be " +
+							"before scheduled termination date '" + DOM.getInnerText(termDate) + "'",
+							getName (), null);
+
+						result = false;
+					}
+				}
+				return (result);
+			}
+		};
+
+	/**
+	 * A <CODE>Rule</CODE> that ensures if a payment date is defined it falls
+	 * before the termination date.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule	RULE27
+		= new Rule (R5_0__LATER, "cd-27")
+		{
+			/**
+			 * {@inheritDoc}
+			 */
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result 	= true;
+
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context = (Element) list.item (index);
+					Element		feeDate;
+					Element		termDate;
+
+					if (and (
+						exists (feeDate = XPath.path (context, "feeLeg", "singlePayment", "adjustablePaymentDate")),
+						exists (termDate = XPath.path (context, "generalTerms", "scheduledTerminationDate", "unadjustedDate")))) {
+						if (less (toDate (feeDate), toDate (termDate))) continue;
 
 						errorHandler.error ("305", context,
 							"Single payment date '" + DOM.getInnerText (feeDate) + "' must be " +
@@ -1597,8 +1896,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("creditDefaultSwap");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context 		= (Element) list.item (index);
@@ -1636,8 +1942,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("creditDefaultSwap");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -1676,8 +1989,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("creditDefaultSwap");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -1716,8 +2036,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "PeriodicPayment"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("periodicPayment"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("periodicPayment");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -1757,6 +2084,11 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
 				return (
 					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
 					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
@@ -1806,8 +2138,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "PeriodicPayment"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("periodicPayment"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("periodicPayment");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -1849,8 +2188,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "DeliverableObligations"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("deliverableObligations"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("deliverableObligations");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -1889,8 +2235,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditEvents"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditEvents"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("creditEvents");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -1923,8 +2276,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "PubliclyAvailableInformation"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("publiclyAvailableInformation"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= XPath.paths (nodeIndex.getElementsByName ("creditEvents"), "creditEventNotice", "publiclyAvailableInformation");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -1960,8 +2320,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CashSettlementTerms"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("cashSettlementTerms"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("cashSettlementTerms");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -2003,17 +2370,19 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
-				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "ReferencePool"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("referencePool"), errorHandler));
 			}
-
+			
 			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
 			{
 				boolean		result = true;
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
-					Element 	pool	= XPath.path (context, "generalTerms", "basketReferenceInformation",	"referencePool");
-					NodeList	items	= XPath.paths (pool, "referencePoolItem", "constituentWeight", "basketPercentage");
+					NodeList	items	= XPath.paths (context, "referencePoolItem", "constituentWeight", "basketPercentage");
 
 					if (items.getLength() == 0) continue;
 
@@ -2023,7 +2392,7 @@ public final class CdsRules extends Logic
 
 					if (equal (total, BigDecimal.ONE)) continue;
 
-					errorHandler.error ("305", pool,
+					errorHandler.error ("305", context,
 							"The sum of referencePoolItem/constituentWeight/basketPercentage should be equal to 1",
 							getName (), total.toString ());
 
@@ -2049,22 +2418,24 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
-				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "BasketReferenceInformation"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("basketReferenceInformation"), errorHandler));
 			}
-
+			
 			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
 			{
 				boolean		result = true;
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
-					Element		info	= XPath.path (context, "generalTerms", "basketReferenceInformation");
 					Element		nth		= XPath.path (context, "nthToDefault");
 					Element		mth		= XPath.path (context, "mthToDefault");
 
 					if ((nth == null) || (mth == null) || (toInteger (nth) < toInteger (mth))) continue;
 
-					errorHandler.error ("305", info,
+					errorHandler.error ("305", context,
 							"If nthToDefault is present and mthToDefault is present then nthToDefault must be less than mthToDefault.",
 							getName (), null);
 
@@ -2084,34 +2455,36 @@ public final class CdsRules extends Logic
 	public static final Rule	RULE40
 		= new Rule (R4_2__LATER, "cd-40")
 		{
-		/**
-		 * {@inheritDoc}
-		 */
-		public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
-		{
-			return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
-		}
-
-		private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
-		{
-			boolean		result = true;
-
-			for (int index = 0; index < list.getLength (); ++index) {
-				Element		context = (Element) list.item (index);
-				Element		tranche	= XPath.path (context, "generalTerms", "indexReferenceInformation", "tranche");
-				Element		attach	= XPath.path (tranche, "attachmentPoint");
-				Element		exhaust	= XPath.path (tranche, "exhaustionPoint");
-
-				if ((attach == null) || (exhaust == null) || lessOrEqual (toDecimal (attach), toDecimal (exhaust))) continue;
-
-				errorHandler.error ("305", tranche,
-						"attachmentPoint must be less than or equal to exhaustionPoint.",
-						getName (), null);
-
-				result = false;
+			/**
+			 * {@inheritDoc}
+			 */
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Tranche"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("tranche"), errorHandler));
 			}
-			return (result);
-		}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result = true;
+	
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context = (Element) list.item (index);
+					Element		attach	= XPath.path (context, "attachmentPoint");
+					Element		exhaust	= XPath.path (context, "exhaustionPoint");
+	
+					if ((attach == null) || (exhaust == null) || lessOrEqual (toDecimal (attach), toDecimal (exhaust))) continue;
+	
+					errorHandler.error ("305", context,
+							"attachmentPoint must be less than or equal to exhaustionPoint.",
+							getName (), null);
+	
+					result = false;
+				}
+				return (result);
+			}
 		};
 
 	/**
@@ -2129,8 +2502,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "GeneralTerms"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("generalTerms"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("generalTerms");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -2167,8 +2547,15 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "GeneralTerms"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("generalTerms"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result 	= true;
-				NodeList	list 	= nodeIndex.getElementsByName ("generalTerms");
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
@@ -2251,9 +2638,12 @@ public final class CdsRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
 				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
 			}
-
+			
 			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
 			{
 				boolean		result = true;

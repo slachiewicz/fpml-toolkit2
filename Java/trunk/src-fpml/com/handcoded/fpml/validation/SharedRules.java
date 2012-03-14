@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -25,7 +25,6 @@ import com.handcoded.validation.Rule;
 import com.handcoded.validation.RuleSet;
 import com.handcoded.validation.ValidationErrorHandler;
 import com.handcoded.xml.DOM;
-import com.handcoded.xml.Logic;
 import com.handcoded.xml.NodeIndex;
 import com.handcoded.xml.Types;
 import com.handcoded.xml.XPath;
@@ -38,7 +37,7 @@ import com.handcoded.xml.XPath;
  * @version	$Id$
  * @since	TFP 1.0
  */
-public final class SharedRules extends Logic
+public final class SharedRules extends FpMLRuleSet
 {
 	/**
 	 * A <CODE>Rule</CODE> instance that ensures that business centers are
@@ -330,31 +329,31 @@ public final class SharedRules extends Logic
 			 */
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
+				return (validate (nodeIndex.getElementsByName ("bermudaExercise"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
 				boolean		result = true;
-				NodeList	list = nodeIndex.getElementsByName ("bermudaExercise");
 				
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
-					Element		latest  = DOM.getElementByLocalName (context, "latestExerciseTime");
+					Element		latest   = XPath.path (context, "latestExerciseTime", "hourMinuteTime");
+					Element		earliest = XPath.path (context, "earliestExerciseTime", "hourMinuteTime");
 
-					if (latest != null) {
-						Element		earliest = DOM.getElementByLocalName (context, "earliestExerciseTime");
+					if ((latest == null) || (earliest == null)) continue;
+					
+					Time 	t1 = toTime (earliest);
+					Time	t2 = toTime (latest);
+					
+					if ((t1 == null) || (t2 == null) || less (t1, t2))
+						continue;
 						
-						try {
-							Time latestTime   = Time.parse (DOM.getInnerText (latest));
-							Time earliestTime = Time.parse (DOM.getInnerText (earliest));
-
-							if (earliestTime.compareTo (latestTime) >= 0) {
-								errorHandler.error ("305", context,
-									"The latest exercise time must be after the earliest",
-									getName (), null);
-								result = false;
-							}
-						}
-						catch (IllegalArgumentException error) {
-							// Syntax errors handled elsewhere.
-						}
-					}
+					errorHandler.error ("305", context,
+						"The latest exercise time must be after the earliest",
+						getName (), null);
+					
+					result = false;
 				}
 				return (result);
 			}
