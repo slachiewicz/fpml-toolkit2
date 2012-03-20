@@ -254,6 +254,7 @@ public final class RuleSet extends Validator
 			}
 			else if (localName.equals ("addRule")) {
 				String		name	= attributes.getValue ("name");
+				String		alias	= attributes.getValue ("alias");
 				Rule		rule	= Rule.forName (name);
 				
 				if (rule != null) {
@@ -261,6 +262,8 @@ public final class RuleSet extends Validator
 						ruleSet.add (rule);
 					else
 						logger.severe ("Syntax error in rule file - addRule outside of RuleSet");
+					
+					if (alias != null) rule.setAlias (alias);
 				}
 				else
 					logger.severe ("Reference to undefined rule '" + name + "' in addRule");
