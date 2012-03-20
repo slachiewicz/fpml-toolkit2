@@ -1,4 +1,4 @@
-// Copyright (C),2005-2008 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -92,7 +92,7 @@ public final class PricingAndRiskRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 						"generic/@href must match the @id attribute of an element of type Asset",
-						getName (), targetName);
+						getDisplayName (), targetName);
 					
 					result = false;
 				}
@@ -141,7 +141,7 @@ public final class PricingAndRiskRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 						"@href must match the @id attribute of an element of type PricingStructure",
-						getName (), targetName);
+						getDisplayName (), targetName);
 					
 					result = false;
 				}

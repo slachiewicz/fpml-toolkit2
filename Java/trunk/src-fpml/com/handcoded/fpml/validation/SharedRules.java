@@ -80,14 +80,14 @@ public final class SharedRules extends FpMLRuleSet
 					if (text.equals ("NONE") || text.equals ("NotApplicable")) {
 						if ((defs.getLength () + refs.getLength ()) != 0) {
 							errorHandler.error ("305", context,
-								"business center definitions or references should not be present", getName (), null);
+								"business center definitions or references should not be present", getDisplayName (), null);
 							result = false;
 						}
 					}
 					else {
 						if ((defs.getLength () + refs.getLength ()) == 0) {
 							errorHandler.error ("305", context,
-								"business center definitions or references should be present", getName (), null);
+								"business center definitions or references should be present", getDisplayName (), null);
 							result = false;
 						}
 					}
@@ -138,7 +138,7 @@ public final class SharedRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Offset contains a day type by the the period is '" +
 						DOM.getInnerText (XPath.path (context, "period")) + "', not 'D'",
-						getName (), null);
+						getDisplayName (), null);
 					
 					result = false;
 				}
@@ -188,7 +188,7 @@ public final class SharedRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Offset has day type set to 'Business' but the period " +
 						"multiplier is set to zero.",
-						getName (), Types.toToken (XPath.path (context, "periodMultiplier")));
+						getDisplayName (), Types.toToken (XPath.path (context, "periodMultiplier")));
 
 					result = false;
 				}				
@@ -232,7 +232,7 @@ public final class SharedRules extends FpMLRuleSet
 						String value = DOM.getInnerText (DOM.getElementByLocalName (context, "businessDayConvention"));
 						if (!value.equals ("NONE")) {
 							errorHandler.error ("305", context,
-								"businessDayConvention should be NONE", getName (), value);
+								"businessDayConvention should be NONE", getDisplayName (), value);
 							result = false;
 						}
 					}
@@ -270,7 +270,7 @@ public final class SharedRules extends FpMLRuleSet
 					if (payer.getAttribute ("href").equals (receiver.getAttribute ("href"))) {
 						errorHandler.error ("305", parent,
 							"payer and receiver party references must be different",
-							getName (), payer.getAttribute ("href"));
+							getDisplayName (), payer.getAttribute ("href"));
 						result = false;
 					}
 				}
@@ -307,7 +307,7 @@ public final class SharedRules extends FpMLRuleSet
 						
 					errorHandler.error ("305", context,
 						"The latest exercise time must be after the earliest",
-						getName (), null);
+						getDisplayName (), null);
 					result = false;
 				}
 				return (result);
@@ -351,7 +351,7 @@ public final class SharedRules extends FpMLRuleSet
 						
 					errorHandler.error ("305", context,
 						"The latest exercise time must be after the earliest",
-						getName (), null);
+						getDisplayName (), null);
 					
 					result = false;
 				}
@@ -403,7 +403,7 @@ public final class SharedRules extends FpMLRuleSet
 						if (firstDate.compareTo (lastDate) >= 0) {
 							errorHandler.error ("305", context,
 									"The unadjusted last date must be after the unadjusted first date",
-									getName (), null);
+									getDisplayName (), null);
 											  	
 							result = false;
 						}
@@ -459,14 +459,14 @@ public final class SharedRules extends FpMLRuleSet
 					if (text.equals ("NONE") || text.equals ("NotApplicable")) {
 						if ((defs.getLength () + refs.getLength ()) != 0) {
 							errorHandler.error ("305", context,
-								"business center definitions or references should not be present", getName (), null);
+								"business center definitions or references should not be present", getDisplayName (), null);
 							result = false;
 						}
 					}
 					else {
 						if ((defs.getLength () + refs.getLength ()) == 0) {
 							errorHandler.error ("305", context,
-								"business center definitions or references should be present", getName (), null);
+								"business center definitions or references should be present", getDisplayName (), null);
 							result = false;
 						}
 					}
@@ -502,7 +502,7 @@ public final class SharedRules extends FpMLRuleSet
 						
 						if (values.contains (href)) {
 							errorHandler.error ("305", context,
-								"Duplicate calculationAgentPartyReference", getName (), href);
+								"Duplicate calculationAgentPartyReference", getDisplayName (), href);
 							result = false;
 						}
 						else
@@ -543,7 +543,7 @@ public final class SharedRules extends FpMLRuleSet
 						if (!def.getLocalName ().equals ("businessCenters")) {
 							errorHandler.error ("305", context,
 								"Reference does not match with a businessCenters element",
-								getName (), null);
+								getDisplayName (), null);
 							result = false;
 						}
 						else {
@@ -570,7 +570,7 @@ public final class SharedRules extends FpMLRuleSet
 							if (def != ref) {
 								errorHandler.error ("305", context,
 									"The referenced business centers are not in the same trade",
-									getName (), null);
+									getDisplayName (), null);
 								result = false;
 							}
 						}
@@ -606,7 +606,7 @@ public final class SharedRules extends FpMLRuleSet
 					if ((href == null) || (href.length() < 2) || (href.charAt(0) != '#')) {
 						errorHandler.error ("305", context,
 							"The @href attribute is not a valid XPointer",
-							getName (), href);
+							getDisplayName (), href);
 						result = false;
 						continue;
 					}
@@ -616,7 +616,7 @@ public final class SharedRules extends FpMLRuleSet
 					if ((target == null) || !(target.getLocalName ().equals ("party") || target.getLocalName ().equals ("tradeSide"))) {
 						errorHandler.error ("305", context,
 							"The @href attribute does not reference a party element",
-							getName (), href);
+							getDisplayName (), href);
 						result = false;
 					}
 				}
@@ -651,7 +651,7 @@ public final class SharedRules extends FpMLRuleSet
 					if ((target == null) || !(target.getLocalName ().equals ("party")  || target.getLocalName ().equals ("tradeSide"))) {
 						errorHandler.error ("305", context,
 							"The @href attribute does not reference a party element",
-							getName (), href);
+							getDisplayName (), href);
 						result = false;
 					}
 				}
@@ -685,7 +685,7 @@ public final class SharedRules extends FpMLRuleSet
 					if ((href == null) || (href.length() < 2) || (href.charAt(0) != '#')) {
 						errorHandler.error ("305", context,
 							"The @href attribute is not a valid XPointer",
-							getName (), href);
+							getDisplayName (), href);
 						result = false;
 						continue;
 					}
@@ -695,7 +695,7 @@ public final class SharedRules extends FpMLRuleSet
 					if ((target == null) || !(target.getLocalName ().equals ("party"))) {
 						errorHandler.error ("305", context,
 							"The @href attribute does not reference a party element",
-							getName (), href);
+							getDisplayName (), href);
 						result = false;
 					}
 				}
@@ -730,7 +730,7 @@ public final class SharedRules extends FpMLRuleSet
 					if ((target == null) || !(target.getLocalName ().equals ("party") || target.getLocalName ().equals ("tradeSide"))) {
 						errorHandler.error ("305", context,
 							"The @href attribute does not reference a party element",
-							getName (), href);
+							getDisplayName (), href);
 						result = false;
 					}
 				}
@@ -764,7 +764,7 @@ public final class SharedRules extends FpMLRuleSet
 					if ((href == null) || (href.length() < 2) || (href.charAt(0) != '#')) {
 						errorHandler.error ("305", context,
 							"The @href attribute is not a valid XPointer",
-							getName (), href);
+							getDisplayName (), href);
 						result = false;
 						continue;
 					}
@@ -774,7 +774,7 @@ public final class SharedRules extends FpMLRuleSet
 					if ((target == null) || !(target.getLocalName ().equals ("party"))) {
 						errorHandler.error ("305", context,
 							"The @href attribute does not reference a party element",
-							getName (), href);
+							getDisplayName (), href);
 						result = false;
 					}
 				}
@@ -809,7 +809,7 @@ public final class SharedRules extends FpMLRuleSet
 					if ((target == null) || !(target.getLocalName ().equals ("party"))) {
 						errorHandler.error ("305", context,
 							"The @href attribute does not reference a party element",
-							getName (), href);
+							getDisplayName (), href);
 						result = false;
 					}
 				}
@@ -872,7 +872,7 @@ public final class SharedRules extends FpMLRuleSet
 							|| Integer.parseInt (DOM.getInnerText (factor)) == 0) {
 							errorHandler.error ("305", context,
 								"The dayType element should not be present",
-								getName (), null);
+								getDisplayName (), null);
 							result = false;
 						}
 					}
@@ -881,7 +881,7 @@ public final class SharedRules extends FpMLRuleSet
 							&& Integer.parseInt (DOM.getInnerText (factor)) != 0) {
 							errorHandler.error ("305", context,
 								"The dayType element should be present",
-								getName (), null);
+								getDisplayName (), null);
 							result = false;
 						}
 					}			
@@ -917,7 +917,7 @@ public final class SharedRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 						"The value of the href attribute does not refere to a party structure",
-						getName (), href);
+						getDisplayName (), href);
 					
 					result = false;
 				}
@@ -951,7 +951,7 @@ public final class SharedRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 						"The value of the href attribute does not refere to an account structure",
-						getName (), href);
+						getDisplayName (), href);
 					
 					result = false;
 				}

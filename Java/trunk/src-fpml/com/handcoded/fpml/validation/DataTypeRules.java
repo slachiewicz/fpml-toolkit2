@@ -1,4 +1,4 @@
-// Copyright (C),2005-2008 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -80,14 +80,14 @@ public final class DataTypeRules
 						if (!Time.parse (value).seconds ().equals (BigDecimal.ZERO)) {
 							errorHandler.error ("305", context,
 								"The seconds component of the time must be zeroes",
-								getName (), value);
+								getDisplayName (), value);
 							result = false;
 						}
 					}
 					catch (IllegalArgumentException error) {
 						errorHandler.error ("305", context,
 							"The time value is not in HH:MM:SS format",
-							getName (), value);
+							getDisplayName (), value);
 						result = false;
 					}
 				}
@@ -194,7 +194,7 @@ public final class DataTypeRules
 					if (!matcher.matches ()) {
 						errorHandler.error ("305", context,
 								"The date value is not in YYYY-MM-DD format",
-								getName (), value);
+								getDisplayName (), value);
 						result = false;
 					}
 				}
@@ -301,7 +301,7 @@ public final class DataTypeRules
 					if (!matcher.matches ()) {
 						errorHandler.error ("305", context,
 							"Invalid decimal value",
-							getName (), value);
+							getDisplayName (), value);
 						result = false;
 					}
 				}
@@ -370,7 +370,7 @@ public final class DataTypeRules
 					if (!matcher.matches ()) {
 						errorHandler.error ("305", context,
 							"Invalid integer value",
-							getName (), value);
+							getDisplayName (), value);
 						result = false;
 					}
 				}
@@ -440,7 +440,7 @@ public final class DataTypeRules
 					if (!matcher.matches ()) {
 						errorHandler.error ("305", context,
 							"Invalid positive integer value",
-							getName (), value);
+							getDisplayName (), value);
 						result = false;
 					}
 				}
@@ -508,7 +508,7 @@ public final class DataTypeRules
 					if (!matcher.matches ()) {
 						errorHandler.error ("305", context,
 							"Invalid non-negative integer value",
-							getName (), value);
+							getDisplayName (), value);
 						result = false;
 					}
 				}
@@ -586,7 +586,7 @@ public final class DataTypeRules
 					if (!matcher.matches ()) {
 						errorHandler.error ("305", context,
 							"Invalid boolean value",
-							getName (), value);
+							getDisplayName (), value);
 						result = false;
 					}
 				}

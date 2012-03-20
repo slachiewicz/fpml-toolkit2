@@ -1,4 +1,4 @@
-// Copyright (C),2005-2008 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -228,7 +228,7 @@ public class SchemeRule extends Rule
 				if ((uri == null) || (uri.length () == 0)) {
 					errorHandler.error ("305", context,
 						"A qualifying scheme URI has not been defined for this element",
-						getName (), context.getLocalName ());
+						getDisplayName (), context.getLocalName ());
 	
 					result = false;
 					continue;
@@ -238,7 +238,7 @@ public class SchemeRule extends Rule
 				if (scheme == null) {
 					errorHandler.error ("305", context,
 						"An unrecognized scheme URI has been used as a qualifier",
-						getName (), uri);
+						getDisplayName (), uri);
 	
 					result = false;
 					continue;
@@ -249,7 +249,7 @@ public class SchemeRule extends Rule
 	
 				errorHandler.error ("305", context,
 					"The code value '" + value + "' is not valid in scheme '" + scheme.getUri () + "'",
-					getName (), value);
+					getDisplayName (), value);
 	
 				result = false;
 			}

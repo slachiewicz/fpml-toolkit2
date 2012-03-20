@@ -134,7 +134,7 @@ public final class CdsRules extends FpMLRuleSet
 
 						errorHandler.error ("305", context,
 								"The tradeHeader/tradeDate must be before creditDefaultSwap/generalTerms/effectiveDate/unadjustedDate",
-								getName (), null);
+								getDisplayName (), null);
 						result = false;
 					}
 					catch (IllegalArgumentException error) {
@@ -188,7 +188,7 @@ public final class CdsRules extends FpMLRuleSet
 
 						errorHandler.error ("305", context,
 								"The tradeHeader/tradeDate must not be before creditDefaultSwap/generalTerms/effectiveDate/unadjustedDate",
-								getName (), null);
+								getDisplayName (), null);
 						result = false;
 					}
 					catch (IllegalArgumentException error) {
@@ -254,7 +254,7 @@ public final class CdsRules extends FpMLRuleSet
 							errorHandler.error ("305", context,
 									"The calculationAgent element may only contain calculationAgentPartyReferences " +
 									"or a calculationAgentParty with the value 'AsSpecifiedInMasterAgreement",
-									getName (), null);
+									getDisplayName (), null);
 							result = false;
 						}
 					}
@@ -308,7 +308,7 @@ public final class CdsRules extends FpMLRuleSet
 						if (toToken (supplement).startsWith ("ISDA2003Credit")) {
 							errorHandler.error ("305", supplement,
 								"The contractualSupplement name may not begin with ISDA2003Credit",
-								getName (), DOM.getInnerText (supplement));
+								getDisplayName (), DOM.getInnerText (supplement));
 							result = false;
 						}
 					}
@@ -361,7 +361,7 @@ public final class CdsRules extends FpMLRuleSet
 						if (toToken (type).startsWith ("ISDA2003Credit")) {
 							errorHandler.error ("305", type,
 								"The contractualTermsSupplement/type may not begin with ISDA2003Credit",
-								getName (), toToken (type));
+								getDisplayName (), toToken (type));
 							result = false;
 						}
 					}
@@ -415,7 +415,7 @@ public final class CdsRules extends FpMLRuleSet
 						if (DOM.getInnerText (supplement).startsWith ("ISDA1999Credit")) {
 							errorHandler.error ("305", supplement,
 								"The contractualSupplement name may not begin with ISDA1999Credit",
-								getName (), DOM.getInnerText (supplement));
+								getDisplayName (), DOM.getInnerText (supplement));
 							result = false;
 						}
 					}
@@ -468,7 +468,7 @@ public final class CdsRules extends FpMLRuleSet
 						if (toToken (type).startsWith ("ISDA1999Credit")) {
 							errorHandler.error ("305", type,
 								"The contractualTermSupplement/type name may not begin with ISDA1999Credit",
-								getName (), DOM.getInnerText (type));
+								getDisplayName (), DOM.getInnerText (type));
 							result = false;
 						}
 					}
@@ -517,7 +517,7 @@ public final class CdsRules extends FpMLRuleSet
 							if (effective.compareTo (adjustable) >= 0) {
 								errorHandler.error ("305", context,
 										"The scheduled termination date must be later than the effective date",
-										getName (), null);
+										getDisplayName (), null);
 								result = false;
 							}
 						}
@@ -569,7 +569,7 @@ public final class CdsRules extends FpMLRuleSet
 					if (buyer.getAttribute ("href").equals (seller.getAttribute ("href"))) {
 						errorHandler.error ("305", context,
 							"The buyer and seller party references must be different",
-							getName (), null);
+							getDisplayName (), null);
 						result = false;
 					}
 
@@ -619,7 +619,7 @@ public final class CdsRules extends FpMLRuleSet
 					if (((def == null) && (ref == null)) || ((def != null) && (ref != null))) {
 						errorHandler.error ("305", context,
 							"A date adjustment for the effective date must either be specified or referenced",
-							getName (), null);
+							getDisplayName (), null);
 						result = false;
 					}
 				}
@@ -668,7 +668,7 @@ public final class CdsRules extends FpMLRuleSet
 					if (((def == null) && (ref == null)) || ((def != null) && (ref != null))) {
 						errorHandler.error ("305", context,
 							"A date adjustment for the scheduled termination date must either be specified or referenced",
-							getName (), null);
+							getDisplayName (), null);
 						result = false;
 					}
 				}
@@ -717,7 +717,7 @@ public final class CdsRules extends FpMLRuleSet
 					if (((def == null) && (ref == null)) || ((def != null) && (ref != null))) {
 						errorHandler.error ("305", context,
 							"A date adjustment for the scheduled termination date must either be specified or referenced",
-							getName (), null);
+							getDisplayName (), null);
 						result = false;
 					}
 				}
@@ -764,7 +764,7 @@ public final class CdsRules extends FpMLRuleSet
 							if (!ref.getAttribute ("href").equals (entity.getAttribute ("id"))) {
 								errorHandler.error ("305", context,
 									"The primaryObligorReference must refer to the referenceEntity",
-									getName (), ref.getAttribute ("href"));
+									getDisplayName (), ref.getAttribute ("href"));
 								result = false;
 							}
 						}
@@ -813,7 +813,7 @@ public final class CdsRules extends FpMLRuleSet
 							if (!ref.getAttribute ("href").equals (entity.getAttribute ("id"))) {
 								errorHandler.error ("305", context,
 									"The primaryObligorReference must refer to the referenceEntity",
-									getName (), ref.getAttribute ("href"));
+									getDisplayName (), ref.getAttribute ("href"));
 								result = false;
 							}
 						}
@@ -858,7 +858,7 @@ public final class CdsRules extends FpMLRuleSet
 						if (guarantees == null) {
 							errorHandler.error ("305", context,
 								"The allGuarantees element must be present",
-								getName (), null);
+								getDisplayName (), null);
 							result = false;
 						}
 					}
@@ -903,7 +903,7 @@ public final class CdsRules extends FpMLRuleSet
 						if (Double.parseDouble (priceValue) < 0.0) {
 							errorHandler.error ("305", context,
 								"The reference price must be greater than or equal to zero",
-								getName (), priceValue);
+								getDisplayName (), priceValue);
 							result = false;
 						}
 					}
@@ -953,7 +953,7 @@ public final class CdsRules extends FpMLRuleSet
 						errorHandler.error ("305", context,
 							"Credit event notice references buyer party reference " + buyerName +
 							" but general terms references " + referenceName,
-							getName (), null);
+							getDisplayName (), null);
 
 						result = false;
 					}
@@ -999,7 +999,7 @@ public final class CdsRules extends FpMLRuleSet
 						errorHandler.error ("305", context,
 							"If protectionTerms/creditEvents/creditEventNotice/notifyingParty/sellerPartyReference " +
 							"is present, its @href attribute must match that of generalTerms/sellerPartyReference",
-							getName (), null);
+							getDisplayName (), null);
 
 						result = false;
 					}
@@ -1055,7 +1055,7 @@ public final class CdsRules extends FpMLRuleSet
 						"and cashSettlementTerms/valuationDate/singleValuationDate occurs " +
 						"then the value of cashSettlementTerms/valuationMethod must be " +
 						"Market or Highest",
-						getName (), DOM.getInnerText (XPath.path (context, "cashSettlementTerms", "valuationMethod")));
+						getDisplayName (), DOM.getInnerText (XPath.path (context, "cashSettlementTerms", "valuationMethod")));
 
 					result = false;
 				}
@@ -1114,7 +1114,7 @@ public final class CdsRules extends FpMLRuleSet
 						"and cashSettlementTerms/valuationDate/multipleValuationDates occurs " +
 						"then the value of cashSettlementTerms/valuationMethod must be " +
 						"AverageMarket, Highest or AverageHighest",
-						getName (), DOM.getInnerText (XPath.path (context, "cashSettlementTerms", "valuationMethod")));
+						getDisplayName (), DOM.getInnerText (XPath.path (context, "cashSettlementTerms", "valuationMethod")));
 
 					result = false;
 				}
@@ -1169,7 +1169,7 @@ public final class CdsRules extends FpMLRuleSet
 						"and cashSettlementTerms/valuationDate/singleValuationDate occurs " +
 						"then the value of cashSettlementTerms/valuationMethod must be " +
 						"BlendedMarket or BlendedHighest",
-						getName (), DOM.getInnerText (XPath.path (context, "cashSettlementTerms", "valuationMethod")));
+						getDisplayName (), DOM.getInnerText (XPath.path (context, "cashSettlementTerms", "valuationMethod")));
 
 					result = false;
 				}
@@ -1224,7 +1224,7 @@ public final class CdsRules extends FpMLRuleSet
 						"and cashSettlementTerms/valuationDate/multipleValuationDates occurs " +
 						"then the value of cashSettlementTerms/valuationMethod must be " +
 						"AverageBlendedMarket or AverageBlendedHighest",
-						getName (), DOM.getInnerText (XPath.path (context, "cashSettlementTerms", "valuationMethod")));
+						getDisplayName (), DOM.getInnerText (XPath.path (context, "cashSettlementTerms", "valuationMethod")));
 
 					result = false;
 				}
@@ -1285,7 +1285,7 @@ public final class CdsRules extends FpMLRuleSet
 				if (illegal != null) {
 					errorHandler.error ("305", context,
 						"Illegal element found in ISDA 1999 credit default swap",
-						getName (), XPath.forNode (illegal));
+						getDisplayName (), XPath.forNode (illegal));
 
 					return (false);
 				}
@@ -1333,7 +1333,7 @@ public final class CdsRules extends FpMLRuleSet
 
 							errorHandler.error ("305", context,
 								"Illegal element found in ISDA 2003 credit default swap",
-								getName (), "notContingent");
+								getDisplayName (), "notContingent");
 
 							result = false;
 						}
@@ -1411,7 +1411,7 @@ public final class CdsRules extends FpMLRuleSet
 				if (illegal != null) {
 					errorHandler.error ("305", context,
 						"Illegal element found in short form credit default swap",
-						getName (), XPath.forNode (illegal));
+						getDisplayName (), XPath.forNode (illegal));
 
 					return (false);
 				}
@@ -1478,7 +1478,7 @@ public final class CdsRules extends FpMLRuleSet
 				if (illegal != null) {
 					errorHandler.error ("305", context,
 						"Illegal element found in short form credit default swap",
-						getName (), XPath.forNode (illegal));
+						getDisplayName (), XPath.forNode (illegal));
 
 					return (false);
 				}
@@ -1536,7 +1536,7 @@ public final class CdsRules extends FpMLRuleSet
 										localName.equals ("obligationAcceleration")) {
 										errorHandler.error ("305", context,
 											"Illegal element found in short form credit default swap",
-											getName (), localName);
+											getDisplayName (), localName);
 
 											result = false;
 									}
@@ -1591,7 +1591,7 @@ public final class CdsRules extends FpMLRuleSet
 
 						errorHandler.error ("305", context,
 							"Neither cash nor physical settlement terms are present",
-							getName (), null);
+							getDisplayName (), null);
 
 						result = false;
 					}
@@ -1638,7 +1638,7 @@ public final class CdsRules extends FpMLRuleSet
 						if (!exists (XPath.path (context, "protectionTerms", "creditEvents", "creditEventNotice"))) {
 							errorHandler.error ("305", context,
 								"Long Form credit default swap is missing a mandatory element",
-								getName (), "protectionEvents/creditEvents/creditEventNotices");
+								getDisplayName (), "protectionEvents/creditEvents/creditEventNotices");
 
 							result = false;
 						}
@@ -1646,7 +1646,7 @@ public final class CdsRules extends FpMLRuleSet
 						if (!exists (XPath.path (context, "protectionTerms", "obligations"))) {
 							errorHandler.error ("305", context,
 								"Long Form credit default swap is missing a mandatory element",
-								getName (), "protectionTerms/obligations");
+								getDisplayName (), "protectionTerms/obligations");
 
 							result = false;
 						}
@@ -1654,7 +1654,7 @@ public final class CdsRules extends FpMLRuleSet
 						if (!exists (XPath.path (context, "generalTerms", "referenceInformation", "referencePrice"))) {
 							errorHandler.error ("305", context,
 								"Long Form credit default swap is missing a mandatory element",
-								getName (), "generalTerms/referenceInformation/referencePrice");
+								getDisplayName (), "generalTerms/referenceInformation/referencePrice");
 
 							result = false;
 						}
@@ -1703,7 +1703,7 @@ public final class CdsRules extends FpMLRuleSet
 							if (!exists (XPath.path (context, "physicalSettlementTerms", "settlementCurrency"))) {
 								errorHandler.error ("305", context,
 									"A mandatory element for physical settlement is missing",
-									getName (), "physicalSettlementTerms/settlementCurrency");
+									getDisplayName (), "physicalSettlementTerms/settlementCurrency");
 
 								result = false;
 							}
@@ -1711,7 +1711,7 @@ public final class CdsRules extends FpMLRuleSet
 							if (!exists (XPath.path (context, "physicalSettlementTerms", "physicalSettlementPeriod"))) {
 								errorHandler.error ("305", context,
 									"A mandatory element for physical settlement is missing",
-									getName (), "physicalSettlementTerms/physicalSettlementPeriod");
+									getDisplayName (), "physicalSettlementTerms/physicalSettlementPeriod");
 
 								result = false;
 							}
@@ -1719,7 +1719,7 @@ public final class CdsRules extends FpMLRuleSet
 							if (!exists (XPath.path (context, "physicalSettlementTerms", "escrow"))) {
 								errorHandler.error ("305", context,
 									"A mandatory element for physical settlement is missing",
-									getName (), "physicalSettlementTerms/escrow");
+									getDisplayName (), "physicalSettlementTerms/escrow");
 
 								result = false;
 							}
@@ -1727,7 +1727,7 @@ public final class CdsRules extends FpMLRuleSet
 							if (!exists (XPath.path (context, "physicalSettlementTerms", "deliverableObligations", "accruedInterest"))) {
 								errorHandler.error ("305", context,
 									"A mandatory element for physical settlement is missing",
-									getName (), "physicalSettlementTerms/deliverableObligations/accruedInterest");
+									getDisplayName (), "physicalSettlementTerms/deliverableObligations/accruedInterest");
 
 								result = false;
 							}
@@ -1779,7 +1779,7 @@ public final class CdsRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Single payment date " + DOM.getInnerText (paymentDate) + " must be " +
 						"after the effective date " + DOM.getInnerText (effectiveDate),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1825,7 +1825,7 @@ public final class CdsRules extends FpMLRuleSet
 						errorHandler.error ("305", context,
 							"Single payment date '" + DOM.getInnerText (feeDate) + "' must be " +
 							"before scheduled termination date '" + DOM.getInnerText(termDate) + "'",
-							getName (), null);
+							getDisplayName (), null);
 
 						result = false;
 					}
@@ -1872,7 +1872,7 @@ public final class CdsRules extends FpMLRuleSet
 						errorHandler.error ("305", context,
 							"Single payment date '" + DOM.getInnerText (feeDate) + "' must be " +
 							"before scheduled termination date '" + DOM.getInnerText(termDate) + "'",
-							getName (), null);
+							getDisplayName (), null);
 
 						result = false;
 					}
@@ -1918,7 +1918,7 @@ public final class CdsRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"First periodic payment date '" + toToken (paymentDate) + "' " +
 						"must be after the effective date '" + toToken (effectiveDate) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1965,7 +1965,7 @@ public final class CdsRules extends FpMLRuleSet
 						errorHandler.error ("305", context,
 							"First periodic payment date '" + DOM.getInnerText (paymentDate) + "' " +
 							"must be before the termination date '" + DOM.getInnerText (terminationDate) + "'",
-							getName (), null);
+							getDisplayName (), null);
 
 						result = false;
 					}
@@ -2012,7 +2012,7 @@ public final class CdsRules extends FpMLRuleSet
 						errorHandler.error ("305", context,
 							"Last regular periodic payment date '" + DOM.getInnerText (paymentDate) + "' " +
 							"must be before the termination date '" + DOM.getInnerText (terminationDate) + "'",
-							getName (), null);
+							getDisplayName (), null);
 
 						result = false;
 					}
@@ -2061,7 +2061,7 @@ public final class CdsRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"First payment date '" + DOM.getInnerText (firstDate) + "' must be before " +
 						"last payment date '" + DOM.getInnerText (lastDate) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -2113,7 +2113,7 @@ public final class CdsRules extends FpMLRuleSet
 							errorHandler.error ("305", context,
 								"Day count fraction must be present if a periodic payment is based on " +
 								"a fixed amount calculation",
-								getName (), null);
+								getDisplayName (), null);
 
 							result = false;
 						}
@@ -2164,7 +2164,7 @@ public final class CdsRules extends FpMLRuleSet
 						"Last regular payment date '" + DOM.getInnerText (lastDate) + "' is not " +
 						"an integer multiple of the payment period after the first payment " +
 						" date '" + DOM.getInnerText (firstDate) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -2209,7 +2209,7 @@ public final class CdsRules extends FpMLRuleSet
 								errorHandler.error ("305", context,
 									"Deliverable obligations category is set to 'Reference " +
 									" Obligations Only' but further elements have been included",
-									getName (), null);
+									getDisplayName (), null);
 
 								result = false;
 								break;
@@ -2252,7 +2252,7 @@ public final class CdsRules extends FpMLRuleSet
 						errorHandler.error ("305", context,
 							"No elements where found in creditEvents. The structure must " +
 							"contain at least one element",
-							getName (), null);
+							getDisplayName (), null);
 
 						result = false;
 					}
@@ -2297,7 +2297,7 @@ public final class CdsRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Either at least one public source or standard public sources " +
 						"must be referred to in publiclyAvailableInformation",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -2346,7 +2346,7 @@ public final class CdsRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"In cash settlement terms, quotation amount " + toToken (amount) +
 						" must be greater or equal to minimum quotation amount",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -2394,7 +2394,7 @@ public final class CdsRules extends FpMLRuleSet
 
 					errorHandler.error ("305", context,
 							"The sum of referencePoolItem/constituentWeight/basketPercentage should be equal to 1",
-							getName (), total.toString ());
+							getDisplayName (), total.toString ());
 
 					result = false;
 				}
@@ -2437,7 +2437,7 @@ public final class CdsRules extends FpMLRuleSet
 
 					errorHandler.error ("305", context,
 							"If nthToDefault is present and mthToDefault is present then nthToDefault must be less than mthToDefault.",
-							getName (), null);
+							getDisplayName (), null);
 
 					result = false;
 				}
@@ -2479,7 +2479,7 @@ public final class CdsRules extends FpMLRuleSet
 	
 					errorHandler.error ("305", context,
 							"attachmentPoint must be less than or equal to exhaustionPoint.",
-							getName (), null);
+							getDisplayName (), null);
 	
 					result = false;
 				}
@@ -2523,7 +2523,7 @@ public final class CdsRules extends FpMLRuleSet
 					if ((tranche == null) && (delivery != null)) {
 						errorHandler.error ("305", context,
 							"If indexReferenceInformation/tranche is not present then modifiedEquityDelivery must not be present.",
-							getName (), null);
+							getDisplayName (), null);
 
 						result = false;
 					}
@@ -2568,7 +2568,7 @@ public final class CdsRules extends FpMLRuleSet
 					if ((basket == null) && (substitution != null)) {
 						errorHandler.error ("305", context,
 							"If basketReferenceInformation is not present then substitution must not be present.",
-							getName (), null);
+							getDisplayName (), null);
 
 						result = false;
 					}
@@ -2615,7 +2615,7 @@ public final class CdsRules extends FpMLRuleSet
 
 					errorHandler.error ("305", context,
 						"The initial payment should be paid by the protection buyer to the protection seller",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -2658,7 +2658,7 @@ public final class CdsRules extends FpMLRuleSet
 
 					errorHandler.error ("305", pool,
 							"Either every referencePoolItem should have a basketPercentage or none should have one",
-							getName (), null);
+							getDisplayName (), null);
 
 					result = false;
 				}

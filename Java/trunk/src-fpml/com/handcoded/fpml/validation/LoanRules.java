@@ -1,4 +1,4 @@
-// Copyright (C),2005-2008 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -72,7 +72,7 @@ public final class LoanRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The effectiveDate must not be after the currentInterestRatePeriod/startDate",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -119,7 +119,7 @@ public final class LoanRules extends FpMLRuleSet
 							if (notEqual (toDate (fixingDate) , toDate (effective))) {
 								errorHandler.error ("305", context,
 									"If the floatingRateIndex contains the string 'PRIME' then the currentInterestRatePeriod/rateFixingDate must be the same as the effectiveDate",
-									getName (), null);
+									getDisplayName (), null);
 								result = false;
 							}
 						}
@@ -167,21 +167,21 @@ public final class LoanRules extends FpMLRuleSet
 					if ((start!= null) && (fixingDate != null) && (less (toDate (start), toDate (fixingDate)))){
 						errorHandler.error ("305", context,
 								"The rateFixingDate must not be after the startDate",
-								getName (), null);
+								getDisplayName (), null);
 						result = false;
 					}						
 					if ((end != null) && (start !=null) && (less (toDate (end), toDate (start)))) {
 					
 						errorHandler.error ("305", context,
 								"The startDate must not be after the endDate",
-								getName (), null);
+								getDisplayName (), null);
 						result = false;
 					}
 					if ((end != null) && (fixingDate !=null) && (less (toDate (end), toDate (fixingDate)))) {
 						
 						errorHandler.error ("305", context,
 								"The rateFixingDate must not be after the endDate",
-								getName (), null);
+								getDisplayName (), null);
 						result = false;
 					}
 				}
@@ -232,7 +232,7 @@ public final class LoanRules extends FpMLRuleSet
 						if (allInRateValue.compareTo (marginPlusInterest) != 0)
 							errorHandler.error ("305", context,
 									"The allInRate must be equal to margin + interestRate",
-									getName (), null);
+									getDisplayName (), null);
 							result = false;
 					}						
 				}
@@ -286,7 +286,7 @@ public final class LoanRules extends FpMLRuleSet
 						if (allInRateValue.compareTo (totalMarginPlusCost) != 0) {
 							errorHandler.error ("305", context,
 								"The allInRate must be equal to margin + interestRate + mandatoryCostRate",
-								getName (), null);
+								getDisplayName (), null);
 							result = false;
 						}
 					}						
@@ -327,7 +327,7 @@ public final class LoanRules extends FpMLRuleSet
 						if (less(toDecimal(originalCommitment), toDecimal(originalAmount))){
 							errorHandler.error ("305", context,
 									"The facilityIdentifier/originalCommitmentAmount/amount must be greater than or equal to the facilityCommitmentPosition/loanContractPosition/loanContractIdentifier/originalAmount/amount",
-									getName (), null);		
+									getDisplayName (), null);		
 							result = false;
 						}
 						
