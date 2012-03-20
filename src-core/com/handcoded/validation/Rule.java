@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -62,8 +62,41 @@ public abstract class Rule extends Validator
 	public final String getName ()
 	{
 		return (name);
-	}	
+	}
 	
+	/**
+	 * Provides access to the rule alias.
+	 *
+	 * @return	The rule alias.
+	 * @since	TFP 1.6
+	 */
+	public final String getAlias ()
+	{
+		return (alias);
+	}
+	
+	/**
+	 * Changes the alias name value.
+	 * 
+	 * @param 	value		The new alias name.
+	 * @since	TFP 1.6
+	 */
+	public final void setAlias (final String value)
+	{
+		alias = value;
+	}
+	
+	/**
+	 * Provides access to the display name.
+	 *
+	 * @return	The display name.
+	 * @since	TFP 1.6
+	 */
+	public final String getDisplayName ()
+	{
+		return ((alias != null) ? alias : name);
+	}
+
 	/**
 	 * Evaluates the <CODE>Precondition</CODE> against an indexed <CODE>Document
 	 * </CODE> to see if it applies.
@@ -146,4 +179,10 @@ public abstract class Rule extends Validator
 	 * @since	TFP 1.0
 	 */
 	private final String		name;
+	
+	/**
+	 * The alias for this <CODE>Rule</CODE>.
+	 * @since	TFP 1.6
+	 */
+	private String				alias = null;
 }
