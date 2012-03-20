@@ -1,4 +1,4 @@
-// Copyright (C),2005-2008 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -66,7 +66,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"American exercise expiration date " + toToken (expiration) +
 						" should be the same or later than trade date " + toToken (trade),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -106,7 +106,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"American exercise structure should include a latest " +
 						"exercise time, since time type is set to SpecificTime",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -146,7 +146,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Bermuda exercise commencement date " + toToken (commence) +
 						" should not be before the trade date " + toToken (trade),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -186,7 +186,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Bermuda exercise expiration date " + toToken (expiration) +
 						" should not be before the trade date " + toToken (trade),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -226,7 +226,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Bermuda exercise structure should include a latest " +
 						"exercise time, since time type is set to SpecificTime",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -267,7 +267,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Bermuda exercise dates " + toToken (context) + " and " +
 						toToken (next) + " are not in order",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -308,7 +308,7 @@ public final class EqdRules extends FpMLRuleSet
 						"Bermuda exercise date " + toToken (context) +
 						" should be after exercise period commencement date " +
 						toToken (commence),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -349,7 +349,7 @@ public final class EqdRules extends FpMLRuleSet
 						"Bermuda exercise date " + toToken (context) +
 						" should be on or before exercise period expiration date " +
 						toToken (expiration),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -388,7 +388,7 @@ public final class EqdRules extends FpMLRuleSet
 
 						errorHandler.error ("305", context,
 							"Duplicate bermuda exercise date, " + toToken (other),
-							getName (), toToken (other));
+							getDisplayName (), toToken (other));
 
 						result = false;
 					}
@@ -429,7 +429,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"European exercise expiration date " + toToken (expiration) +
 						" should not be before the trade date " + toToken (trade),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -469,7 +469,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Equity premium payment date " + toToken (premiumDate) +
 						" must be on or after trade date " + toToken (tradeDate),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -509,7 +509,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Broker equity premium payment date " + toToken (premiumDate) +
 						" must be on or after trade date " + toToken (tradeDate),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -548,7 +548,7 @@ public final class EqdRules extends FpMLRuleSet
 
 					errorHandler.error ("305", context,
 						"The valuation and expiration dates for a European option must be same",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -596,7 +596,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"maximumNumberOfOptions * integralMultipleExercise should " +
 						"not be greater than numberOfOptions",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -644,7 +644,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"maximumNumberOfOptions * integralMultipleExercise should " +
 						"not be greater than numberOfOptions",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -694,7 +694,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"The equity premium amount does not agree with the figures given for " +
 						"the notional and premium percentage",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -744,7 +744,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"The equity premium amount does not agree with the figures given for " +
 						"the number of options, price per option and entitlement",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -785,7 +785,7 @@ public final class EqdRules extends FpMLRuleSet
 
 					errorHandler.error ("305", context,
 						"Calculation agent field must contain a calculation agent party reference",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -829,7 +829,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"The buyerPartyReference/@href must not be the same as the " +
 						"sellerPartyReference/@href",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -872,7 +872,7 @@ public final class EqdRules extends FpMLRuleSet
 
 					errorHandler.error ("305", context,
 						"The equity effective date must be on or after the trade date",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -911,7 +911,7 @@ public final class EqdRules extends FpMLRuleSet
 
 					errorHandler.error ("305", context,
 						"The equity schedule start date can not be after the end date",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -958,7 +958,7 @@ public final class EqdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"The equity premium amount does not agree with the figures given for " +
 						"the number of options and price per option",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}

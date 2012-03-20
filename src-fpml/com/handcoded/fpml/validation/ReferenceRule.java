@@ -1,4 +1,4 @@
-// Copyright (C),2005-2010 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -140,7 +140,7 @@ public class ReferenceRule extends Rule
 					"The @" + referenceAttribute + " attribute of a '" + contextType
 					+ "' element should match with an @id attribute on a '" + targetType
 					+ "' element.",
-					getName (), hrefValue);
+					getDisplayName (), hrefValue);
 			
 			result = false;
 		}

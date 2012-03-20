@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -119,7 +119,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"The rate must be positive",
-							getName (), toToken (rate));
+							getDisplayName (), toToken (rate));
 					
 					result = false;
 				}
@@ -160,7 +160,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"If forwardPoints exists then spotRate should also exist.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -205,7 +205,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"Sum of spotRate and forwardPoints does not equal rate.",
-							getName (), toToken (rate));
+							getDisplayName (), toToken (rate));
 					
 					result = false;
 				}
@@ -248,7 +248,7 @@ public final class FxRules extends FpMLRuleSet
 					if (equal (baseCcy, ccy1) || equal (baseCcy, ccy2)) {
 						errorHandler.error ("305", context,
 								"The side rate base currency must not be one of the trade currencies.",
-								getName (), toToken (baseCcy));
+								getDisplayName (), toToken (baseCcy));
 					
 						result = false;
 					}
@@ -291,7 +291,7 @@ public final class FxRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 							"The side rate currency1 '" + toToken (ccy1) +
 							"' must be the same as trade currency1 '" + toToken (ccy) + "'.",
-							getName (), null);
+							getDisplayName (), null);
 				
 					result = false;
 				}
@@ -333,7 +333,7 @@ public final class FxRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 							"The side rate currency2 '" + toToken (ccy1) +
 							"' must be the same as trade currency2 '" + toToken (ccy) + "'.",
-							getName (), null);
+							getDisplayName (), null);
 				
 					result = false;
 				}
@@ -374,7 +374,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The trigger rate must be positive",
-							getName (), toToken (rate));
+							getDisplayName (), toToken (rate));
 					
 					result = false;
 				}
@@ -418,7 +418,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The observationStartDate must not be after the observationEndDate",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -461,7 +461,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The observationStartDate must not be after the observationEndDate",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -505,7 +505,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The observationStartDate must not be after the observationEndDate",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -548,7 +548,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The startDate must not be after the endDate",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -594,7 +594,7 @@ public final class FxRules extends FpMLRuleSet
 								
 					errorHandler.error ("305", context,
 							"The observation period is not a multiple of the calculationPeriodFrequency",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -638,7 +638,7 @@ public final class FxRules extends FpMLRuleSet
 								
 					errorHandler.error ("305", context,
 							"The observation period is not a multiple of the calculationPeriodFrequency",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -686,7 +686,7 @@ public final class FxRules extends FpMLRuleSet
 							if (equal (dates [outer], dates [inner]))
 								errorHandler.error ("305", nodes.item (inner),
 										"Duplicate observation date",
-										getName (), toToken (nodes.item (inner)));
+										getDisplayName (), toToken (nodes.item (inner)));
 							
 							result = false;
 						}
@@ -736,7 +736,7 @@ public final class FxRules extends FpMLRuleSet
 							if (equal (dates [outer], dates [inner]))
 								errorHandler.error ("305", nodes.item (inner),
 										"Duplicate observation date",
-										getName (), toToken (nodes.item (inner)));
+										getDisplayName (), toToken (nodes.item (inner)));
 							
 							result = false;
 						}
@@ -807,7 +807,7 @@ public final class FxRules extends FpMLRuleSet
 							errorHandler.error ("305", observed,
 									"Observation date '" + toToken (observed) +
 									"' does not match with the schedule.",
-									getName (), toToken(observed));
+									getDisplayName (), toToken(observed));
 							
 							result = false;
 						}
@@ -877,7 +877,7 @@ public final class FxRules extends FpMLRuleSet
 							errorHandler.error ("305", observed,
 									"Observation date '" + toToken (observed) +
 									"' does not match with the schedule.",
-									getName (), toToken(observed));
+									getDisplayName (), toToken(observed));
 							
 							result = false;
 						}
@@ -943,7 +943,7 @@ public final class FxRules extends FpMLRuleSet
 							errorHandler.error ("305", observed,
 									"Observation date '" + toToken (observed) +
 									"' does not match with a defined observationDate.",
-									getName (), toToken(observed));
+									getDisplayName (), toToken(observed));
 							
 							result = false;
 						}
@@ -990,7 +990,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The observationStartDate must not be after the observationEndDate",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1033,7 +1033,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The observationStartDate must not be after the observationEndDate",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1074,7 +1074,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The spot rate must be positive",
-							getName (), toToken (rate));
+							getDisplayName (), toToken (rate));
 					
 					result = false;
 				}
@@ -1117,7 +1117,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The spot rate must be positive",
-							getName (), toToken (rate));
+							getDisplayName (), toToken (rate));
 					
 					result = false;
 				}
@@ -1158,7 +1158,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The trigger rate must be positive",
-							getName (), toToken (rate));
+							getDisplayName (), toToken (rate));
 					
 					result = false;
 				}
@@ -1208,7 +1208,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Exchanged currency payers and receivers don't match.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1265,7 +1265,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Exchanged currency payers and receivers don't match.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1309,7 +1309,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"Exchanged currencies must be different.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1352,7 +1352,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"Exchanged currencies must be different.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1396,7 +1396,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"currency1ValueDate and currency2ValueDate must be different.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1439,7 +1439,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"currency1ValueDate and currency2ValueDate must be different.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1482,7 +1482,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"Non-deliverable forward does not specify forwardPoints.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1524,7 +1524,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"Non-deliverable forward does not specify forwardPoints.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1573,7 +1573,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Premium payer and receiver don't match with option buyer and seller.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1634,7 +1634,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Premium payer and receiver don't match with option buyer and seller.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1677,7 +1677,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"Put and call currencies must be different.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1718,7 +1718,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"Put and call currencies must be different.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1759,7 +1759,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The rate must be positive",
-							getName (), toToken (rate));
+							getDisplayName (), toToken (rate));
 					
 					result = false;
 				}
@@ -1802,7 +1802,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"FX swaps must have at least two legs.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1849,7 +1849,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"FX swaps legs must settle on different days.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1892,7 +1892,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"The value date of the near leg must be before that of the far leg.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1932,7 +1932,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"Currencies must be different.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -1972,7 +1972,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The rate must be positive",
-							getName (), toToken (rate));
+							getDisplayName (), toToken (rate));
 					
 					result = false;
 				}
@@ -2014,7 +2014,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"If forwardPoints exists then spotRate should also exist.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -2060,7 +2060,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"Sum of spotRate and forwardPoints does not equal rate.",
-							getName (), toToken (rate));
+							getDisplayName (), toToken (rate));
 					
 					result = false;
 				}
@@ -2105,7 +2105,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"Sum of spotRate and forwardPoints does not equal rate.",
-							getName (), toToken (rate));
+							getDisplayName (), toToken (rate));
 					
 					result = false;
 				}
@@ -2148,7 +2148,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"The base currency must be different from the side rate currencies.",
-							getName (), toToken (base));
+							getDisplayName (), toToken (base));
 					
 					result = false;
 				}
@@ -2192,7 +2192,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"The initial payer and receiver must be different",
-							getName (), DOM.getAttribute (payer, "href"));
+							getDisplayName (), DOM.getAttribute (payer, "href"));
 					
 					result = false;
 				}
@@ -2242,7 +2242,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"The payer and receiver must be different",
-							getName (), DOM.getAttribute (payerParty, "href"));
+							getDisplayName (), DOM.getAttribute (payerParty, "href"));
 					
 					result = false;
 				}
@@ -2283,7 +2283,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"The maturity date must be after the start date",
-							getName (), toToken (maturity));
+							getDisplayName (), toToken (maturity));
 					
 					result = false;
 				}
@@ -2322,7 +2322,7 @@ public final class FxRules extends FpMLRuleSet
 
 					errorHandler.error ("305", context,
 							"The principal amount must be positive",
-							getName (), toToken (amount));
+							getDisplayName (), toToken (amount));
 					
 					result = false;
 				}
@@ -2361,7 +2361,7 @@ public final class FxRules extends FpMLRuleSet
 
 					errorHandler.error ("305", context,
 							"The fixed rate must be positive",
-							getName (), toToken (rate));
+							getDisplayName (), toToken (rate));
 					
 					result = false;
 				}
@@ -2403,7 +2403,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Expiry date must be after trade date.",
-							getName (), toToken (expiryDate));
+							getDisplayName (), toToken (expiryDate));
 					
 					result = false;
 				}
@@ -2445,7 +2445,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Expiry date must be after trade date.",
-							getName (), toToken (expiryDate));
+							getDisplayName (), toToken (expiryDate));
 					
 					result = false;
 				}
@@ -2487,7 +2487,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Expiry date must be after contract trade date.",
-							getName (), toToken (expiryDate));
+							getDisplayName (), toToken (expiryDate));
 					
 					result = false;
 				}
@@ -2529,7 +2529,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Expiry date must be after trade date.",
-							getName (), toToken (expiryDate));
+							getDisplayName (), toToken (expiryDate));
 					
 					result = false;
 				}
@@ -2571,7 +2571,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Expiry date must be after contract trade date.",
-							getName (), toToken (expiryDate));
+							getDisplayName (), toToken (expiryDate));
 					
 					result = false;
 				}
@@ -2613,7 +2613,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Expiry date must be after trade date.",
-							getName (), toToken (expiryDate));
+							getDisplayName (), toToken (expiryDate));
 					
 					result = false;
 				}
@@ -2655,7 +2655,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Expiry date must be after trade date.",
-							getName (), toToken (expiryDate));
+							getDisplayName (), toToken (expiryDate));
 					
 					result = false;
 				}
@@ -2697,7 +2697,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Expiry date must be after contract trade date.",
-							getName (), toToken (expiryDate));
+							getDisplayName (), toToken (expiryDate));
 					
 					result = false;
 				}
@@ -2741,7 +2741,7 @@ public final class FxRules extends FpMLRuleSet
 							
 							errorHandler.error ("305", context,
 									"value date must be after trade date.",
-									getName (), toToken (valueDate));
+									getDisplayName (), toToken (valueDate));
 							
 							result = false;
 						}
@@ -2751,7 +2751,7 @@ public final class FxRules extends FpMLRuleSet
 							
 							errorHandler.error ("305", context,
 									"value1date must be after trade date.",
-									getName (), toToken (value1Date));
+									getDisplayName (), toToken (value1Date));
 							
 							result = false;
 						}
@@ -2761,7 +2761,7 @@ public final class FxRules extends FpMLRuleSet
 							
 							errorHandler.error ("305", context,
 									"value2date must be after trade date.",
-									getName (), toToken (value2Date));
+									getDisplayName (), toToken (value2Date));
 							
 							result = false;
 						}
@@ -2807,7 +2807,7 @@ public final class FxRules extends FpMLRuleSet
 							
 							errorHandler.error ("305", context,
 									"value date must be after contract trade date.",
-									getName (), toToken (valueDate));
+									getDisplayName (), toToken (valueDate));
 							
 							result = false;
 						}
@@ -2817,7 +2817,7 @@ public final class FxRules extends FpMLRuleSet
 							
 							errorHandler.error ("305", context,
 									"value1date must be after contract trade date.",
-									getName (), toToken (value1Date));
+									getDisplayName (), toToken (value1Date));
 							
 							result = false;
 						}
@@ -2827,7 +2827,7 @@ public final class FxRules extends FpMLRuleSet
 							
 							errorHandler.error ("305", context,
 									"value2date must be after contract trade date.",
-									getName (), toToken (value2Date));
+									getDisplayName (), toToken (value2Date));
 							
 							result = false;
 						}
@@ -2878,7 +2878,7 @@ public final class FxRules extends FpMLRuleSet
 								
 								errorHandler.error ("305", leg,
 										"value date must be after trade date.",
-										getName (), toToken (valueDate));
+										getDisplayName (), toToken (valueDate));
 								
 								result = false;
 							}
@@ -2888,7 +2888,7 @@ public final class FxRules extends FpMLRuleSet
 								
 								errorHandler.error ("305", leg,
 										"value1date must be after trade date.",
-										getName (), toToken (value1Date));
+										getDisplayName (), toToken (value1Date));
 								
 								result = false;
 							}
@@ -2898,7 +2898,7 @@ public final class FxRules extends FpMLRuleSet
 								
 								errorHandler.error ("305", leg,
 										"value2date must be after trade date.",
-										getName (), toToken (value2Date));
+										getDisplayName (), toToken (value2Date));
 								
 								result = false;
 							}
@@ -2950,7 +2950,7 @@ public final class FxRules extends FpMLRuleSet
 								
 								errorHandler.error ("305", nearLeg,
 										"value date must be after trade date.",
-										getName (), toToken (valueDate));
+										getDisplayName (), toToken (valueDate));
 								
 								result = false;
 							}
@@ -2960,7 +2960,7 @@ public final class FxRules extends FpMLRuleSet
 								
 								errorHandler.error ("305", nearLeg,
 										"value1date must be after trade date.",
-										getName (), toToken (value1Date));
+										getDisplayName (), toToken (value1Date));
 								
 								result = false;
 							}
@@ -2970,7 +2970,7 @@ public final class FxRules extends FpMLRuleSet
 								
 								errorHandler.error ("305", nearLeg,
 										"value2date must be after trade date.",
-										getName (), toToken (value2Date));
+										getDisplayName (), toToken (value2Date));
 								
 								result = false;
 							}
@@ -2988,7 +2988,7 @@ public final class FxRules extends FpMLRuleSet
 								
 								errorHandler.error ("305", farLeg,
 										"value date must be after trade date.",
-										getName (), toToken (valueDate));
+										getDisplayName (), toToken (valueDate));
 								
 								result = false;
 							}
@@ -2998,7 +2998,7 @@ public final class FxRules extends FpMLRuleSet
 								
 								errorHandler.error ("305", farLeg,
 										"value1date must be after trade date.",
-										getName (), toToken (value1Date));
+										getDisplayName (), toToken (value1Date));
 								
 								result = false;
 							}
@@ -3008,7 +3008,7 @@ public final class FxRules extends FpMLRuleSet
 								
 								errorHandler.error ("305", farLeg,
 										"value2date must be after trade date.",
-										getName (), toToken (value2Date));
+										getDisplayName (), toToken (value2Date));
 								
 								result = false;
 							}
@@ -3060,7 +3060,7 @@ public final class FxRules extends FpMLRuleSet
 								
 								errorHandler.error ("305", leg,
 										"value date must be after contract trade date.",
-										getName (), toToken (valueDate));
+										getDisplayName (), toToken (valueDate));
 								
 								result = false;
 							}
@@ -3070,7 +3070,7 @@ public final class FxRules extends FpMLRuleSet
 								
 								errorHandler.error ("305", leg,
 										"value1date must be after contract trade date.",
-										getName (), toToken (value1Date));
+										getDisplayName (), toToken (value1Date));
 								
 								result = false;
 							}
@@ -3080,7 +3080,7 @@ public final class FxRules extends FpMLRuleSet
 								
 								errorHandler.error ("305", leg,
 										"value2date must be after contract trade date.",
-										getName (), toToken (value2Date));
+										getDisplayName (), toToken (value2Date));
 								
 								result = false;
 							}
@@ -3124,7 +3124,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"The trigger rate must be positive",
-							getName (), toToken (rate));
+							getDisplayName (), toToken (rate));
 					
 					result = false;
 				}
@@ -3173,7 +3173,7 @@ public final class FxRules extends FpMLRuleSet
 							if (equal (dates [outer], dates [inner]))
 								errorHandler.error ("305", nodes.item (inner),
 										"Duplicate observation date",
-										getName (), toToken(nodes.item (inner)));
+										getDisplayName (), toToken(nodes.item (inner)));
 							
 							result = false;
 						}
@@ -3218,7 +3218,7 @@ public final class FxRules extends FpMLRuleSet
 													
 					errorHandler.error ("305", context,
 							"Put and call currencies must be different.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -3266,7 +3266,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Premium payer and receiver don't match with option buyer and seller.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -3314,7 +3314,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Premium payer and receiver don't match with option buyer and seller.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -3374,7 +3374,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Premium payer and receiver don't match with option buyer and seller.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -3416,7 +3416,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"Side rate basis for currency1 should not be expressed in terms of currency2.",
-							getName (), toToken (basis));
+							getDisplayName (), toToken (basis));
 					
 					result = false;
 				}
@@ -3458,7 +3458,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"Side rate basis for currency2 should not be expressed in terms of currency1.",
-							getName (), toToken (basis));
+							getDisplayName (), toToken (basis));
 					
 					result = false;
 				}
@@ -3500,7 +3500,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"If one rateObservation/rate exists, then rateObservationQuoteBasis must exist.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -3544,7 +3544,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"The two currencies must be different",
-							getName (), toToken (ccy1));
+							getDisplayName (), toToken (ccy1));
 					
 					result = false;
 				}
@@ -3587,7 +3587,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"currency1ValueDate and currency2ValueDate must be different.",
-							getName (), toToken (date1));
+							getDisplayName (), toToken (date1));
 					
 					result = false;
 				}
@@ -3629,7 +3629,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 							"If nonDeliverableSettlement is specified then forwardPoints must be present.",
-							getName (), null);
+							getDisplayName (), null);
 					
 					result = false;
 				}
@@ -3670,7 +3670,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Expiry date must be after trade date.",
-							getName (), toToken (expiryDate));
+							getDisplayName (), toToken (expiryDate));
 					
 					result = false;
 				}
@@ -3711,7 +3711,7 @@ public final class FxRules extends FpMLRuleSet
 										
 					errorHandler.error ("305", context,
 							"Expiry date must be after trade date.",
-							getName (), toToken (expiryDate));
+							getDisplayName (), toToken (expiryDate));
 					
 					result = false;
 				}

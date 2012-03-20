@@ -1,4 +1,4 @@
-// Copyright (C),2005-2008 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -127,7 +127,7 @@ public final class ReferenceRules extends FpMLRuleSet
 					if ((target == null) || !target.getLocalName().equals("party")) {
 						errorHandler.error ("305", context,
 							"The @href attribute on the firstPeriodStartDate must reference a party",
-							getName (), href.getValue () );
+							getDisplayName (), href.getValue () );
 						
 						result = false;
 					}
@@ -363,7 +363,7 @@ public final class ReferenceRules extends FpMLRuleSet
 					
 					errorHandler.error ("305", context,
 						"generic/@href must match the @id attribute of an element of type Asset",
-						getName (), targetName);
+						getDisplayName (), targetName);
 					
 					result = false;
 				}

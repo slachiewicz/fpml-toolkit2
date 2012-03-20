@@ -99,7 +99,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"resetDates must be present if and only if a floatingRateCalculation " +
 						"or inflationRateCalculation element is present in calculationPeriodAmount",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -153,7 +153,7 @@ public final class IrdRules extends FpMLRuleSet
 						"Payment frequency '" + toInterval (paymentFreq) +
 						"' is not an integer multiple of calculation frequency '" +
 						toInterval (calcFreq) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -212,7 +212,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"The first payment date '" + toToken (paymentDate) + "' does not " +
 						"fall on one of the unadjusted calculation period dates.",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -271,7 +271,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"The first payment date '" + toToken (paymentDate) + "' does not " +
 						"fall on one of the unadjusted calculation period dates.",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -325,7 +325,7 @@ public final class IrdRules extends FpMLRuleSet
 						"Calculation frequency '" + toInterval (calcFreq) +
 						"' is not an integer multiple of reset frequency '" +
 						toInterval (resetFreq) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -373,7 +373,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"The first payment date " + toToken (payment) + " must be after " +
 						"the unadjusted effective date " + toToken (effective),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -433,7 +433,7 @@ public final class IrdRules extends FpMLRuleSet
 						"Compounding method must only be present when the payment frequency '" +
 						toInterval (paymentFreq) + "' is different from the calculation " +
 						"frequency '" + toInterval (calcFreq) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -475,7 +475,7 @@ public final class IrdRules extends FpMLRuleSet
 					if (payer.getAttribute ("href").equals (receiver.getAttribute ("href"))) {
 						errorHandler.error ("305", context,
 							"The payer and receiver references must not be the same",
-							getName (), payer.getAttribute ("href"));
+							getDisplayName (), payer.getAttribute ("href"));
 						result = false;
 					}
 				}
@@ -521,7 +521,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"calculationPeriodAmount/calculation/compoundingMethod can only be " +
 						"present if a resetDates element is present",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -576,7 +576,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"The start date of the calculation period,  '" + start + "' is not " +
 						"consistent with the roll convention " + toToken (rollConvention),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -634,7 +634,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"The end date of the calculation period,  '" + end + "' is not " +
 						"consistent with the roll convention " + toToken (rollConvention),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -689,7 +689,7 @@ public final class IrdRules extends FpMLRuleSet
 						errorHandler.error ("305", context,
 							"The calculation period '" + startDate + "' to '" + endDate +
 							"' is not a multiple of the frequency '" + interval + "'",
-							getName (), null);
+							getDisplayName (), null);
 
 						result = false;
 					}
@@ -737,7 +737,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Unadjusted termination date '" + toToken (termination) + "' should " +
 						"be after unadjusted effective date '" + toToken (effective) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -781,7 +781,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Unadjusted termination date '" + toToken (termination) + "' should " +
 						"be after unadjusted first period start date '" + toToken (periodStart) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -825,7 +825,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Unadjusted termination date '" + toToken (termination) + "' should " +
 						"be after unadjusted first regular period start date '" + toToken (periodStart) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -869,7 +869,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Unadjusted termination date '" + toToken (termination) + "' should " +
 						"be after unadjusted last regular period end date '" + toToken (periodEnd) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -913,7 +913,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Unadjusted last regular period end date '" + toToken (periodEnd) + "' should " +
 						"be after unadjusted first regular period start date '" + toToken (periodStart) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -957,7 +957,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Unadjusted last regular period end date '" + toToken (periodEnd) + "' should " +
 						"be after unadjusted first period start date '" + toToken (periodStart) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1001,7 +1001,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Unadjusted last regular period end date " + toToken (last) +
 						" must be after unadjusted effective date " + toToken (effective),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1049,7 +1049,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Unadjusted first period start date " + toToken (first) +
 						" must be before unadjusted effective date " + toToken (effective),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1093,7 +1093,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Unadjusted first period start date " + toToken (first) +
 						" must be before first regular period start date " + toToken (regular),
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1151,7 +1151,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Initial stub is present but neither a first start date or first regular " +
 						"period start date is defined in the referenced calculation period dates",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1208,7 +1208,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Final stub is present but no last regular period end date is defined " +
 						"in the referenced calculation period dates",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1262,7 +1262,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"An non-zero initial value must be provided when there are no steps " +
 						"in the schedule",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1314,7 +1314,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"An non-zero initial value must be provided when there are no steps " +
 						"in the schedule",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1361,7 +1361,7 @@ public final class IrdRules extends FpMLRuleSet
 
 					errorHandler.error ("305", context,
 						"The businessCenterReference/@href attribute must reference a businessCenters element",
-						getName (), context.getAttribute ("href"));
+						getDisplayName (), context.getAttribute ("href"));
 
 					result = false;
 				}
@@ -1403,7 +1403,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Mandatory early termination must not contain a cash settlement " +
 						"payment date",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1453,7 +1453,7 @@ public final class IrdRules extends FpMLRuleSet
 						errorHandler.error ("305", context,
 							"The href of the relative cash settlement valuation date must refer to " +
 							"the mandatory early termination date",
-							getName (), href);
+							getDisplayName (), href);
 
 						result = false;
 					}
@@ -1500,7 +1500,7 @@ public final class IrdRules extends FpMLRuleSet
 							errorHandler.error ("305", context,
 								"The href of the relative cash settlement valuation date must refer to " +
 								"the mandatory early termination date",
-								getName (), href);
+								getDisplayName (), href);
 
 							result = false;
 						}
@@ -1549,7 +1549,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"The calculation element contains a compounding method but " +
 						"no floating rate calculation element",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1593,7 +1593,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Calculation period contains neither an adjusted nor unadjusted " +
 						"start date",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1637,7 +1637,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Calculation period contains neither an adjusted nor unadjusted " +
 						"end date",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1681,7 +1681,7 @@ public final class IrdRules extends FpMLRuleSet
 
 					errorHandler.error ("305", context,
 						"Discount rate is missing but discount rate day fraction is present",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1724,7 +1724,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Adjusted termination date '" + toToken (termination) + "' must be " +
 						"after adjusted effective date '" + toToken (effective) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1768,7 +1768,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Both the unadjusted and adjusted payment date are missing from " +
 						"the payment calculation period",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1811,7 +1811,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"The first payment date '" + toToken (firstDate) + "' should be " +
 						"before the last regular payment date '" + toToken (lastDate) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1859,7 +1859,7 @@ public final class IrdRules extends FpMLRuleSet
 
 						errorHandler.error ("305", context,
 							"The first payment date and last regular payment date are not " +
-							"a multiple of the payment frequency apart", getName (), null);
+							"a multiple of the payment frequency apart", getDisplayName (), null);
 
 						result = false;
 					}
@@ -1905,7 +1905,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Both the initial and final stub are missing from the stub " +
 						"calculation period amount",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1948,7 +1948,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"The adjusted exercise date '" + toToken (exercise) + "' should be " +
 						"on or before the adjusted early termination date '" + toToken (termination) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -1992,7 +1992,7 @@ public final class IrdRules extends FpMLRuleSet
 						"The adjusted exercise date '" + toToken (exercise) + "' should be " +
 						"on or before the adjusted cash settlement date '" +
 						toToken (valuation) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -2037,7 +2037,7 @@ public final class IrdRules extends FpMLRuleSet
 						"The adjusted case settlement valuation date '" + toToken (valuation) +
 						"' should be on or before the adjusted cash settlement payment date '" +
 						toToken (payment) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -2080,7 +2080,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"The adjusted exercise date '" + toToken (exercise) + "' should be " +
 						"on or before the adjusted extended termination date '" + toToken (termination) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -2119,7 +2119,7 @@ public final class IrdRules extends FpMLRuleSet
 
 					errorHandler.error ("305", context,
 						"fxLinkedNotionalAmount did not contain any elements",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -2168,7 +2168,7 @@ public final class IrdRules extends FpMLRuleSet
 						"cash settlement valuation date '" + toToken (valuation) + "' and " +
 						"cash settlement payment date '" + toToken (payment) + "' " +
 						"are not in order",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -2217,7 +2217,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"dateRelativeTo element in cash settlement valuation date must " +
 						"be relative to the cash settlement payment date",
-						getName (), href);
+						getDisplayName (), href);
 
 					result = false;
 				}
@@ -2265,7 +2265,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"dateRelativeTo element in cash settlement valuation date must " +
 						"be relative to the cash settlement payment date",
-						getName (), href);
+						getDisplayName (), href);
 
 					result = false;
 				}
@@ -2320,7 +2320,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"dateRelativeTo element in cash settlement payment date must " +
 						"be relative to the exercise structure",
-						getName (), href);
+						getDisplayName (), href);
 
 					result = false;
 				}
@@ -2374,7 +2374,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"dateRelativeTo element in cash settlement payment date must " +
 						"be relative to the exercise structure",
-						getName (), href);
+						getDisplayName (), href);
 
 					result = false;
 				}
@@ -2432,7 +2432,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"dateRelativeTo element in cash settlement payment date must " +
 						"be relative to the exercise structure",
-						getName (), href);
+						getDisplayName (), href);
 
 					result = false;
 				}
@@ -2475,7 +2475,7 @@ public final class IrdRules extends FpMLRuleSet
 
 					errorHandler.error ("305", context,
 						"weeklyRollConvention should be present if and only if the period is 'W'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -2534,7 +2534,7 @@ public final class IrdRules extends FpMLRuleSet
 							"The notional step schedule step date '" + payment + "' does not fall " +
 							"on one of the calculated period dates between '" + first + "' and '" +
 							last + "'",
-							getName (), toToken (date));
+							getDisplayName (), toToken (date));
 
 						result = false;
 					}
@@ -2595,7 +2595,7 @@ public final class IrdRules extends FpMLRuleSet
 							"The fixed rate schedule step date '" + payment + "' does not fall " +
 							"on one of the calculated period dates between '" + first + "' and '" +
 							last + "'",
-							getName (), toToken (date));
+							getDisplayName (), toToken (date));
 
 						result = false;
 					}
@@ -2655,7 +2655,7 @@ public final class IrdRules extends FpMLRuleSet
 							"The cap rate schedule step date '" + payment + "' does not fall " +
 							"on one of the calculated period dates between '" + first + "' and '" +
 							last + "'",
-							getName (), toToken (date));
+							getDisplayName (), toToken (date));
 
 						result = false;
 					}
@@ -2715,7 +2715,7 @@ public final class IrdRules extends FpMLRuleSet
 							"The floor rate schedule step date '" + payment + "' does not fall " +
 							"on one of the calculated period dates between '" + first + "' and '" +
 							last + "'",
-							getName (), toToken (date));
+							getDisplayName (), toToken (date));
 
 						result = false;
 					}
@@ -2775,7 +2775,7 @@ public final class IrdRules extends FpMLRuleSet
 							"The known amount schedule step date '" + payment + "' does not fall " +
 							"on one of the calculated period dates between '" + first + "' and '" +
 							last + "'",
-							getName (), toToken (date));
+							getDisplayName (), toToken (date));
 
 						result = false;
 					}
@@ -2819,7 +2819,7 @@ public final class IrdRules extends FpMLRuleSet
 
 						errorHandler.error ("305", context,
 							"The calculation period dates reference does not match with dates defined " +
-							"in the same interest rate stream", getName (), href);
+							"in the same interest rate stream", getDisplayName (), href);
 
 						result = false;
 					}
@@ -2863,7 +2863,7 @@ public final class IrdRules extends FpMLRuleSet
 
 						errorHandler.error ("305", context,
 							"The reset dates reference does not match with dates defined " +
-							"in the same interest rate stream", getName (), href);
+							"in the same interest rate stream", getDisplayName (), href);
 
 						result = false;
 					}
@@ -2902,7 +2902,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Calculation period frequency roll convention '" + toToken (convention) +
 						"' is inconsistent with the calculation period '" + toToken (period) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -2939,7 +2939,7 @@ public final class IrdRules extends FpMLRuleSet
 					errorHandler.error ("305", context,
 						"Calculation period frequency roll convention '" + toToken (convention) +
 						"' is inconsistent with the calculation period '" + toToken (period) + "'",
-						getName (), null);
+						getDisplayName (), null);
 
 					result = false;
 				}
@@ -2982,7 +2982,7 @@ public final class IrdRules extends FpMLRuleSet
 
 							errorHandler.error ("305", context,
 								"The calculation period dates reference does not match with dates defined " +
-								"in the same interest rate stream", getName (), href);
+								"in the same interest rate stream", getDisplayName (), href);
 
 							result = false;
 						}
@@ -3020,7 +3020,7 @@ public final class IrdRules extends FpMLRuleSet
 						errorHandler.error ("305", context,
 							"Calculation period frequency roll convention '" + toToken (convention) +
 							"' is inconsistent with the calculation period '" + toToken (period) + "'",
-							getName (), null);
+							getDisplayName (), null);
 
 						result = false;
 					}
@@ -3065,7 +3065,7 @@ public final class IrdRules extends FpMLRuleSet
 						errorHandler.error ("305", context,
 							"An non-zero initial value must be provided when there are no steps " +
 							"in the schedule",
-							getName (), null);
+							getDisplayName (), null);
 
 						result = false;
 					}
