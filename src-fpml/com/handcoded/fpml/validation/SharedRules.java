@@ -21,6 +21,7 @@ import org.w3c.dom.NodeList;
 
 import com.handcoded.finance.Date;
 import com.handcoded.finance.Time;
+import com.handcoded.fpml.util.Identifier;
 import com.handcoded.validation.Rule;
 import com.handcoded.validation.RuleSet;
 import com.handcoded.validation.ValidationErrorHandler;
@@ -502,7 +503,7 @@ public final class SharedRules extends FpMLRuleSet
 						
 						if (values.contains (href)) {
 							errorHandler.error ("305", context,
-								"Duplicate calculationAgentPartyReference", getDisplayName (), href);
+								"Duplicate calculation agent party reference", getDisplayName (), href);
 							result = false;
 						}
 						else
@@ -588,8 +589,8 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 1-0 and 2-0.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE12A 
-		= new Rule (Preconditions.R1_0__R2_0, "shared-12a")
+	public static final Rule	RULE12_XLINK
+		= new Rule (Preconditions.R1_0__R2_0, "shared-12[XLINK]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -632,8 +633,8 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 3-0 and later.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE12B
-		= new Rule (Preconditions.R3_0__LATER, "shared-12b")
+	public static final Rule	RULE12
+		= new Rule (Preconditions.R3_0__LATER, "shared-12")
 		{
 			/**
 			 * {@inheritDoc}
@@ -667,8 +668,8 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 1-0 and 2-0.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE13A
-		= new Rule (Preconditions.R1_0__R2_0, "shared-13a")
+	public static final Rule	RULE13_XLINK
+		= new Rule (Preconditions.R1_0__R2_0, "shared-13[XLINK]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -711,8 +712,8 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 3-0 and later. 
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE13B
-		= new Rule (Preconditions.R3_0__LATER, "shared-13b")
+	public static final Rule	RULE13
+		= new Rule (Preconditions.R3_0__LATER, "shared-13")
 		{
 			/**
 			 * {@inheritDoc}
@@ -746,8 +747,8 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 1-0 and 2-0. 
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE14A
-		= new Rule (Preconditions.R1_0__R2_0, "shared-14a")
+	public static final Rule	RULE14_XLINK
+		= new Rule (Preconditions.R1_0__R2_0, "shared-14[XLINK]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -790,8 +791,8 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 3-0 and later. 
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE14B
-		= new Rule (Preconditions.R3_0__LATER, "shared-14b")
+	public static final Rule	RULE14
+		= new Rule (Preconditions.R3_0__LATER, "shared-14")
 		{
 			/**
 			 * {@inheritDoc}
@@ -871,7 +872,8 @@ public final class SharedRules extends FpMLRuleSet
 						if (!DOM.getInnerText (period).equals ("D")
 							|| Integer.parseInt (DOM.getInnerText (factor)) == 0) {
 							errorHandler.error ("305", context,
-								"The dayType element should not be present",
+									"daytype must only be present if and only if the period " +
+									"is 'D' and the periodMultiplier is non-zero",
 								getDisplayName (), null);
 							result = false;
 						}
@@ -880,7 +882,8 @@ public final class SharedRules extends FpMLRuleSet
 						if (DOM.getInnerText (period).equals ("D")
 							&& Integer.parseInt (DOM.getInnerText (factor)) != 0) {
 							errorHandler.error ("305", context,
-								"The dayType element should be present",
+									"daytype must only be present if and only if the period " +
+									"is 'D' and the periodMultiplier is non-zero",
 								getDisplayName (), null);
 							result = false;
 						}
@@ -895,10 +898,10 @@ public final class SharedRules extends FpMLRuleSet
 	 * A <CODE>Rule</CODE> that ensures the reference integrity of trade side
 	 * party references.
 	 * <P>
-	 * Applies to FpML 4.2 and later.
+	 * Applies to FpML 4.2 until 5.0.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule RULE16	= new Rule (Preconditions.R4_2__LATER, "shared-16")
+	public static final Rule RULE16	= new Rule (Preconditions.R4_2__R4_X, "shared-16")
 		{
 			/**
 			 * {@inheritDoc}
@@ -929,10 +932,10 @@ public final class SharedRules extends FpMLRuleSet
 	 * A <CODE>Rule</CODE> that ensures the reference integrity of trade side
 	 * account references.
 	 * <P>
-	 * Applies to FpML 4.2 and later.
+	 * Applies to FpML 4.2 until 5.0.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule RULE17	= new Rule (Preconditions.R4_2__LATER, "shared-17")
+	public static final Rule RULE17	= new Rule (Preconditions.R4_2__R4_X, "shared-17")
 		{
 			/**
 			 * {@inheritDoc}
@@ -958,7 +961,486 @@ public final class SharedRules extends FpMLRuleSet
 				return (result);
 			}
 		};
+		
+	/**
+	 * A <CODE>Rule</CODE> that ensures all party instances represent unique
+	 * entities.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule RULE18 = new Rule (Preconditions.R5_0__LATER, "shared-18")
+		{
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Party"), errorHandler));
+				return (validate (nodeIndex.getElementsByName ("party"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean			result	= true;
+				Vector<Identifier> identifiers = new Vector<Identifier> ();
+				Vector<String>	names = new Vector<String> ();
+				
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context 	= (Element) list.item (index);
+					Element 	partyId 	= XPath.path (context, "partyId");
+					Element		partyName	= XPath.path (context, "partyName");
+					
+					if (partyId != null) {
+						Identifier	identifier = new Identifier (partyId, "partyIdScheme");
+						
+						if (identifiers.contains (identifier)) {
+							errorHandler.error ("305", context,
+								"Party identifiers must be unique",
+								getDisplayName (), identifier.toString ());
+							result = false;
+						}
+						else
+							identifiers.add (identifier);
+					}
+					
+					// The FpML rule should not include this part
+					if (partyName != null) {
+						String		name	= DOM.getInnerText (partyName);
+						
+						if (names.contains (name)) {
+							errorHandler.error ("305", context,
+								"Party names must be unique",
+								getDisplayName (), name);
+							result = false;
+						}
+						else
+							names.add (name);
+					}
+				}
+				
+				identifiers.clear ();
+				names.clear ();
+				
+				return (result);
+			}
+		};
+	
+	/**
+	 * A <CODE>Rule</CODE> that ensures all account instances represent unique
+	 * entities.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule RULE19 = new Rule (Preconditions.R5_0__LATER, "shared-19")
+		{
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Account"), errorHandler));
+				return (validate (nodeIndex.getElementsByName ("account"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean			result	= true;
+				Vector<Identifier> identifiers = new Vector<Identifier> ();
+				Vector<String>	names = new Vector<String> ();
+				
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context 	= (Element) list.item (index);
+					Element 	accountId 	= XPath.path (context, "accountId");
+					Element		accountName	= XPath.path (context, "accountName");
+					
+					if (accountId != null) {
+						Identifier	identifier = new Identifier (accountId, "accountIdScheme");
+						
+						if (identifiers.contains (identifier)) {
+							errorHandler.error ("305", context,
+								"Account identifiers must be unique",
+								getDisplayName (), identifier.toString ());
+							result = false;
+						}
+						else
+							identifiers.add (identifier);
+					}
+					
+					// The FpML rule should not include this part
+					if (accountName != null) {
+						String		name	= DOM.getInnerText (accountName);
+						
+						if (names.contains (name)) {
+							errorHandler.error ("305", context,
+								"Account names must be unique",
+								getDisplayName (), name);
+							result = false;
+						}
+						else
+							names.add (name);
+					}
+				}
 
+				identifiers.clear ();
+				names.clear ();
+				
+				return (result);
+			}
+		};
+
+	/**
+	 * A <CODE>Rule</CODE> that ensures all adjustable dates in a set are unique.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule RULE20 = new Rule (Preconditions.R5_0__LATER, "shared-20")
+		{
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "AdjustableDates"), errorHandler));
+				return (
+					  validate (nodeIndex.getElementsByName ("adjustableDates"), errorHandler)
+					& validate (nodeIndex.getElementsByName ("calculationPeriods"), errorHandler)
+					& validate (nodeIndex.getElementsByName ("fixingDates"), errorHandler)
+					& validate (nodeIndex.getElementsByName ("fxFixingSchedule"), errorHandler)
+					& validate (nodeIndex.getElementsByName ("fxObservationDates"), errorHandler)
+					& validate (nodeIndex.getElementsByName ("paymentDates"), errorHandler)
+					& validate (nodeIndex.getElementsByName ("periods"), errorHandler)
+					& validate (nodeIndex.getElementsByName ("pricingDates"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean			result	= true;
+				Vector<Date>	dates	= new Vector<Date> ();
+				
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element			context	= (Element) list.item (index);
+					NodeList		nodes	= XPath.paths (context, "unadjustedDate");
+					
+					for (int count = 0; count < nodes.getLength (); ++count) {
+						Element			node	= (Element) nodes.item (count);
+						Date			date 	= Types.toDate (node);
+						
+						if (dates.contains (date)) {
+							errorHandler.error ("305", node,
+								"Duplicate unadjustedDate",
+								getDisplayName (), date.toString ());
+							result = false;
+						}
+						else
+							dates.add (date);
+					}
+					
+					dates.clear ();
+				}
+				return (result);
+			}
+		};
+		
+	/**
+	 * A <CODE>Rule</CODE> that ensures all account instances represent unique
+	 * entities.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule RULE21 = new Rule (Preconditions.R5_0__LATER, "shared-21")
+		{
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "BusinessCenters"), errorHandler));
+				return (validate (nodeIndex.getElementsByName ("businessCenters"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean			result	= true;
+				Vector<Identifier> identifiers = new Vector<Identifier> ();
+				
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context 	= (Element) list.item (index);
+					NodeList	nodes		= XPath.paths (context, "businessCenter");
+					
+					for (int count = 0; count < nodes.getLength (); ++count) {
+						Element		node		= (Element) nodes.item (count);
+						Identifier	identifier  = new Identifier (node, "businessCenterScheme");
+						
+						if (identifiers.contains (identifier)) {
+							errorHandler.error ("305", node,
+								"Duplicate business center",
+								getDisplayName (), identifier.toString ());
+							result = false;
+						}
+						else
+							identifiers.add (identifier);
+					}
+					identifiers.clear ();
+				}
+				return (result);
+			}
+		};
+		
+	/**
+	 * A <CODE>Rule</CODE> that ensures calculation agent references are unique.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.6
+	 * @deprecated
+	 */
+	public static final Rule RULE22 = new Rule (Preconditions.R5_0__LATER, "shared-22")
+		{
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CalculationAgent"), errorHandler));
+				return (validate (nodeIndex.getElementsByName ("calculationAgent"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean			result	= true;
+				Vector<String>	idrefs	= new Vector<String> ();
+
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element			context = (Element) list.item (index);
+					NodeList		nodes	= XPath.paths (context, "calculationAgentPartyReference");
+					
+					for (int count = 0; count < nodes.getLength (); ++count) {
+						Element 		node	= (Element) nodes.item (count);
+						String			idref	= node.getAttribute ("href");
+						
+						if (idrefs.contains (idref)) {
+							errorHandler.error ("305", node,
+								"Duplicate calculationAgentPartyReference",
+								getDisplayName (), idref);
+							result = false;
+						}
+						else
+							idrefs.add (idref);
+					}
+					idrefs.clear ();
+				}
+				return (result);
+			}
+		};
+
+	/**
+	 * A <CODE>Rule</CODE> that ensures all reference bank references are unique.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule RULE23 = new Rule (Preconditions.R5_0__LATER, "shared-23")
+		{
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CashSettlementReferenceBanks"), errorHandler));
+				return (validate (nodeIndex.getElementsByName ("cashSettlementReferenceBanks"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean			result	= true;
+				Vector<Identifier> identifiers = new Vector<Identifier> ();
+				
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context 	= (Element) list.item (index);
+					NodeList	nodes		= XPath.paths (context, "referenceBank", "referenceBankId");
+					
+					for (int count = 0; count < nodes.getLength (); ++count) {
+						Element		node		= (Element) nodes.item (count);
+						Identifier	identifier  = new Identifier (node, "referenceBankIdScheme");
+						
+						if (identifiers.contains (identifier)) {
+							errorHandler.error ("305", node,
+								"Duplicate reference bank Id",
+								getDisplayName (), identifier.toString ());
+							result = false;
+						}
+						else
+							identifiers.add (identifier);
+					}
+					identifiers.clear ();
+				}
+				return (result);
+			}
+		};
+		
+	/**
+	 * A <CODE>Rule</CODE> that ensures all routing identifers are unique.
+	 * entities.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule RULE24 = new Rule (Preconditions.R5_0__LATER, "shared-24")
+		{
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "RoutingIds"), errorHandler));
+				return (validate (nodeIndex.getElementsByName ("routingIds"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean			result	= true;
+				Vector<Identifier> identifiers = new Vector<Identifier> ();
+				
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context 	= (Element) list.item (index);
+					NodeList	nodes		= XPath.paths (context, "routingId");
+					
+					for (int count = 0; count < nodes.getLength (); ++count) {
+						Element		node		= (Element) nodes.item (count);
+						Identifier	identifier  = new Identifier (node, "routingIdCodeScheme");
+						
+						if (identifiers.contains (identifier)) {
+							errorHandler.error ("305", node,
+								"Duplicate routing Id",
+								getDisplayName (), identifier.toString ());
+							result = false;
+						}
+						else
+							identifiers.add (identifier);
+					}
+					identifiers.clear ();
+				}
+				return (result);
+			}
+		};
+
+	/**
+	 * A <CODE>Rule</CODE> that ensures all step dates in a schedule are unique.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule RULE25 = new Rule (Preconditions.R5_0__LATER, "shared-25")
+		{
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Schedule"), errorHandler));
+				
+				return (
+						  validate (nodeIndex.getElementsByName ("floatingRateMultiplierSchedule"), errorHandler)
+						& validate (nodeIndex.getElementsByName ("spreadSchedule"), errorHandler)
+						& validate (nodeIndex.getElementsByName ("fixedRateSchedule"), errorHandler)
+						& validate (nodeIndex.getElementsByName ("feeRateSchedule"), errorHandler)
+						& validate (nodeIndex.getElementsByName ("capRateSchedule"), errorHandler)
+						& validate (nodeIndex.getElementsByName ("floorRateSchedule"), errorHandler)
+						& validate (nodeIndex.getElementsByName ("knownAmountSchedule"), errorHandler)
+						& validate (nodeIndex.getElementsByName ("notionalStepSchedule"), errorHandler)
+						& validate (nodeIndex.getElementsByName ("feeAmountSchedule"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean			result	= true;
+				Vector<Date> 	dates = new Vector<Date> ();
+				
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context		= (Element) list.item (index);
+					NodeList	nodes		= XPath.paths (context, "step", "stepDate");
+					
+					for (int count = 0; count < nodes.getLength (); ++count) {
+						Element		node		= (Element) nodes.item (count);
+						Date		date	  	= Types.toDate (node);
+						
+						if (dates.contains (date)) {
+							errorHandler.error ("305", node,
+								"Duplicate step date",
+								getDisplayName (), date.toString ());
+							result = false;
+						}
+						else
+							dates.add (date);
+					}
+					dates.clear ();
+				}
+				return (result);
+			}
+		};
+
+	/**
+	 * A <CODE>Rule</CODE> that ensures a currency is specified when a bond
+	 * has a par value.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule RULE26 = new Rule (Preconditions.R5_0__LATER, "shared-26")
+	{
+		public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+		{
+			if (nodeIndex.hasTypeInformation ())
+				return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Bond"), errorHandler));
+			return (validate (nodeIndex.getElementsByName ("bond"), errorHandler));
+		}
+		
+		private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+		{
+			boolean		result	= true;
+			
+			for (int index = 0; index < list.getLength (); ++index) {
+				Element		context	= (Element) list.item (index);
+				Element		parValue = XPath.path (context, "parValue");
+				Element		currency = XPath.path (context, "currency");
+				
+				if ((parValue == null) || (currency != null)) continue;
+				
+				errorHandler.error ("305", context,
+					"If parValue is present then the currency must be specified",
+					getDisplayName (), null);
+				result = false;				
+			}
+			
+			return (result);
+		}
+	};
+
+	/**
+	 * A <CODE>Rule</CODE> that ensures the buyers and sellers are different.
+	 * <P>
+	 * Applies to all FpML versions.
+	 * @since	TFP 1.6	
+	 */
+	public static final Rule	RULE29 = new Rule ("shared-29")
+		{
+			/**
+			 * {@inheritDoc}
+			 */
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				boolean		result = true;
+				NodeList	list = nodeIndex.getElementsByName ("buyerPartyReference");
+
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element buyer  = (Element) list.item (index);
+					
+					if (buyer == null) continue;
+					
+					Element parent = (Element) buyer.getParentNode ();
+ 					Element seller = DOM.getElementByLocalName (parent, "sellerPartyReference");
+					
+ 					if (seller == null) continue;
+ 					
+					if (buyer.getAttribute ("href").equals (seller.getAttribute ("href"))) {
+						errorHandler.error ("305", parent,
+							"buyer and seller party references must be different",
+							getDisplayName (), buyer.getAttribute ("href"));
+						result = false;
+					}
+				}
+
+				return (result);
+			}
+		};
+		
 	/**
 	 * Provides access to the shared components validation rule set.
 	 * 

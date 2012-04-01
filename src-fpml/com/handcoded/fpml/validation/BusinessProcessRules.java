@@ -21,7 +21,6 @@ import com.handcoded.validation.Rule;
 import com.handcoded.validation.RuleSet;
 import com.handcoded.validation.ValidationErrorHandler;
 import com.handcoded.xml.NodeIndex;
-import com.handcoded.xml.XPath;
 
 /**
  * The <CODE>BusinessProcessRules</CODE> class contains a <CODE>RuleSet</CODE>
@@ -34,7 +33,8 @@ import com.handcoded.xml.XPath;
 public final class BusinessProcessRules extends FpMLRuleSet
 {
 	/**
-	 * A <CODE>Rule</CODE> that ensures The @href attribute must match the @id attribute of an element of type Party.
+	 * A <CODE>Rule</CODE> that ensures The @href attribute on a firstPeriodStartDate
+	 * must match the @id attribute of an element of type Party.
 	 * <P>
 	 * Applies to FpML 4.1 and later.
 	 * @since	TFP 1.2
@@ -45,19 +45,20 @@ public final class BusinessProcessRules extends FpMLRuleSet
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
-				return (validate (nodeIndex, XPath.paths (nodeIndex.getElementsByName ("novation"), ".."), errorHandler));
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex, nodeIndex.getElementsByType (determineNamespace (nodeIndex), "FirstPeriodStartDate"), errorHandler));
+				return (validate (nodeIndex, nodeIndex.getElementsByName ("firstPeriodStartDate"), errorHandler));
 			}
 			
-			public boolean validate (NodeIndex nodeIndex, NodeList list, ValidationErrorHandler errorHandler)
+			private boolean validate (NodeIndex nodeIndex, NodeList list, ValidationErrorHandler errorHandler)
 			{
 				boolean		result 	= true;
 				
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context 	= (Element) list.item (index);
-					Element		startDate	= XPath.path (context, "novation", "firstPeriodStartDate");
 					Attr		href;
 					
-					if ((startDate == null) || (href = startDate.getAttributeNode ("href"))== null) continue;
+					if ((context == null) || (href = context.getAttributeNode ("href"))== null) continue;
 					
 					Element		target	= nodeIndex.getElementById (href.getValue ());
 						
@@ -85,26 +86,27 @@ public final class BusinessProcessRules extends FpMLRuleSet
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
-				return (validate (nodeIndex, XPath.paths (nodeIndex.getElementsByName ("novation"), ".."), errorHandler));
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex, nodeIndex.getElementsByType (determineNamespace (nodeIndex), "FirstPeriodStartDate"), errorHandler));
+				return (validate (nodeIndex, nodeIndex.getElementsByName ("firstPeriodStartDate"), errorHandler));
 			}
 			
-			public boolean validate (NodeIndex nodeIndex, NodeList list, ValidationErrorHandler errorHandler)
+			private boolean validate (NodeIndex nodeIndex, NodeList list, ValidationErrorHandler errorHandler)
 			{
 				boolean		result 	= true;
 				
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context 	= (Element) list.item (index);
-					Element		startDate	= XPath.path (context, "novation", "firstPeriodStartDate");
 					Attr		href;
 					
-					if ((startDate == null) || (href = startDate.getAttributeNode ("href"))== null) continue;
+					if ((context == null) || (href = context.getAttributeNode ("href"))== null) continue;
 					
 					Element		target	= nodeIndex.getElementById (href.getValue ());
 						
 					if ((target == null) || !target.getLocalName().equals("party")) {
 						errorHandler.error ("305", context,
 							"The @href attribute on the firstPeriodStartDate must reference a party",
-							getDisplayName (), href.getValue ());
+							getDisplayName (), href.getValue () );
 						
 						result = false;
 					}
