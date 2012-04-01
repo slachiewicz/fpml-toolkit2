@@ -108,19 +108,20 @@ public final class ReferenceRules extends FpMLRuleSet
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
-				return (validate (nodeIndex, XPath.paths (nodeIndex.getElementsByName ("novation"), ".."), errorHandler));
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex, nodeIndex.getElementsByType (determineNamespace (nodeIndex), "FirstPeriodStartDate"), errorHandler));
+				return (validate (nodeIndex, nodeIndex.getElementsByName ("firstPeriodStartDate"), errorHandler));
 			}
 			
-			public boolean validate (NodeIndex nodeIndex, NodeList list, ValidationErrorHandler errorHandler)
+			private boolean validate (NodeIndex nodeIndex, NodeList list, ValidationErrorHandler errorHandler)
 			{
 				boolean		result 	= true;
 				
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context 	= (Element) list.item (index);
-					Element		startDate	= XPath.path (context, "novation", "firstPeriodStartDate");
 					Attr		href;
 					
-					if ((startDate == null) || (href = startDate.getAttributeNode ("href"))== null) continue;
+					if ((context == null) || (href = context.getAttributeNode ("href"))== null) continue;
 					
 					Element		target	= nodeIndex.getElementById (href.getValue ());
 						
