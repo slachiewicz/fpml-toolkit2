@@ -849,8 +849,8 @@ public final class FxRules extends FpMLRuleSet
 					
 					if (schedule == null) continue;
 					
-					Element		start	= XPath.path (schedule, "observationStartDate");
-					Element		end		= XPath.path (schedule, "observationEndDate");
+					Element		start	= XPath.path (schedule, "startDate");
+					Element		end		= XPath.path (schedule, "endDate");
 					Element		freq	= XPath.path (schedule, "calculationPeriodFrequency");
 					Element		roll	= XPath.path (freq, "rollConvention");
 					
@@ -859,7 +859,7 @@ public final class FxRules extends FpMLRuleSet
 					Date [] 	dates	= generateSchedule (toDate (start), toDate (end),
 							toInterval (freq), DateRoll.forName (toToken (roll)), null);
 					
-					NodeList	nodes	= XPath.paths (context, "observedRates", "observationDate");
+					NodeList	nodes	= XPath.paths (context, "rateObservation", "date");
 										
 					for (int count = 0; count < nodes.getLength(); ++count) {
 						Element 	observed = (Element) nodes.item (count);
@@ -2226,7 +2226,7 @@ public final class FxRules extends FpMLRuleSet
 				
 				for (int index = 0; index < list.getLength(); ++index) {
 					Element		context 	= (Element) list.item (index);
-					Element		payerParty	  = XPath.path (context, "payerPayerReference");
+					Element		payerParty	  = XPath.path (context, "payerPartyReference");
 					Element		receiverParty = XPath.path (context, "receiverPartyReference");
 					
 					if ((payerParty == null) || (receiverParty == null) ||

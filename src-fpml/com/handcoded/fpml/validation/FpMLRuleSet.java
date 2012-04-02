@@ -54,7 +54,10 @@ public abstract class FpMLRuleSet extends Logic
 		String		uri1	= DOM.getAttribute (ccy1, "currencyScheme");
 		String		uri2	= DOM.getAttribute (ccy2, "currencyScheme");
 		
-		if ((uri1 != null) && (uri2 != null) && uri1.equals (uri2))
+        if ((uri1 == null) && (uri2 == null))
+            return (equal (ccy1, ccy2));
+
+        if ((uri1 != null) && (uri2 != null) && uri1.equals (uri2))
 			return (equal (ccy1, ccy2));
 		
 		return (false);

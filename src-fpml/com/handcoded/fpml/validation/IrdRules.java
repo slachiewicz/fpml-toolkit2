@@ -27,6 +27,7 @@ import com.handcoded.validation.RuleSet;
 import com.handcoded.validation.ValidationErrorHandler;
 import com.handcoded.xml.DOM;
 import com.handcoded.xml.NodeIndex;
+import com.handcoded.xml.Types;
 import com.handcoded.xml.XPath;
 
 /**
@@ -514,7 +515,7 @@ public final class IrdRules extends FpMLRuleSet
 					Element context = (Element) list.item (index);
 
 					if (implies (
-							exists (XPath.path (context, "calculationPeriodAmount/calculation/compoundingMethod")),
+							exists (XPath.path (context, "calculationPeriodAmount", "calculation", "compoundingMethod")),
 							exists (XPath.path (context, "resetDates"))))
 						continue;
 
@@ -2074,12 +2075,13 @@ public final class IrdRules extends FpMLRuleSet
 					Element	exercise	= XPath.path (context, "adjustedExerciseDate");
 					Element	termination	= XPath.path (context, "adjustedExtendedTerminationDate");
 
-					if ((exercise == null) || (termination == null) || lessOrEqual (exercise, termination))
+					if ((exercise == null) || (termination == null) ||
+						less (Types.toDate (exercise), Types.toDate (termination)))
 						continue;
 
 					errorHandler.error ("305", context,
 						"The adjusted exercise date '" + toToken (exercise) + "' should be " +
-						"on or before the adjusted extended termination date '" + toToken (termination) + "'",
+						"before the adjusted extended termination date '" + toToken (termination) + "'",
 						getDisplayName (), null);
 
 					result = false;
@@ -3172,7 +3174,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * weekly roll convention.
 	 * 
 	 * @param 	code			The code value to be tested.
-	 * @return	<CODE>true</CODE> if the string matches a recognized weekly
+	 * @return	<CODE>true</CODE> if the string matches a recognised weekly
 	 * 			roll convention.
 	 * @since	TFP 1.2
 	 */

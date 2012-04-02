@@ -20,6 +20,7 @@ import org.w3c.dom.NodeList;
 import com.handcoded.validation.Rule;
 import com.handcoded.validation.RuleSet;
 import com.handcoded.validation.ValidationErrorHandler;
+import com.handcoded.xml.DOM;
 import com.handcoded.xml.NodeIndex;
 import com.handcoded.xml.XPath;
 
@@ -666,6 +667,45 @@ public final class ReferenceRules extends FpMLRuleSet
 					"definitionReference" },
 				"SensitivitySetDefinition", new String [] {
 					"sensitivitySetDefinition" });
+		
+	/**
+	 * A <CODE>Rule</CODE> that ensures the cash settlement date for a
+	 * mandatory early termination matches the termination date.
+	 * <P>
+	 * Applies to FpML 4.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule	RULE38
+		= new Rule (Preconditions.R4_0__LATER, "ref-38")
+		{
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "MandatoryEarlyTermination"), errorHandler));
+				return (validate (nodeIndex.getElementsByName ("mandatoryEarlyTermination"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result	= true;
+				
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context	= (Element) list.item (index);
+					Element		dateRef  = XPath.path (context, "cashSettlement", "cashSettlementValuationDate", "dateRelativeTo");
+					Element		termDate = XPath.path (context, "mandatoryEarlyTerminationDate");
+					
+					if ((dateRef == null) || (termDate == null) ||
+							DOM.getAttribute (dateRef, "href").equals (DOM.getAttribute (termDate, "id"))) continue;
+					
+					errorHandler.error ("305", context,
+							"The cash settlement valuation date should reference the" +
+							"mandatory termination date", 
+							getDisplayName (), DOM.getAttribute (dateRef, "href"));
+					result = false;
+				}
+				return (result);
+			}
+		};
 		
 	/**
 	 * Provides access to the business process validation rule set.
