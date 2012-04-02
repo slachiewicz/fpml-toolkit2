@@ -13,6 +13,8 @@
 
 package com.handcoded.fpml.validation;
 
+import java.math.BigDecimal;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -36,7 +38,7 @@ public final class EqdRules extends FpMLRuleSet
 {
 	/**
 	 * A <CODE>Rule</CODE> instance that ensures the unadjusted expiration
-	 * date is after the trade date for american options.
+	 * date is after the trade date for American options.
 	 * <P>
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
@@ -75,8 +77,48 @@ public final class EqdRules extends FpMLRuleSet
 		};
 
 	/**
+	 * A <CODE>Rule</CODE> instance that ensures the unadjusted expiration
+	 * date is after the trade date for American options.
+	 * <P>
+	 * Applies to FpML 4.0 until 5.0.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule	RULE02B	= new Rule (Preconditions.R4_0__R4_X, "eqd-2b")
+		{
+			/**
+			 * {@inheritDoc}
+			 */
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				return (validate (nodeIndex.getElementsByName("equityAmericanExercise"), errorHandler));
+			}
+
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result	= true;
+
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element context 	= (Element) list.item (index);
+					Element	expiration	= XPath.path (context, "expirationDate", "adjustableDate", "unadjustedDate");
+					Element	trade		= XPath.path (context, "..", "..", "..", "header", "contractDate");
+
+					if ((expiration == null) || (trade == null) || greaterOrEqual (toDate (expiration), toDate (trade)))
+						continue;
+
+					errorHandler.error ("305", context,
+						"American exercise expiration date " + toToken (expiration) +
+						" should be the same or later than trade date " + toToken (trade),
+						getDisplayName (), null);
+
+					result = false;
+				}
+				return (result);
+			}
+		};
+
+	/**
 	 * A <CODE>Rule</CODE> instance that ensures the latest exercise time is
-	 * after the earliest exercise time for american options.
+	 * after the earliest exercise time for American options.
 	 * <P>
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
@@ -116,7 +158,7 @@ public final class EqdRules extends FpMLRuleSet
 
 	/**
 	 * A <CODE>Rule</CODE> instance that ensures the unadjusted commencement
-	 * date is the same as the trade date for bermudan options.
+	 * date is the same as the trade date for Bermuda options.
 	 * <P>
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
@@ -155,8 +197,48 @@ public final class EqdRules extends FpMLRuleSet
 		};
 
 	/**
+	 * A <CODE>Rule</CODE> instance that ensures the unadjusted commencement
+	 * date is the same as the trade date for Bermuda options.
+	 * <P>
+	 * Applies to FpML 4.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule	RULE04B	= new Rule (Preconditions.R4_0__R4_X, "eqd-4b")
+		{
+			/**
+			 * {@inheritDoc}
+			 */
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				return (validate (nodeIndex.getElementsByName ("equityBermudaExercise"), errorHandler));
+			}
+
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result	= true;
+
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element context 	= (Element) list.item (index);
+					Element	commence	= XPath.path (context, "commencementDate", "adjustableDate", "unadjustedDate");
+					Element	trade		= XPath.path (context, "..", "..", "..", "header", "contractDate");
+
+					if ((commence == null) || (trade == null) || greaterOrEqual (toDate (commence), toDate (trade)))
+						continue;
+
+					errorHandler.error ("305", context,
+						"Bermuda exercise commencement date " + toToken (commence) +
+						" should not be before the trade date " + toToken (trade),
+						getDisplayName (), null);
+
+					result = false;
+				}
+				return (result);
+			}
+		};
+
+	/**
 	 * A <CODE>Rule</CODE> instance that ensures the unadjusted expiration
-	 * date is after the trade date for bermudan options.
+	 * date is after the trade date for Bermuda options.
 	 * <P>
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
@@ -196,7 +278,7 @@ public final class EqdRules extends FpMLRuleSet
 
 	/**
 	 * A <CODE>Rule</CODE> instance that ensures the latest exercise time is
-	 * after the earliest exercise time for bermudan options.
+	 * after the earliest exercise time for Bermuda options.
 	 * <P>
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
@@ -235,7 +317,7 @@ public final class EqdRules extends FpMLRuleSet
 		};
 
 	/**
-	 * A <CODE>Rule</CODE> instance that ensures bermudan exercise dates are
+	 * A <CODE>Rule</CODE> instance that ensures Bermuda exercise dates are
 	 * in order.
 	 * <P>
 	 * Applies to FpML 4.0 and later.
@@ -276,7 +358,7 @@ public final class EqdRules extends FpMLRuleSet
 		};
 
 	/**
-	 * A <CODE>Rule</CODE> instance that ensures bermudan exercise dates are
+	 * A <CODE>Rule</CODE> instance that ensures Bermuda exercise dates are
 	 * after commencement.
 	 * <P>
 	 * Applies to FpML 4.0 and later.
@@ -965,7 +1047,260 @@ public final class EqdRules extends FpMLRuleSet
 				return (result);
 			}
 		};
+	
+	/**
+	 * A <CODE>Rule</CODE> instance that ensures you cannot exercise more
+	 * options than are defined in the product.
+	 * <P>
+	 * Applies to FpML 4.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule	RULE26 = new Rule (Preconditions.R4_0__LATER, "eqd-26")
+		{
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						  validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "EquityOption"), errorHandler)
+						& validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "EquityDerivativeShortFormBase"), errorHandler));
+				
+				return (
+					  validate (nodeIndex.getElementsByName ("brokerEquityOption"), errorHandler)
+					& validate (nodeIndex.getElementsByName ("equityOption"), errorHandler)
+					& validate (nodeIndex.getElementsByName ("equityOptionTransactionSupplement"), errorHandler));
+			}
+	
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result	= true;
+				
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element	context	= (Element) list.item (index);
+					Element number 	= XPath.path (context, "numberOfOptions");
+					Element maximum	= XPath.path (context, "equityExercise", "equityAmericanExercise", "equityMultipleExercise", "maximumNumberOfOptions");
+					
+					if ((number == null) || (maximum == null) ||
+							lessOrEqual (toDecimal (maximum), toDecimal (number))) continue;
+					
+					errorHandler.error ("305", context,
+							"The exercise structure specifies a greater number of options " +
+							"than the product definition",
+							getDisplayName (), toToken (maximum));
+					result = false;
+				}
+				return (result);
+			}
+		};
 
+	/**
+	 * A <CODE>Rule</CODE> instance that ensures you cannot exercise more
+	 * options than are defined in the product.
+	 * <P>
+	 * Applies to FpML 4.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule	RULE26B = new Rule (Preconditions.R4_0__LATER, "eqd-26b")
+	{
+		public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+		{
+			if (nodeIndex.hasTypeInformation ())
+				return (
+					  validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "EquityOption"), errorHandler)
+					& validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "EquityDerivativeShortFormBase"), errorHandler));
+			
+			return (
+				  validate (nodeIndex.getElementsByName ("brokerEquityOption"), errorHandler)
+				& validate (nodeIndex.getElementsByName ("equityOption"), errorHandler)
+				& validate (nodeIndex.getElementsByName ("equityOptionTransactionSupplement"), errorHandler));
+		}
+
+		private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+		{
+			boolean		result	= true;
+			
+			for (int index = 0; index < list.getLength (); ++index) {
+				Element	context	= (Element) list.item (index);
+				Element number 	= XPath.path (context, "numberOfOptions");
+				Element maximum	= XPath.path (context, "equityExercise", "equityBermudaExercise", "equityMultipleExercise", "maximumNumberOfOptions");
+				
+				if ((number == null) || (maximum == null) ||
+						lessOrEqual (toDecimal (maximum), toDecimal (number))) continue;
+				
+				errorHandler.error ("305", context,
+						"The exercise structure specifies a greater number of options " +
+						"than the product definition",
+						getDisplayName (), toToken (maximum));
+				result = false;
+			}
+			return (result);
+		}
+	};
+
+	/**
+	 * A <CODE>Rule</CODE> instance that ensures the minimum number of options
+	 * exercisable is less than the maximum number.
+	 * <P>
+	 * Applies to FpML 4.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule	RULE27 = new Rule (Preconditions.R4_0__LATER, "eqd-27")
+	{
+		public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+		{
+			if (nodeIndex.hasTypeInformation ())
+				return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "EquityMultipleExercise"), errorHandler));
+			
+			return (validate (nodeIndex.getElementsByName ("equityMultipleExercise"), errorHandler));
+		}
+	
+		private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+		{
+			boolean		result	= true;
+			
+			for (int index = 0; index < list.getLength (); ++index) {
+				Element	context	= (Element) list.item (index);
+				Element minimum	= XPath.path (context, "minimumNumberOfOptions");
+				Element maximum	= XPath.path (context, "maximumNumberOfOptions");
+				
+				if ((minimum == null) || (maximum == null) ||
+						lessOrEqual (toDecimal (minimum), toDecimal (maximum))) continue;
+				
+				errorHandler.error ("305", context,
+						"The maximum number of options must be greater or equal " +
+						"to the minimum number of options",
+						getDisplayName (), toToken (maximum));
+				result = false;
+			}
+			return (result);
+		}
+	};
+
+	/**
+	 * A <CODE>Rule</CODE> instance that ensures the minimum number of options
+	 * is an integer multiple of an integral quantity.
+	 * <P>
+	 * Applies to FpML 4.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule	RULE28 = new Rule (Preconditions.R4_0__LATER, "eqd-28")
+	{
+		public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+		{
+			if (nodeIndex.hasTypeInformation ())
+				return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "EquityMultipleExercise"), errorHandler));
+			
+			return (validate (nodeIndex.getElementsByName ("equityMultipleExercise"), errorHandler));
+		}
+	
+		private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+		{
+			boolean		result	= true;
+			
+			for (int index = 0; index < list.getLength (); ++index) {
+				Element	context	= (Element) list.item (index);
+				Element minimum	= XPath.path (context, "minimumNumberOfOptions");
+				Element integral = XPath.path (context, "integralMultipleExercise");
+				
+				if ((minimum == null) || (integral == null)) continue;
+				
+				BigDecimal	mod = toDecimal (minimum).remainder (toDecimal (integral));
+				
+				if (mod.compareTo (BigDecimal.ZERO) == 0) continue;
+						
+				errorHandler.error ("305", context,
+						"The minimum number of options must be a multiple of " +
+						"multiple exercise quantity",
+						getDisplayName (), toToken (minimum));
+				result = false;
+			}
+			return (result);
+		}
+	};
+
+	/**
+	 * A <CODE>Rule</CODE> instance that ensures the maximum number of options
+	 * is an integer multiple of an integral quantity.
+	 * <P>
+	 * Applies to FpML 4.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule	RULE29 = new Rule (Preconditions.R4_0__LATER, "eqd-29")
+	{
+		public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+		{
+			if (nodeIndex.hasTypeInformation ())
+				return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "EquityMultipleExercise"), errorHandler));
+			
+			return (validate (nodeIndex.getElementsByName ("equityMultipleExercise"), errorHandler));
+		}
+	
+		private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+		{
+			boolean		result	= true;
+			
+			for (int index = 0; index < list.getLength (); ++index) {
+				Element	context	= (Element) list.item (index);
+				Element maximum	= XPath.path (context, "maximumNumberOfOptions");
+				Element integral = XPath.path (context, "integralMultipleExercise");
+				
+				if ((maximum == null) || (integral == null)) continue;
+				
+				BigDecimal	mod = toDecimal (maximum).remainder (toDecimal (integral));
+				
+				if (mod.compareTo (BigDecimal.ZERO) == 0) continue;
+						
+				errorHandler.error ("305", context,
+						"The minimum number of options must be a multiple of " +
+						"multiple exercise quantity",
+						getDisplayName (), toToken (maximum));
+				result = false;
+			}
+			return (result);
+		}
+	};
+	
+	/**
+	 * A <CODE>Rule</CODE> instance that ensures forward started options
+	 * have an effective date later than the trade date.
+	 * <P>
+	 * Applies to FpML 4.0 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule	RULE31 = new Rule (Preconditions.R4_0__LATER, "eqd-31")
+	{
+		public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+		{
+			if (nodeIndex.hasTypeInformation ())
+				return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "EquityDerivativeBase"), errorHandler));
+			
+			return (
+				  validate (nodeIndex.getElementsByName ("brokerEquityOption"), errorHandler)
+				& validate (nodeIndex.getElementsByName ("equityOption"), errorHandler)
+				& validate (nodeIndex.getElementsByName ("equityOptionTransactionSupplement"), errorHandler));
+		}
+
+		private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+		{
+			boolean		result	= true;
+			
+			for (int index = 0; index < list.getLength (); ++index) {
+				Element	context	= (Element) list.item (index);
+				Element effective = XPath.path (context, "equityEffectiveDate");
+				Element tradeDate = XPath.path (context, "..", "tradeHeader", "tradeDate");
+				
+				if ((effective == null) || (tradeDate == null) ||
+						greater (toDate (effective), toDate (tradeDate))) continue;
+				
+				errorHandler.error ("305", context,
+						"If present the equity effective date must be after " +
+						"the trade date",
+						getDisplayName (), toToken (effective));
+				result = false;
+			}
+			return (result);
+		}
+	};
+	
 	/**
 	 * Provides access to the EQD validation rule set.
 	 *
