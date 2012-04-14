@@ -107,7 +107,8 @@ public final class Interval implements Serializable
 		else if ((period == Period.YEAR) && (other.period == Period.MONTH))
 			value = 12 * multiplier;
 			
-		return (((value / other.multiplier) >= 1) &&
+		return ((other.multiplier != 0) &&
+				((value / other.multiplier) >= 1) &&
 				((value % other.multiplier) == 0));			
 	}
 	
@@ -125,6 +126,8 @@ public final class Interval implements Serializable
 	{
 		int				multiplier	= this.multiplier;
 		Period			period		= this.period;
+		
+		if (multiplier == 0) return (false);
 		
 		if (period == Period.TERM)
 			return (multiplier == 1);
