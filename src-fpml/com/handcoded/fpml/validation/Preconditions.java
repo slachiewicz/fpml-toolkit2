@@ -171,12 +171,36 @@ public interface Preconditions
 		= new VersionPrecondition (Releases.R5_1_REPORTING);
 
 	/**
-	 * A <CODE>Precondition</CODE> instance that detects FpML 5-1 compatible
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5-3 compatible
 	 * documents.
 	 * @since	TFP 1.5
 	 */
 	public static final Precondition 	R5_1
 		= Precondition.or (R5_1_CONFIRMATION, R5_1_REPORTING);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5-1 confirmation
+	 * documents.
+	 * @since	TFP 1.6
+	 */
+	public static final Precondition 	R5_3_CONFIRMATION
+		= new VersionPrecondition (Releases.R5_1_CONFIRMATION);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5-1 reporting
+	 * documents.
+	 * @since	TFP 1.6
+	 */
+	public static final Precondition 	R5_3_REPORTING
+		= new VersionPrecondition (Releases.R5_1_REPORTING);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5-3 compatible
+	 * documents.
+	 * @since	TFP 1.6
+	 */
+	public static final Precondition 	R5_3
+		= Precondition.or (R5_3_CONFIRMATION, R5_3_REPORTING);
 
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML versions that use
@@ -227,6 +251,14 @@ public interface Preconditions
 	= new VersionRangePrecondition (Releases.R3_0, Releases.R4_9);
 
     /**
+	 * A <CODE>Precondition</CODE> instance that detects any FpML 4-0
+	 * or 4-1 compatible document.
+	 * @since	TFP 1.6
+	 */
+	public static final Precondition	R4_0__R4_1
+		= new VersionRangePrecondition (Releases.R4_0, Releases.R4_1);
+
+    /**
 	 * A <CODE>Precondition</CODE> instance that detects any FpML 4-*
 	 * compatible document.
 	 * @since	TFP 1.6
@@ -249,6 +281,14 @@ public interface Preconditions
 	 */
 	public static final Precondition	R4_2__R4_X
 		= new VersionRangePrecondition (Releases.R4_2, Releases.R5_0_CONFIRMATION);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML versions 5-3 and
+	 * later.
+	 * @since	TFP 1.6
+	 */
+	public static final Precondition	R5_3__LATER
+		= new VersionRangePrecondition (Releases.R5_3_CONFIRMATION, null);
 
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML versions 5-1 and
