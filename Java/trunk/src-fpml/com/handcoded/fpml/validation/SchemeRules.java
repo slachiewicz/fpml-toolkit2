@@ -296,17 +296,6 @@ public final class SchemeRules
 		= new SchemeRule (Preconditions.R4_0, "scheme-24b", "clearanceSystem", "clearanceSystemIdScheme");
 		
 	/**
-	 * Rule 25: The value of any <CODE>contractualDefinitions</CODE> element must
-	 * be valid within the domain defined by its <CODE>@contractualDefinitionsScheme</CODE>
-	 * attribute.
-	 * <P>
-	 * Applies to FpML 3-0 and later.
-	 * @since	TFP 1.0	
-	 */
-	public static final Rule	RULE25
-		= new SchemeRule (Preconditions.R3_0__LATER, "scheme-25", "contractualDefinitions", "contractualDefinitionsScheme");
-
-	/**
 	 * Rule 26: The value of any <CODE>country</CODE> element must be valid
 	 * within the domain defined by its <CODE>@countryScheme</CODE> attribute.
 	 * <P>
@@ -389,22 +378,13 @@ public final class SchemeRules
 				"nationalisationOrInsolvencyOrDelistingScheme");
 	
 	/**
-	 * Rule 34: The value of any <CODE>optionType</CODE> element must be valid
-	 * within the domain defined by its <CODE>@optionTypeScheme</CODE> attribute.
-	 * <P>
-	 * Applies to FpML 3-0.
-	 * @since	TFP 1.0	
-	 */
-	public static final Rule	RULE34
-		= new BrokenSchemeRule (Preconditions.R3_0, "scheme-34", "optionType", "optionTypeScheme");
-	
-	/**
 	 * Rule 35: The value of any <CODE>partyContactDetails</CODE> element must be valid
 	 * within the domain defined by its <CODE>@partyContactDetailsScheme</CODE> attribute.
 	 * <P>
 	 * Applies to FpML 3-0.
 	 * @since	TFP 1.0	
 	 */
+	// TODO Needed?
 	public static final Rule	RULE35
 		= new SchemeRule (Preconditions.R3_0, "scheme-35", "partyContactDetails", "partyContactDetailsScheme");
 	
@@ -557,11 +537,22 @@ public final class SchemeRules
 	 * Rule 50: The value of any <CODE>additionalTerm</CODE> element must be valid
 	 * within the domain defined by its <CODE>@additionalTermScheme</CODE> attribute.
 	 * <P>
-	 * Applies to FpML 4.0 and later.
+	 * Applies to FpML 4.0 and 4.1.
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule	RULE50
-		= new SchemeRule (Preconditions.R4_0__LATER, "scheme-50", "additionalTerm", "additionalTermScheme");
+		= new SchemeRule (Preconditions.R4_0__R4_1, "scheme-50", "additionalTerm", "additionalTermScheme");
+
+	/**
+	 * Rule 25: The value of any <CODE>contractualDefinitions</CODE> element must
+	 * be valid within the domain defined by its <CODE>@contractualDefinitionsScheme</CODE>
+	 * attribute.
+	 * <P>
+	 * Applies to FpML 4-0 and later.
+	 * @since	TFP 1.0	
+	 */
+	public static final Rule	RULE25
+		= new SchemeRule (Preconditions.R4_0__LATER, "scheme-25", "contractualDefinitions", "contractualDefinitionsScheme");
 
 	/**
 	 * Rule 51: The value of any <CODE>contractualSupplement</CODE> element must
@@ -828,6 +819,20 @@ public final class SchemeRules
 	
 	// commodityMarketDisruptionFallbackScheme
 	// commodityMarketDisruptionScheme
+	
+	// FpML 5.3 ------------------------------------------------------------
+	
+	/**
+	 * Rule 34: The value of any <CODE>optionType</CODE> element must be valid
+	 * within the domain defined by its <CODE>@optionTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 5-3 and Later.
+	 * @since	TFP 1.0	
+	 */
+	public static final Rule	RULE34
+		= new BrokenSchemeRule (Preconditions.R5_3__LATER, "scheme-34", "optionType", "optionTypeScheme");
+	
+
 
 	/**
 	 * Provides access to the scheme validation rule set.
