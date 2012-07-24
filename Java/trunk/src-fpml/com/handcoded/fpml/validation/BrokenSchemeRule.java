@@ -130,11 +130,18 @@ public class BrokenSchemeRule extends Rule
 			String version	= null;
 			
 			// Find the FpML root node
-			while ((fpml != null) &&  !fpml.getLocalName().equals("FpML"))
+			while (fpml != null) {
+				if (fpml.getLocalName().equals("FpML")) {
+					version = fpml.getAttribute ("version");
+					break;
+				}
+				if (fpml.hasAttribute ("fpmlVersion")) {
+					version = fpml.getAttribute ("fpmlVersion");
+					break;
+				}
 				fpml = DOM.getParent (fpml);
-				
-			if (fpml != null) version = fpml.getAttribute ("version");
-			
+			}
+						
 			SchemeCollection 	schemes =
 				((SchemeAccess) (Releases.FPML.getReleaseForVersion (version))).getSchemeCollection ();
 				

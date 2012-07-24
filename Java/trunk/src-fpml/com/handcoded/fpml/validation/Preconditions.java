@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -179,12 +179,36 @@ public interface Preconditions
 		= Precondition.or (R5_1_CONFIRMATION, R5_1_REPORTING);
 
 	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5-2 confirmation
+	 * documents.
+	 * @since	TFP 1.6
+	 */
+	public static final Precondition 	R5_2_CONFIRMATION
+		= new VersionPrecondition (Releases.R5_2_CONFIRMATION);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5-1 reporting
+	 * documents.
+	 * @since	TFP 1.6
+	 */
+	public static final Precondition 	R5_2_REPORTING
+		= new VersionPrecondition (Releases.R5_2_REPORTING);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5-2 compatible
+	 * documents.
+	 * @since	TFP 1.6
+	 */
+	public static final Precondition 	R5_2
+		= Precondition.or (R5_2_CONFIRMATION, R5_2_REPORTING);
+
+	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML 5-1 confirmation
 	 * documents.
 	 * @since	TFP 1.6
 	 */
 	public static final Precondition 	R5_3_CONFIRMATION
-		= new VersionPrecondition (Releases.R5_1_CONFIRMATION);
+		= new VersionPrecondition (Releases.R5_3_CONFIRMATION);
 
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML 5-1 reporting
@@ -192,7 +216,7 @@ public interface Preconditions
 	 * @since	TFP 1.6
 	 */
 	public static final Precondition 	R5_3_REPORTING
-		= new VersionPrecondition (Releases.R5_1_REPORTING);
+		= new VersionPrecondition (Releases.R5_3_REPORTING);
 
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML 5-3 compatible
@@ -201,6 +225,30 @@ public interface Preconditions
 	 */
 	public static final Precondition 	R5_3
 		= Precondition.or (R5_3_CONFIRMATION, R5_3_REPORTING);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5-1 confirmation
+	 * documents.
+	 * @since	TFP 1.6
+	 */
+	public static final Precondition 	R5_4_CONFIRMATION
+		= new VersionPrecondition (Releases.R5_4_CONFIRMATION);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5-1 reporting
+	 * documents.
+	 * @since	TFP 1.6
+	 */
+	public static final Precondition 	R5_4_REPORTING
+		= new VersionPrecondition (Releases.R5_4_REPORTING);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5-3 compatible
+	 * documents.
+	 * @since	TFP 1.6
+	 */
+	public static final Precondition 	R5_4
+		= Precondition.or (R5_4_CONFIRMATION, R5_4_REPORTING);
 
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML versions that use
@@ -281,6 +329,14 @@ public interface Preconditions
 	 */
 	public static final Precondition	R4_2__R4_X
 		= new VersionRangePrecondition (Releases.R4_2, Releases.R5_0_CONFIRMATION);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML versions 5-4 and
+	 * later.
+	 * @since	TFP 1.6
+	 */
+	public static final Precondition	R5_4__LATER
+		= new VersionRangePrecondition (Releases.R5_4_CONFIRMATION, null);
 
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML versions 5-3 and

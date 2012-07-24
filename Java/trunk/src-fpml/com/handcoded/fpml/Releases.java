@@ -240,6 +240,38 @@ public final class Releases
 		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-3", "http://www.fpml.org/FpML-5/transparency");
 	
 	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-4 confirmation view working draft.
+	 * @since	TFP 1.6
+	 */
+	public static SchemaRelease	R5_4_CONFIRMATION
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-4", "http://www.fpml.org/FpML-5/confirmation");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-4 reporting view working draft.
+	 * @since	TFP 1.6
+	 */
+	public static SchemaRelease	R5_4_REPORTING
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-4", "http://www.fpml.org/FpML-5/reporting");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-4 record keeping view working draft.
+	 * @since	TFP 1.6
+	 */
+	public static SchemaRelease	R5_4_RECORDKEEPING
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-4", "http://www.fpml.org/FpML-5/recordkeeping");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-4 transparency view working draft.
+	 * @since	TFP 1.6
+	 */
+	public static SchemaRelease	R5_4_TRANSPARENCY
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-4", "http://www.fpml.org/FpML-5/transparency");
+	
+	/**
 	 * A <CODE>Conversion</CODE> instance configured for FpML 1-0 to 2-0
 	 * transformation. The specific changes needed (other than basic DOCTYPE
 	 * changes) are:
@@ -418,6 +450,17 @@ public final class Releases
 	 */
 	public static final Conversion R5_2__R5_3_CONFIRMATION
 		= new Conversions.R5_2__R5_3_CONFIRMATION ();
+		
+	/**
+	 * A <CODE>Conversion</CODE> instance configured for FpML 5-3 to 5-4
+	 * confirmation view transformation. The specific changes needed are:
+	 * <UL>
+	 * <LI>The FpML XML schema namespace URI is updated.</LI>
+	 * </UL>
+	 * @since	TFP 1.6
+	 */
+	public static final Conversion R5_3__R5_4_CONFIRMATION
+		= new Conversions.R5_3__R5_4_CONFIRMATION ();
 		
 	/**
 	 * Examines the provided <CODE>Document</CODE> to determine the associated
