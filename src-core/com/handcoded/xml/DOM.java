@@ -1,4 +1,4 @@
-// Copyright (C),2005-2010 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -119,7 +119,13 @@ public final class DOM
 	 */
 	public static Element getParent (final Element element)
 	{
-		return ((element != null) ? (Element) element.getParentNode () : null);
+		if (element != null) {
+			Node	parent  = element.getParentNode ();
+			
+			if ((parent != null) && (parent.getNodeType () == Node.ELEMENT_NODE))
+				return ((Element) parent);
+		}
+		return (null);
 	}
 	
 	/**

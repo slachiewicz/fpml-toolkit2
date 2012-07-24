@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -56,7 +56,7 @@ public abstract class Application extends com.handcoded.framework.Application
 		super.startUp();
 
 		// Initialise the default catalog
-		String		catalogPath = "files-fpml/catalog-fpml-5-3.xml";
+		String		catalogPath = "files-fpml/catalog-fpml-5-4.xml";
 		
 		if (catalogOption.isPresent ()) {
 			if (catalogOption.getValue() != null)

@@ -50,7 +50,6 @@ public final class IrdRules extends FpMLRuleSet
 				new String [] { "swapStream", "capFloorStream" },
 				new String [] { "InterestRateStream" });
 	
-	
 	/**
 	 * A <CODE>Precondition</CODE> instance that detect documents containing
 	 * at least one set of calculation period dates.
@@ -671,6 +670,10 @@ public final class IrdRules extends FpMLRuleSet
 
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context	= (Element) list.item (index);
+	                Element		indexName = XPath.path (context, "..", "calculationPeriodAmount", "calculation", "floatingRateCalculation", "floatingRateIndex");
+
+	                if ((indexName != null) && equal (indexName, "CNY-CNREPOFIX=CFXS-Reuters")) continue;
+
 					Element		start	= XPath.path (context, "firstRegularPeriodStartDate");
 					Element		end		= XPath.path (context, "lastRegularPeriodEndDate");
 					Element		period	= XPath.path (context, "calculationPeriodFrequency");
