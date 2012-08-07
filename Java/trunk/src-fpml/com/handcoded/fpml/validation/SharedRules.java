@@ -1028,10 +1028,10 @@ public final class SharedRules extends FpMLRuleSet
 	 * A <CODE>Rule</CODE> that ensures all account instances represent unique
 	 * entities.
 	 * <P>
-	 * Applies to FpML 5.0 and later.
+	 * Applies to FpML 5.0 up to 5.3.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule RULE19 = new Rule (Preconditions.R5_0__LATER, "shared-19")
+	public static final Rule RULE19A = new Rule (Preconditions.R5_0__R5_3, "shared-19a")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1079,6 +1079,53 @@ public final class SharedRules extends FpMLRuleSet
 					}
 				}
 
+				identifiers.clear ();
+				names.clear ();
+				
+				return (result);
+			}
+		};
+
+	/**
+	 * A <CODE>Rule</CODE> that ensures all account instances represent unique
+	 * entities.
+	 * <P>
+	 * Applies to FpML 5.4 and later.
+	 * @since	TFP 1.6
+	 */
+	public static final Rule RULE19B = new Rule (Preconditions.R5_4__LATER, "shared-19b")
+		{
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Account"), errorHandler));
+				return (validate (nodeIndex.getElementsByName ("account"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean			result	= true;
+				Vector<Identifier> identifiers = new Vector<Identifier> ();
+				Vector<String>	names = new Vector<String> ();
+				
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context 	= (Element) list.item (index);
+					Element 	accountId 	= XPath.path (context, "accountId");
+					
+					if (accountId != null) {
+						Identifier	identifier = new Identifier (accountId, "accountIdScheme");
+						
+						if (identifiers.contains (identifier)) {
+							errorHandler.error ("305", context,
+								"Account identifiers must be unique",
+								getDisplayName (), identifier.toString ());
+							result = false;
+						}
+						else
+							identifiers.add (identifier);
+					}
+				}
+				
 				identifiers.clear ();
 				names.clear ();
 				
