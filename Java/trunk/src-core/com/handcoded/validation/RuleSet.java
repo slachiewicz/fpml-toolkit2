@@ -245,7 +245,6 @@ public final class RuleSet extends Validator
 						logger.severe ("Could not force load rule class '" + implementation + "'");
 					}
 				}
-				
 			}
 			else if (localName.equals ("ruleSet")) {
 				String		name	= attributes.getValue ("name");
