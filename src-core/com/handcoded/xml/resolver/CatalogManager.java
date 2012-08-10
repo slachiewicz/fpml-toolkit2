@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -32,7 +32,7 @@ import com.handcoded.xml.parser.SAXParser;
 /**
  * The <CODE>CatalogManager</CODE> maintains a cache of <CODE>Catalog</CODE>
  * instances created on their first access. Subsequent requests for a previously
- * processed catalog will always be satisified from the cache.
+ * processed catalogs will always be satisfied from the cache.
  *
  * @author	BitWise
  * @version	$Id$
