@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -157,7 +157,7 @@ public final class Catalog implements EntityResolver2
 	 */
 	protected Catalog (final String url, final String prefer, final String xmlbase)
 	{
-		logger.info ("Creating catalog '" + (this.url = url) + "'");
+		logger.info ("Loading catalog '" + (this.url = url) + "'");
 
 		definition = new CatalogEntry (prefer, (xmlbase != null) ? xmlbase : url);
 	}
