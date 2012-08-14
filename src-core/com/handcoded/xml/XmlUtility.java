@@ -34,6 +34,7 @@ import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
@@ -41,6 +42,10 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.InputSource;
 
+import com.handcoded.framework.Application;
+import com.handcoded.meta.Release;
+import com.handcoded.meta.SchemaRelease;
+import com.handcoded.meta.Specification;
 import com.handcoded.xml.parser.DOMParser;
 import com.handcoded.xml.resolver.Catalog;
 
@@ -461,6 +466,13 @@ public final class XmlUtility
 	private static SchemaSet	defaultSchemaSet = new SchemaSet ();
 
 	/**
+	 * Ensures no instances can be constructed.
+	 * @since	TFP 1.0
+	 */
+	private XmlUtility ()
+	{ }
+	
+	/**
 	 * A dummy implementation of the <CODE>ErrorHandler</CODE> interface that
 	 * discards any errors.
 	 * @since	TFP 1.4
@@ -477,13 +489,6 @@ public final class XmlUtility
 				public void warning (SAXParseException notUsed)
 				{  }
 			};
-	
-	/**
-	 * Ensures no instances can be constructed.
-	 * @since	TFP 1.0
-	 */
-	private XmlUtility ()
-	{ }
 	
 	/**
 	 * Performs the actual recursive dumping of a DOM tree to a given
@@ -715,5 +720,77 @@ public final class XmlUtility
 			return ("\"" + value + "\"");
 		else
 			return ("null");
+	}
+	
+	/**
+	 * Initialises the default schema set using its configuration file.
+	 * @since	TFP 1.6
+	 */
+	static {
+		Specification.forName ("DUMMY");
+		
+		logger.info ("Bootstrapping Default Schema Set");
+
+		try {
+			Document document = XmlUtility.nonValidatingParse (
+					new InputSource (Application.openStream ("files-core/default-schema-set.xml")));
+
+			NodeList schemas = XPath.paths (document.getDocumentElement (), "schemaReference");
+			for (int index = 0; index < schemas.getLength (); ++index) {
+				Element context = (Element) schemas.item (index);
+				Attr specificationName = context.getAttributeNode ("specification");
+				Attr versionNumber = context.getAttributeNode ("version");
+				Attr namespaceUri = context.getAttributeNode ("namespaceUri");
+				
+				if ((specificationName == null) || (versionNumber == null)) {
+					logger.severe ("Mandatory attribute(s) are missing from a schema reference");
+					continue;
+				}
+								
+				Specification specification = Specification.forName (specificationName.getValue ());
+				if (specification == null) {
+					logger.warning ("Invalid specification name '" + specificationName.getValue ()
+							+"' in configuration file.");
+					continue;
+				}
+				
+				Release	release = null;
+				
+				if (namespaceUri != null) {
+					release = specification.getReleaseForVersionAndNamespace (
+							versionNumber.getValue (), namespaceUri.getValue ());
+					
+					if (release == null) {
+						logger.warning ("Invalid version and namespace URI "
+								+ versionNumber.getValue () + " / "
+								+ namespaceUri.getValue ());
+						continue;										
+					}
+				}
+				else {
+					release = specification.getReleaseForVersion (
+							versionNumber.getValue ());
+					
+					if (release == null) {
+						logger.warning ("Invalid version" + versionNumber.getValue ());
+						continue;					
+					}
+				}
+				
+				if (!(release instanceof SchemaRelease)) {
+					logger.warning ("Reference to a non schema release '"
+							+ specificationName.getValue () +"' / '"
+							+ versionNumber.getValue () + "'");
+					continue;
+				}
+				
+				defaultSchemaSet.add ((SchemaRelease) release);
+			}
+		}
+		catch (Exception error) {
+			logger.log (Level.SEVERE, "Unable to load default schema set", error);	
+		}
+		
+		logger.info ("Completed");
 	}
 }

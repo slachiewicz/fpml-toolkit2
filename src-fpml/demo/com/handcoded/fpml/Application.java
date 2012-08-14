@@ -15,16 +15,12 @@ package demo.com.handcoded.fpml;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.Enumeration;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.xml.sax.SAXException;
 
-import com.handcoded.fpml.Releases;
 import com.handcoded.framework.Option;
-import com.handcoded.meta.Release;
-import com.handcoded.meta.SchemaRelease;
 import com.handcoded.xml.XmlUtility;
 import com.handcoded.xml.resolver.Catalog;
 import com.handcoded.xml.resolver.CatalogManager;
@@ -71,15 +67,6 @@ public abstract class Application extends com.handcoded.framework.Application
 		catch (SAXException error) {
 			logger.severe ("Failed to parse XML catalog");
 			System.exit (1);
-		}
-
-		// Activate the all FpML Schemas
-		Enumeration<Release> releases = Releases.FPML.releases ();
-		
-		while (releases.hasMoreElements ()) {
-			Release release = releases.nextElement ();
-			if (release instanceof SchemaRelease)
-				XmlUtility.getDefaultSchemaSet ().add ((SchemaRelease) release);	
 		}
 	}
 

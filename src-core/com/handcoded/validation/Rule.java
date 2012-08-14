@@ -13,6 +13,7 @@
 
 package com.handcoded.validation;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import com.handcoded.xml.NodeIndex;
@@ -40,6 +41,18 @@ public abstract class Rule extends Validator
 	public static Rule forName (final String name)
 	{
 		return (extent.get (name));
+	}
+	
+	/**
+	 * Returns an <CODE>Enumeration</CODE> that can be used to iterate over
+	 * the <CODE>Rule</CODE> instances that have been constructed.
+	 * 
+	 * @return	An <CODE>Enumeration</CODE> of <CODE>Rule</CODE> instances.
+	 * @since	TFP 1.6
+	 */
+	public static Enumeration<Rule> Rules ()
+	{
+		return (extent.elements ());
 	}
 	
 	/**
