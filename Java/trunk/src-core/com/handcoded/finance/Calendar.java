@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -290,6 +290,8 @@ public abstract class Calendar
 	 * @since	TFP 1.0
 	 */
 	static {
+		logger.info ("Bootstrapping Calendars");
+		
 		try {
 			SAXParser parser = new SAXParser (false, true, true, false, null, null);
 			
@@ -305,5 +307,7 @@ public abstract class Calendar
 		catch (Exception error) {
 			logger.log (Level.SEVERE, "No suitable JAXP implementation installed", error);
 		}
+		
+		logger.info ("Completed");
 	}
 }

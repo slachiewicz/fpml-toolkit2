@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -102,6 +102,18 @@ public final class Specification
 			if (release != null) return (release);
 		}
 		return (null);
+	}
+	
+	/**
+	 * Returns an array containing all the <CODE>Specification</CODE>
+	 * instances in the class extent.
+	 * 
+	 * @return	An array of all the instances.
+	 * @since	TFP 1.6
+	 */
+	public static Enumeration<Specification> specifications ()
+	{
+		return (extent.elements ());
 	}
 		
 	/**
@@ -292,7 +304,7 @@ public final class Specification
 		
 		return (buffer.toString ());
 	}
-	
+		                              
 	/**
 	 * A <CODE>Logger</CODE> instance used to report run-time problems.
 	 * @since	TFP 1.4

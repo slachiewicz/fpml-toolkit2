@@ -14,6 +14,7 @@
 package com.handcoded.xml;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,42 +60,8 @@ public final class SchemaSet
 	 */
 	public void add (SchemaRelease release)
 	{
-		add (release, XmlUtility.getDefaultCatalog ());
-	}
-	
-	/**
-	 * Resolve the location of the indicated <CODE>SchemaRelease</CODE> (and
-	 * any that it imports) to the schema set using the given XML catalog to
-	 * resolve the schema location.
-	 * 
-	 * @param 	release			The <CODE>SchemaRelease</CODE> to be added.
-	 * @param	catalog			The <CODE>Catalog</CODE> to resolve with.
-	 * @since	TFP 1.1
-	 */
-	public void add (SchemaRelease release, Catalog catalog)
-	{
-		Vector<SchemaRelease> imports = release.getImportSet ();
-		
-		for (SchemaRelease schema : imports) {
-			try {
-				String source = catalog.resolve (schema.getNamespaceUri());
-	
-				if (!schemas.contains (schema)) {
-					if (source == null) {
-						logger.severe ("Failed to resolve schema URI '" + schema.getNamespaceUri() + "'");
-						source = schema.getSchemaLocation ();
-					}
-					sources.add (source);
-					schemas.add (schema);
-					
-					schema = null;
-				}
-			}
-			catch (SAXException error) {
-				logger.log (Level.SEVERE, "Unexpected SAX exception creating schema source", error);
-				System.exit (2);
-			}
-		}
+		schemas.add (release);
+		schema = null;
 	}
 		
 	/**
@@ -106,7 +73,42 @@ public final class SchemaSet
 	 */
 	public Schema getSchema ()
 	{
+		return (getSchema (XmlUtility.getDefaultCatalog ()));
+	}
+	
+	/**
+	 * Returns the compiled representation of the schema(s), if necessary compiling
+	 * them from their source streams.
+	 *
+	 * @param	catalog			The <CODE>Catalog</CODE> used to locate schemas.
+	 * @return	The compiled schema representation for the set.
+	 * @since	TFP 1.0
+	 */
+	public Schema getSchema (Catalog catalog)
+	{
 		if (schema == null) {
+			sources.clear ();		
+			
+			// Find all the schemas we need
+			Iterator<SchemaRelease> iterator = schemas.iterator ();
+			while (iterator.hasNext ()) {
+				Vector<SchemaRelease> imports = iterator.next ().getImportSet ();
+				
+				for (SchemaRelease schema : imports) {
+					try {
+						String source = catalog.resolve (schema.getNamespaceUri());
+						
+						if (!sources.contains (source))
+							sources.add (source);
+					}
+					catch (SAXException error) {
+						logger.log (Level.SEVERE, "Unexpected SAX exception creating schema source", error);
+						System.exit (2);
+					}
+				}
+			}
+			
+			// The create an source array to fetch them
 			Source [] sourceArray = new StreamSource [sources.size()];
 			
 			for (int index = 0; index < sources.size (); ++index) {
@@ -115,6 +117,7 @@ public final class SchemaSet
 				sourceArray [index] =  new StreamSource (Application.openStream (systemId), systemId);
 			}
 
+			// And compile them into a compiled collection
 			try {
 				schema = SchemaFactory.newInstance (XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema (sourceArray);
 			}
