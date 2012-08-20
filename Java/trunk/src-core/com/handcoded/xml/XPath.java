@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -493,16 +493,79 @@ public final class XPath
 	
 	//---------------------------------------------------------------------------
 	
-	public static boolean match (final Node context, final Node parent, final String name1)
-	{
-		if (name1.startsWith ("@"))
-			return ((context.getNodeType () == Node.ATTRIBUTE_NODE)
-				&& ((Attr) context).getLocalName ().equals (name1.substring (2)));
-		else
-			return ((context.getNodeType () == Node.ELEMENT_NODE)
-				&& ((Element) context).getLocalName ().equals (name1));
-	}
-	
+	/**
+	 * Determines of the context <CODE>Attr</CODE> matches the indicated
+     * named attribute.
+     * 
+     * @param	context		The context <CODE>Attr</CODE>.
+     * @param	attrName	The target attribute name.
+     * @return	<CODE>true</CODE> if the match is successfully made.
+	 * @since	TFP 1.6
+	 */
+    public static boolean match (Attr context, String attrName)
+    {
+        return (context.getLocalName ().equals (attrName));
+    }
+
+    /**
+     * Determines of the context <CODE>Attr</CODE> matches the indicated
+     * named attribute and parent element name.
+     * 
+     * @param	context		The context <CODE>Attr</CODE>.
+     * @param	name1		The name of the parent element.
+     * @param	attrName	The target attribute name.
+     * @return	<CODE>true</CODE> if the match is successfully made.
+	 * @since	TFP 1.6
+     */
+    public static boolean match (Attr context, String name1, String attrName)
+    {
+        return (match (context, attrName) && match (context.getOwnerElement (), name1));
+    }
+
+    /**
+     * Determines of the context <CODE>Attribute</CODE> matches the indicated
+     * named attribute and ancestor element names.
+     * 
+     * @param	context		The context <CODE>Attr</CODE>.
+     * @param	name1		The name of the grand-parent element.
+     * @param	name2		The name of the parent element.
+     * @param	attrName	The target attribute name.
+     * @return	<CODE>true</CODE> if the match is successfully made.
+	 * @since	TFP 1.6
+     */
+    public static boolean match (Attr context, String name1, String name2, String attrName)
+    {
+        return (match (context, attrName) && match (context.getOwnerElement (), name1, name2));
+    }
+
+    /**
+     * Determines of the context <CODE>Element</CODE> matches the indicated
+     * element name.
+     * 
+     * @param	context		The context <CODE>Element</CODE>.
+     * @param	name1		The target element name.
+     * @return	<CODE>true</CODE> if the match is successfully made.
+	 * @since	TFP 1.6
+     */
+    public static boolean match (Element context, String name1)
+    {
+	    return (context.getLocalName ().equals (name1));
+    }
+
+    /**
+     * Determines of the context <CODE>Element</CODE> matches the indicated
+     * element and parent.
+     * 
+     * @param	context		The context <CODE>Element</CODE>.
+     * @param	name1		The parent element name.
+     * @param	name2		The target element name.
+     * @return	<CODE>true</CODE> if the match is successfully made.
+	 * @since	TFP 1.6
+     */
+    public static boolean match (Element context, String name1, String name2)
+    {
+	    return (match (context, name2) && match ((Element) context.getParentNode (), name1));
+    }
 
 	//---------------------------------------------------------------------------
 	
