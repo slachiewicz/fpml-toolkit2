@@ -23,6 +23,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.handcoded.framework.Application;
+import com.handcoded.xml.XmlUtility;
 import com.handcoded.xml.parser.SAXParser;
 
 /**
@@ -160,19 +161,24 @@ public abstract class Calendar
 			}
 			else if (localName.equals ("fixed")) {
 				String		name	 = attributes.getValue("name");
-				int			from	 = Integer.parseInt (attributes.getValue ("from"));
-				int			until	 = Integer.parseInt (attributes.getValue ("until"));
+				int			from	 = Integer.parseInt (
+											isNull (attributes.getValue ("from"), DEFAULT_FROM));
+				int			until	 = Integer.parseInt (
+											isNull (attributes.getValue ("until"), DEFAULT_UNTIL));
 				int			month	 = convertMonth (attributes.getValue ("month"));
 				int			date	 = Integer.parseInt (attributes.getValue ("date"));
-				DateRoll	dateRoll = DateRoll.forName (attributes.getValue ("roll"));
+				DateRoll	dateRoll = DateRoll.forName (
+											isNull (attributes.getValue ("roll"), DEFAULT_ROLL));
 				 
 				if ((calendar != null) && (month != 0) && (dateRoll != null))
 					calendar.addRule (new CalendarRule.Fixed (name, from, until, month, date, dateRoll));
 			}
 			else if (localName.equals ("offset")) {
 				String		name	= attributes.getValue("name");
-				int			from	= Integer.parseInt (attributes.getValue ("from"));
-				int			until	= Integer.parseInt (attributes.getValue ("until"));
+				int			from	 = Integer.parseInt (
+											isNull (attributes.getValue ("from"), DEFAULT_FROM));
+				int			until	 = Integer.parseInt (
+											isNull (attributes.getValue ("until"), DEFAULT_UNTIL));
 				int			month	= convertMonth (attributes.getValue ("month"));
 				int			when	= convertWhen (attributes.getValue ("when"));
 				int 		weekday = convertWeekday (attributes.getValue("weekday"));
@@ -182,8 +188,10 @@ public abstract class Calendar
 			}
 			else if (localName.equals ("easter")) {
 				String		name	 = attributes.getValue("name");
-				int			from	 = Integer.parseInt (attributes.getValue ("from"));
-				int			until	 = Integer.parseInt (attributes.getValue ("until"));
+				int			from	 = Integer.parseInt (
+											isNull (attributes.getValue ("from"), DEFAULT_FROM));
+				int			until	 = Integer.parseInt (
+											isNull (attributes.getValue ("until"), DEFAULT_UNTIL));
 				int			offset	 = Integer.parseInt (attributes.getValue ("offset"));
 				
 				if (calendar != null)
@@ -260,6 +268,21 @@ public abstract class Calendar
 			
 			return (0);
 		}
+		
+		/**
+		 * If the <CODE>value</CODE> is <CODE>null</CODE> then return the
+		 * <CODE>nullValue</CODE> instead.
+		 * 
+		 * @param 	value		A possibly <CODE>null</CODE> value.
+		 * @param 	nullValue	The default value if <CODE>null</CODE>.
+		 * @return	A copy <CODE>value</CODE> if it is not <CODE>null</CODE>,
+		 * 			otherwise the <CODE>nullValue</CODE>.
+		 * @since	TFP 1.6
+		 */
+		private static String isNull (String value, String nullValue)
+		{
+			return ((value != null) ? value : nullValue);
+		}
 	}
 
 	/**
@@ -275,6 +298,12 @@ public abstract class Calendar
 	 */
 	private static Hashtable<String, Calendar> extent
 		= new Hashtable<String, Calendar> ();
+	
+	private static final String	DEFAULT_FROM	= "1901";
+	
+	private static final String DEFAULT_UNTIL	= "2099";
+	
+	private static final String DEFAULT_ROLL	= "NONE";
 	
 	/**
 	 * The name of this <CODE>Calendar</CODE>, <CODE>null</CODE> if not
@@ -293,7 +322,7 @@ public abstract class Calendar
 		logger.info ("Bootstrapping Calendars");
 		
 		try {
-			SAXParser parser = new SAXParser (false, true, true, false, null, null);
+			SAXParser parser = new SAXParser (false, true, false, false, XmlUtility.getDefaultCatalog (), null);
 			
 			try {
 				parser.parse (
