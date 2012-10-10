@@ -148,7 +148,9 @@ public final class SchemeRules
 	 */
 	public static final Rule	RULE10
 		= new SchemeRule (Preconditions.R1_0__LATER, "scheme-10",
-				new ElementContext ("floatingRateIndex"),
+				new ElementContext (
+						new String [] { null, "interestShortfall" },
+						new String [] { "floatingRateIndex", "rateSource" }),
 				new TypeContext ("FloatingRateIndex"), "floatingRateIndexScheme");
 
 	/**
@@ -680,6 +682,18 @@ public final class SchemeRules
 				new ElementContext ("restructuringType"),
 				new TypeContext ("RestructuringType"), "restructuringScheme");
 
+	/**
+	 * Rule 71: The value of any <CODE>additionalTerm</CODE> element must be valid
+	 * within the domain defined by its <CODE>additionalTermScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.0 and 4.1.
+	 * @since	TFP 1.0	
+	 */
+	public static final Rule	RULE71
+		= new SchemeRule (Preconditions.R4_0__R4_1, "scheme-71", 
+				new ElementContext ("additionalTerm"),
+				new TypeContext ("AdditionalTerm"), "additionalTermScheme");
+	
 	// FpML 4.1 ------------------------------------------------------------
 
 	/**
@@ -691,7 +705,8 @@ public final class SchemeRules
 	 */
 	public static final Rule	RULE56
 		= new SchemeRule (Preconditions.R4_1__LATER, "scheme-56",
-				new ElementContext ("measureType"), "assetMeasureScheme");
+				new ElementContext ("measureType"),
+				new TypeContext ("AssetMeasureType"), "assetMeasureScheme");
 	
 	/**
 	 * Rule 57: The value of any <CODE>brokerConfirmationType</CODE> element must be valid
@@ -853,66 +868,130 @@ public final class SchemeRules
 	 * Rule 70: The value of any <CODE>valuationSetDetail</CODE> element must be valid
 	 * within the domain defined by its <CODE>valuationSetDetailScheme</CODE> attribute.
 	 * <P>
-	 * Applies to FpML 4.1 and later.
+	 * Applies to FpML 4.1.
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule	RULE70
-		= new SchemeRule (Preconditions.R4_1__LATER, "scheme-70", 
+		= new SchemeRule (Preconditions.R4_1, "scheme-70", 
 				new ElementContext ("valuationSetDetail"),
 				new TypeContext ("ValuationSetDetail"), "valuationSetDetailScheme");
-	
-	// FpML 4.2 ------------------------------------------------------------
-
-	// cashflowTypeScheme
-	
-	/**
-	 * Rule 71: The value of any <CODE>creditSeniorityTrading</CODE> element must be valid
-	 * within the domain defined by its <CODE>creditSeniorityTradingScheme</CODE> attribute.
-	 * <P>
-	 * Applies to FpML 4.2.
-	 * @since	TFP 1.0	
-	 */
-	public static final Rule	RULE71
-		= new SchemeRule (Preconditions.R4_2, "scheme-71", 
-				new ElementContext ("creditSeniorityTrading"),
-				new TypeContext ("CreditSeniorityTrading"), "creditSeniorityTradingScheme");
 	
 	/**
 	 * Rule 72: The value of any <CODE>derivativeCalculationMethod</CODE> element must be valid
 	 * within the domain defined by its <CODE>derivativeCalculationMethodScheme</CODE> attribute.
 	 * <P>
-	 * Applies to FpML 4.2.
+	 * Applies to FpML 4.1 and later.
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule	RULE72
-		= new SchemeRule (Preconditions.R4_2, "scheme-72", 
+		= new SchemeRule (Preconditions.R4_1__LATER, "scheme-72", 
 				new ElementContext ("derivativeCalculationMethod"),
 				new TypeContext ("DerivativeCalculationMethod"), "derivativeCalculationMethodScheme");
 	
-	// entityTypeScheme
-	// inflationIndexDescriptionScheme
-	// inflationIndexSourceScheme
-	// localJurisdictionScheme
-	// productTypeSimpleScheme
-	// reasonCodeScheme
-	// settledEntityMatrixSourceScheme
-	// spreadScheduleTypeScheme
-	// tradeCashflowsStatusScheme
+	// FpML 4.2 ------------------------------------------------------------
+
+	/**
+	 * Rule 73: The value of any <CODE>cashFlowType</CODE> type element must
+	 * be valid within the domain defined by its <CODE>cashFlowTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.2 and later.
+	 * @since	TFP 1.6	
+	 */
+	public static final Rule	RULE73
+		= new SchemeRule (Preconditions.R4_2__LATER, "scheme-73", 
+				new ElementContext ("cashflowType"),
+				new TypeContext ("CashflowType"), "cashflowTypeScheme");
+	
+	/**
+	 * Rule 74: The value of any <CODE>entityType</CODE> type element must
+	 * be valid within the domain defined by its <CODE>entityTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.2 and later.
+	 * @since	TFP 1.6	
+	 */
+	public static final Rule	RULE74
+		= new SchemeRule (Preconditions.R4_2__LATER, "scheme-74", 
+				new ElementContext ("entityType"),
+				new TypeContext ("EntityTypeType"), "entityTypeScheme");
+	
+	/**
+	 * Rule 75: The value of any <CODE>productType</CODE> type element must
+	 * be valid within the domain defined by its <CODE>productTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.2 and later.
+	 * @since	TFP 1.6	
+	 */
+	public static final Rule	RULE75
+		= new SchemeRule (Preconditions.R4_2__LATER, "scheme-75", 
+				new ElementContext ("productType"),
+				new TypeContext ("ProductType"), "productTypeScheme");
+	
+	/**
+	 * Rule 76: The value of any <CODE>reasonCode</CODE> type element must
+	 * be valid within the domain defined by its <CODE>reasonCodeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.2 and later.
+	 * @since	TFP 1.6	
+	 */
+	public static final Rule	RULE76
+		= new SchemeRule (Preconditions.R4_2__LATER, "scheme-76", 
+				new ElementContext ("reasonCode"),
+				new TypeContext ("ReasonCode"), "reasonCodeScheme");
+	
+	/**
+	 * Rule 77: The value of any <CODE>matrixSource</CODE> type element must
+	 * be valid within the domain defined by its <CODE>settledEntityMatrixSourceScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.2 and later.
+	 * @since	TFP 1.6	
+	 */
+	public static final Rule	RULE77
+		= new SchemeRule (Preconditions.R4_2__LATER, "scheme-7", 
+				new ElementContext ("matrixSource"),
+				new TypeContext ("MatrixSource"), "settledEntityMatrixSourceScheme");
+	
+	/**
+	 * Rule 78: The value of any <CODE>scheduledDate/type</CODE> type element must
+	 * be valid within the domain defined by its <CODE>scheduledDateTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.2 and later.
+	 * @since	TFP 1.6	
+	 */
+	public static final Rule	RULE78
+		= new SchemeRule (Preconditions.R4_2__LATER, "scheme-78", 
+				new ElementContext ("scheduledDate", "type"),
+				new TypeContext ("ScheduleDateType"), "scheduledDateTypeScheme");
+	
+	/**
+	 * Rule 79: The value of any <CODE>spreadSchedule/type</CODE> type element must
+	 * be valid within the domain defined by its <CODE>spreadScheduleTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.2 and later.
+	 * @since	TFP 1.6	
+	 */
+	public static final Rule	RULE79
+		= new SchemeRule (Preconditions.R4_2__LATER, "scheme-79", 
+				new ElementContext ("spreadSchedule", "type"),
+				new TypeContext ("SpreadScheduleType"), "spreadScheduleTypeScheme");
+	
+	/**
+	 * Rule 80: The value of any <CODE>FpML/status</CODE> type element must
+	 * be valid within the domain defined by its <CODE>tradeCashflowsStatusScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.2 and later.
+	 * @since	TFP 1.6	
+	 */
+	public static final Rule	RULE80
+		= new SchemeRule (Preconditions.R4_2__LATER, "scheme-80", 
+				new ElementContext (
+						new String [] { "FpML", "nettedTradeCashflowsMatchResult" },
+						new String [] { "status", "status" }),
+				new TypeContext ("TradeCashflowsStatus"), "tradeCashflowsStatusScheme");
 	
 	// FpML 4.3 ------------------------------------------------------------
 
 	// designatedPriorityScheme
 	
-	/**
-	 * Rule 73: The value of any <CODE>interestShortfall/rateSource</CODE> type element must
-	 * be valid within the domain defined by its <CODE>@floatingRateIndexScheme</CODE> attribute.
-	 * <P>
-	 * Applies to FpML 4.3 and later.
-	 * @since	TFP 1.0	
-	 */
-	public static final Rule	RULE73
-		= new SchemeRule (Preconditions.R4_3__LATER, "scheme-73", 
-				new ElementContext ("interestShortfall", "rateSource"), "floatingRateIndexScheme");
 
 	// loanTypeScheme
 	// mortgageSectorScheme
