@@ -68,11 +68,13 @@ public abstract class Types
 	 */
 	public static boolean toBool (final Node node)
 	{
-		try {
-			return (Boolean.parseBoolean (toToken (node)));
-		}
-		catch (Exception error) {
-			;
+		if (node != null) {
+			try {
+				return (Boolean.parseBoolean (toToken (node)));
+			}
+			catch (Exception error) {
+				;
+			}
 		}
 		return (false);
 	}
@@ -86,11 +88,13 @@ public abstract class Types
 	 */
 	public static int toInteger (final Node node)
 	{
-		try {
-			return (Integer.parseInt (toToken (node)));
-		}
-		catch (Exception error) {
-			;
+		if (node != null) {
+			try {
+				return (Integer.parseInt (toToken (node)));
+			}
+			catch (Exception error) {
+				;
+			}
 		}
 		return (0);
 	}
@@ -104,11 +108,13 @@ public abstract class Types
 	 */
 	public static double toDouble (final Node node)
 	{
-		try {
-			return (Double.parseDouble (toToken (node)));
-		}
-		catch (Exception error) {
-			;
+		if (node != null) {
+			try {
+				return (Double.parseDouble (toToken (node)));
+			}
+			catch (Exception error) {
+				;
+			}
 		}
 		return (0.0);
 	}
@@ -122,13 +128,15 @@ public abstract class Types
 	 */
 	public static BigDecimal toDecimal (final Node node)
 	{
-		try {
-            return (new BigDecimal (toToken (node)));
+		if (node != null) {
+			try {
+	            return (new BigDecimal (toToken (node)));
+			}
+			catch (Exception error) {
+				;
+			}
 		}
-		catch (Exception error) {
-			;
-		}
-		return (BigDecimal.ZERO);
+		return (null);
 	}
 	
 	/**
@@ -140,11 +148,13 @@ public abstract class Types
 	 */
 	public static Date toDate (final Node node)
 	{
-		try {
-			return (Date.parse (toToken (node)));
-		}
-		catch (Exception error) {
-			;
+		if (node != null) {
+			try {
+				return (Date.parse (toToken (node)));
+			}
+			catch (Exception error) {
+				;
+			}
 		}
 		return (null);
 	}
@@ -158,11 +168,13 @@ public abstract class Types
 	 */
 	public static DateTime toDateTime (final Node node)
 	{
-		try {
-			return (DateTime.parse (toToken (node)));
-		}
-		catch (Exception error) {
-			;
+		if (node != null) {
+			try {
+				return (DateTime.parse (toToken (node)));
+			}
+			catch (Exception error) {
+				;
+			}
 		}
 		return (null);
 	}
@@ -176,11 +188,13 @@ public abstract class Types
 	 */
 	public static Time toTime (final Node node)
 	{
-		try {
-			return (Time.parse (toToken (node)));
-		}
-		catch (Exception error) {
-			;
+		if (node != null) {
+			try {
+				return (Time.parse (toToken (node)));
+			}
+			catch (Exception error) {
+				;
+			}
 		}
 		return (null);
 	}

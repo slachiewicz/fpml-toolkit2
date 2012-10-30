@@ -22,6 +22,7 @@ import org.w3c.dom.NodeList;
 import com.handcoded.finance.Date;
 import com.handcoded.finance.Time;
 import com.handcoded.fpml.util.Identifier;
+import com.handcoded.validation.Precondition;
 import com.handcoded.validation.Rule;
 import com.handcoded.validation.RuleSet;
 import com.handcoded.validation.ValidationErrorHandler;
@@ -41,13 +42,93 @@ import com.handcoded.xml.XPath;
 public final class SharedRules extends FpMLRuleSet
 {
 	/**
+	 * A <CODE>Precondition</CODE> instance that detects any FpML 1-0 or
+	 * later confirmation view document.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition R1_0__LATER
+		= Precondition.and (
+				Preconditions.R1_0__LATER,
+				Preconditions.CONFIRMATION);
+	
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects any FpML 1-0 thru
+	 * 2-0 confirmation view document.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition R1_0__R2_0
+	= Precondition.and (
+			Preconditions.R1_0__R2_0,
+			Preconditions.CONFIRMATION);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects any FpML 1-0 thru
+	 * 3-0 confirmation view document.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition R1_0__R3_0
+	= Precondition.and (
+			Preconditions.R1_0__R3_0,
+			Preconditions.CONFIRMATION);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects any FpML 3-0 or
+	 * later confirmation view document.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition R3_0__LATER
+	= Precondition.and (
+			Preconditions.R3_0__LATER,
+			Preconditions.CONFIRMATION);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects any FpML 4-2 thru
+	 * 4-* confirmation view document.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition R4_2__R4_X
+	= Precondition.and (
+			Preconditions.R4_2__R4_X,
+			Preconditions.CONFIRMATION);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects any FpML 5-0 or
+	 * later confirmation view document.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition R5_0__LATER
+	= Precondition.and (
+			Preconditions.R5_0__LATER,
+			Preconditions.CONFIRMATION);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects any FpML 5-0 thru
+	 * 5-3 confirmation view document.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition R5_0__R5_3
+	= Precondition.and (
+			Preconditions.R5_0__R5_3,
+			Preconditions.CONFIRMATION);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects any FpML 5-4 or
+	 * later confirmation view document.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition R5_4__LATER
+	= Precondition.and (
+			Preconditions.R5_4__LATER,
+			Preconditions.CONFIRMATION);
+
+	/**
 	 * A <CODE>Rule</CODE> instance that ensures that business centers are
 	 * only present if the date adjustment convention allows them.
 	 * <P>
 	 * Applies to all FpML versions.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE01 = new Rule ("shared-1")
+	public static final Rule	RULE01 = new Rule (R1_0__LATER, "shared-1")
 		{
 			/**
 			 * {@inheritDoc}
@@ -104,7 +185,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 1.0, 2.0 and 3.0.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE02 = new Rule (Preconditions.R1_0__R3_0, "shared-2")
+	public static final Rule	RULE02 = new Rule (R1_0__R3_0, "shared-2")
 		{
 			/*
 			 * {@inheritDoc}
@@ -154,7 +235,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 1.0, 2.0 and 3.0.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE03 = new Rule (Preconditions.R1_0__R3_0, "shared-3")
+	public static final Rule	RULE03 = new Rule (R1_0__R3_0, "shared-3")
 		{
 			/*
 			 * {@inheritDoc}
@@ -288,7 +369,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule 	RULE06
-		= new Rule (Preconditions.R3_0__LATER, "shared-6")
+		= new Rule (R3_0__LATER, "shared-6")
 		{
 			/**
 			 * {@inheritDoc}
@@ -323,7 +404,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule 	RULE07 
-		= new Rule (Preconditions.R3_0__LATER, "shared-7")
+		= new Rule (R3_0__LATER, "shared-7")
 		{
 			/**
 			 * {@inheritDoc}
@@ -368,7 +449,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule	RULE08 
-		= new Rule (Preconditions.R3_0__LATER, "shared-8")
+		= new Rule (R3_0__LATER, "shared-8")
 		{
 			/**
 			 * {@inheritDoc}
@@ -425,7 +506,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule	RULE09 
-		= new Rule (Preconditions.R3_0__LATER, "shared-9")
+		= new Rule (R3_0__LATER, "shared-9")
 		{
 			/**
 			 * {@inheritDoc}
@@ -524,7 +605,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule	RULE11 
-		= new Rule (Preconditions.R3_0__LATER, "shared-11")
+		= new Rule (R3_0__LATER, "shared-11")
 		{
 			/**
 			 * {@inheritDoc}
@@ -590,7 +671,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule	RULE12_XLINK
-		= new Rule (Preconditions.R1_0__R2_0, "shared-12[XLINK]")
+		= new Rule (R1_0__R2_0, "shared-12[XLINK]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -634,7 +715,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule	RULE12
-		= new Rule (Preconditions.R3_0__LATER, "shared-12")
+		= new Rule (R3_0__LATER, "shared-12")
 		{
 			/**
 			 * {@inheritDoc}
@@ -669,7 +750,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule	RULE13_XLINK
-		= new Rule (Preconditions.R1_0__R2_0, "shared-13[XLINK]")
+		= new Rule (R1_0__R2_0, "shared-13[XLINK]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -713,7 +794,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule	RULE13
-		= new Rule (Preconditions.R3_0__LATER, "shared-13")
+		= new Rule (R3_0__LATER, "shared-13")
 		{
 			/**
 			 * {@inheritDoc}
@@ -748,7 +829,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule	RULE14_XLINK
-		= new Rule (Preconditions.R1_0__R2_0, "shared-14[XLINK]")
+		= new Rule (R1_0__R2_0, "shared-14[XLINK]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -792,7 +873,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * @since	TFP 1.0	
 	 */
 	public static final Rule	RULE14
-		= new Rule (Preconditions.R3_0__LATER, "shared-14")
+		= new Rule (R3_0__LATER, "shared-14")
 		{
 			/**
 			 * {@inheritDoc}
@@ -901,7 +982,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 4.2 until 5.0.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule RULE16	= new Rule (Preconditions.R4_2__R4_X, "shared-16")
+	public static final Rule RULE16	= new Rule (R4_2__R4_X, "shared-16")
 		{
 			/**
 			 * {@inheritDoc}
@@ -935,7 +1016,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 4.2 until 5.0.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule RULE17	= new Rule (Preconditions.R4_2__R4_X, "shared-17")
+	public static final Rule RULE17	= new Rule (R4_2__R4_X, "shared-17")
 		{
 			/**
 			 * {@inheritDoc}
@@ -969,7 +1050,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 5.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule RULE18 = new Rule (Preconditions.R5_0__LATER, "shared-18")
+	public static final Rule RULE18 = new Rule (R5_0__LATER, "shared-18")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1031,7 +1112,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 5.0 up to 5.3.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule RULE19A = new Rule (Preconditions.R5_0__R5_3, "shared-19a")
+	public static final Rule RULE19A = new Rule (R5_0__R5_3, "shared-19a")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1093,7 +1174,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 5.4 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule RULE19B = new Rule (Preconditions.R5_4__LATER, "shared-19b")
+	public static final Rule RULE19B = new Rule (R5_4__LATER, "shared-19b")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1139,7 +1220,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 5.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule RULE20 = new Rule (Preconditions.R5_0__LATER, "shared-20")
+	public static final Rule RULE20 = new Rule (R5_0__LATER, "shared-20")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1192,7 +1273,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 5.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule RULE21 = new Rule (Preconditions.R5_0__LATER, "shared-21")
+	public static final Rule RULE21 = new Rule (R5_0__LATER, "shared-21")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1236,7 +1317,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 * @deprecated
 	 */
-	public static final Rule RULE22 = new Rule (Preconditions.R5_0__LATER, "shared-22")
+	public static final Rule RULE22 = new Rule (R5_0__LATER, "shared-22")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1279,7 +1360,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 5.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule RULE23 = new Rule (Preconditions.R5_0__LATER, "shared-23")
+	public static final Rule RULE23 = new Rule (R5_0__LATER, "shared-23")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1323,7 +1404,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 5.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule RULE24 = new Rule (Preconditions.R5_0__LATER, "shared-24")
+	public static final Rule RULE24 = new Rule (R5_0__LATER, "shared-24")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1366,7 +1447,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 5.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule RULE25 = new Rule (Preconditions.R5_0__LATER, "shared-25")
+	public static final Rule RULE25 = new Rule (R5_0__LATER, "shared-25")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1420,7 +1501,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 5.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule RULE26 = new Rule (Preconditions.R5_0__LATER, "shared-26")
+	public static final Rule RULE26 = new Rule (R5_0__LATER, "shared-26")
 	{
 		public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 		{
