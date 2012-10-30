@@ -41,30 +41,99 @@ import com.handcoded.xml.XPath;
 public final class IrdRules extends FpMLRuleSet
 {
 	/**
-	 * A <CODE>Precondition</CODE> instance that detect documents containing
-	 * at least one interest rate stream.
-	 * @since	TFP 1.6
+	 * A <CODE>Precondition</CODE> instance that detects documents containing
+	 * at least one interest rate product.
+	 * @since	TFP 1.7
 	 */
-	private static final Precondition	INTEREST_RATE_STREAM
+	private static final Precondition	IRD_PRODUCT
 		= new ContentPrecondition (
-				new String [] { "swapStream", "capFloorStream" },
-				new String [] { "InterestRateStream" });
+				new String [] { "swap", "swaption", "fra", "capFloor", "bulletPayment" },
+				new String [] { "Swap", "Swaption", "Fra", "CapFloor", "BulletPayment" });
+	
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 1-0 thru 3-0
+	 * confirmation view documents.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition	R1_0__R3_0
+		= Precondition.and (new Precondition [] {
+				IRD_PRODUCT,
+				Preconditions.R1_0__R3_0,
+				Preconditions.CONFIRMATION });
+	
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 1-0 thru 4-6
+	 * confirmation view documents.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition	R1_0__R4_6
+		= Precondition.and (new Precondition [] {
+				IRD_PRODUCT,
+				Preconditions.R1_0__R4_6,
+				Preconditions.CONFIRMATION });
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 1-0 and later
+	 * confirmation view documents.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition	R1_0__LATER
+		= Precondition.and (new Precondition [] {
+				IRD_PRODUCT,
+				Preconditions.R1_0__LATER,
+				Preconditions.CONFIRMATION });
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 4-0 and later
+	 * confirmation view documents.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition	R4_0__LATER
+		= Precondition.and (new Precondition [] {
+				IRD_PRODUCT,
+				Preconditions.R4_0__LATER,
+				Preconditions.CONFIRMATION });
+	
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 4-7 and later
+	 * confirmation view documents.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition	R4_7__LATER
+		= Precondition.and (new Precondition [] {
+				IRD_PRODUCT,
+				Preconditions.R4_7__LATER,
+				Preconditions.CONFIRMATION });
 	
 	/**
 	 * A <CODE>Precondition</CODE> instance that detect documents containing
-	 * at least one set of calculation period dates.
+	 * at least one interest rate stream in a confirmation view.
+	 * @since	TFP 1.6
+	 */
+	private static final Precondition	INTEREST_RATE_STREAM
+		= Precondition.and (
+			Preconditions.CONFIRMATION,
+			new ContentPrecondition (
+				new String [] { "swapStream", "capFloorStream" },
+				new String [] { "InterestRateStream" }));
+	
+	/**
+	 * A <CODE>Precondition</CODE> instance that detect documents containing
+	 * at least one set of calculation period dates in a confirmation view.
 	 * @since	TFP 1.6
 	 */
 	private static final Precondition	CALCULATION_PERIOD_DATES
-		= new ContentPrecondition (
+		= Precondition.and (
+				Preconditions.CONFIRMATION,
+				new ContentPrecondition (
 				new String [] { "calculationPeriodDates" },
-				new String [] { "CalculationPeriodDates" });
+				new String [] { "CalculationPeriodDates" }));
 
 	/**
 	 * A <CODE>Rule</CODE> that ensures reset dates are present for
 	 * floating rate interest streams.
 	 * <P>
-	 *e Applies to all FpML releases.
+	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
 	public static final Rule	RULE01 = new Rule (INTEREST_RATE_STREAM, "ird-1")
@@ -1112,7 +1181,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE23 = new Rule ("ird-23")
+	public static final Rule	RULE23 = new Rule (R1_0__LATER, "ird-23")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1171,7 +1240,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE24 = new Rule ("ird-24")
+	public static final Rule	RULE24 = new Rule (R1_0__LATER, "ird-24")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1228,7 +1297,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE25_OLD = new Rule (Preconditions.R1_0__R4_6, "ird-25[OLD]")
+	public static final Rule	RULE25_OLD = new Rule (R1_0__R4_6, "ird-25[OLD]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1281,7 +1350,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE25 = new Rule (Preconditions.R4_7__LATER, "ird-25")
+	public static final Rule	RULE25 = new Rule (R4_7__LATER, "ird-25")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1333,7 +1402,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE26 = new Rule ("ird-26")
+	public static final Rule	RULE26 = new Rule (R1_0__LATER, "ird-26")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1381,7 +1450,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE27 = new Rule ("ird-27")
+	public static final Rule	RULE27 = new Rule (R1_0__LATER, "ird-27")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1422,7 +1491,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to FpML 1-0, 2-0 and 3-0.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE28_XLINK = new Rule (Preconditions.R1_0__R3_0, "ird-28[XLINK]")
+	public static final Rule	RULE28_XLINK = new Rule (R1_0__R3_0, "ird-28[XLINK]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1473,7 +1542,7 @@ public final class IrdRules extends FpMLRuleSet
 		 * Applies to FpML 4-0 and later.
 		 * @since	TFP 1.0
 		 */
-		public static final Rule	RULE28 = new Rule (Preconditions.R4_0__LATER, "ird-28")
+		public static final Rule	RULE28 = new Rule (R4_0__LATER, "ird-28")
 			{
 				/**
 				 * {@inheritDoc}
@@ -1520,7 +1589,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE29 = new Rule ("ird-29")
+	public static final Rule	RULE29 = new Rule (R1_0__LATER, "ird-29")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1567,7 +1636,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE30 = new Rule ("ird-30")
+	public static final Rule	RULE30 = new Rule (R1_0__LATER, "ird-30")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1611,7 +1680,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE31 = new Rule ("ird-31")
+	public static final Rule	RULE31 = new Rule (R1_0__LATER, "ird-31")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1656,7 +1725,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE32 = new Rule ("ird-32")
+	public static final Rule	RULE32 = new Rule (R1_0__LATER, "ird-32")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1700,7 +1769,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE33 = new Rule ("ird-33")
+	public static final Rule	RULE33 = new Rule (R1_0__LATER, "ird-33")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1742,7 +1811,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE34 = new Rule ("ird-34")
+	public static final Rule	RULE34 = new Rule (R1_0__LATER, "ird-34")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1787,7 +1856,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE35 = new Rule ("ird-35")
+	public static final Rule	RULE35 = new Rule (R1_0__LATER, "ird-35")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1831,7 +1900,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE36 = new Rule ("ird-36")
+	public static final Rule	RULE36 = new Rule (R1_0__LATER, "ird-36")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1879,7 +1948,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE38 = new Rule ("ird-38")
+	public static final Rule	RULE38 = new Rule (R1_0__LATER, "ird-38")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1924,7 +1993,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE39 = new Rule ("ird-39")
+	public static final Rule	RULE39 = new Rule (R1_0__LATER, "ird-39")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1967,7 +2036,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE40 = new Rule ("ird-40")
+	public static final Rule	RULE40 = new Rule (R1_0__LATER, "ird-40")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2012,7 +2081,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE41 = new Rule ("ird-41")
+	public static final Rule	RULE41 = new Rule (R1_0__LATER, "ird-41")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2056,7 +2125,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE42 = new Rule ("ird-42")
+	public static final Rule	RULE42 = new Rule (R1_0__LATER, "ird-42")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2100,7 +2169,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE43 = new Rule ("ird-43")
+	public static final Rule	RULE43 = new Rule (R1_0__LATER, "ird-43")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2139,7 +2208,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE44 = new Rule ("ird-44")
+	public static final Rule	RULE44 = new Rule (R1_0__LATER, "ird-44")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2189,7 +2258,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * @since	TFP 1.0
 	 */
 	public static final Rule	RULE46_XLINK
-		= new Rule (Preconditions.R1_0__R3_0, "ird-46[XLINK]")
+		= new Rule (R1_0__R3_0, "ird-46[XLINK]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2238,7 +2307,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * @since	TFP 1.0
 	 */
 	public static final Rule	RULE46
-		= new Rule (Preconditions.R4_0__LATER, "ird-46")
+		= new Rule (R4_0__LATER, "ird-46")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2285,7 +2354,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE47_XLINK = new Rule (Preconditions.R1_0__R3_0, "ird-47[XLINK]")
+	public static final Rule	RULE47_XLINK = new Rule (R1_0__R3_0, "ird-47[XLINK]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2340,7 +2409,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE47 = new Rule (Preconditions.R4_0__LATER, "ird-47")
+	public static final Rule	RULE47 = new Rule (R4_0__LATER, "ird-47")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2394,7 +2463,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE48 = new Rule ("ird-48")
+	public static final Rule	RULE48 = new Rule (R1_0__LATER, "ird-48")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2452,7 +2521,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE49 = new Rule ("ird-49")
+	public static final Rule	RULE49 = new Rule (R1_0__LATER, "ird-49")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2797,7 +2866,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE55 = new Rule ("ird-55")
+	public static final Rule	RULE55 = new Rule (R1_0__LATER, "ird-55")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2841,7 +2910,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE56 = new Rule ("ird-56")
+	public static final Rule	RULE56 = new Rule (R1_0__LATER, "ird-56")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2884,7 +2953,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE57 = new Rule ("ird-57")
+	public static final Rule	RULE57 = new Rule (R1_0__LATER, "ird-57")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2922,7 +2991,7 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE58 = new Rule ("ird-58")
+	public static final Rule	RULE58 = new Rule (R1_0__LATER, "ird-58")
 		{
 			/**
 			 * {@inheritDoc}
@@ -3003,7 +3072,7 @@ public final class IrdRules extends FpMLRuleSet
 		 * Applies to all FpML releases.
 		 * @since	TFP 1.0
 		 */
-		public static final Rule	RULE60 = new Rule ("ird-60")
+		public static final Rule	RULE60 = new Rule (R1_0__LATER, "ird-60")
 			{
 				/**
 				 * {@inheritDoc}
@@ -3040,7 +3109,7 @@ public final class IrdRules extends FpMLRuleSet
 		 * Applies to FpML 4.7 and later.
 		 * @since	TFP 1.6
 		 */
-		public static final Rule	RULE61 = new Rule (Preconditions.R4_7__LATER, "ird-61")
+		public static final Rule	RULE61 = new Rule (R4_7__LATER, "ird-61")
 			{
 				/**
 				 * {@inheritDoc}

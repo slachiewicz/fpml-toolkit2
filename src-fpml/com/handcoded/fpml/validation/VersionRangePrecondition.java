@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -42,13 +42,26 @@ public class VersionRangePrecondition extends Precondition
 	 * @param 	minimum			The minimum version accepted.
 	 * @param 	maximum			The maximum version accepted.
 	 * @since	TFP 1.5
+	 * @deprecated
 	 */
 	public VersionRangePrecondition (final Release minimum, final Release maximum)
 	{
-		minimumVersion = ((this.minimum = minimum) != null)
-			? Version.parse (minimum.getVersion ()) : null;
-		maximumVersion = ((this.maximum = maximum) != null)
-			? Version.parse (maximum.getVersion ()) : null;
+		this ((minimum != null) ? minimum.getVersion () : null,
+			  (maximum != null) ? maximum.getVersion () : null);
+	}
+	
+	/**
+	 * Constructs a <CODE>VersionRangePrecondition</CODE> using the two
+	 * bounding version number strings.
+	 * 
+	 * @param 	minimum			The minimum version number accepted.
+	 * @param 	maximum			The maximum version number accepted.
+	 * @since	TFP 1.7
+	 */
+	public VersionRangePrecondition (final String minimum, final String maximum)
+	{
+		this.minimum = (minimum != null) ? Version.parse (minimum) : null;
+		this.maximum = (maximum != null) ? Version.parse (maximum) : null;
 	}
 	
 	/**
@@ -73,11 +86,11 @@ public class VersionRangePrecondition extends Precondition
 		}
 		
 //		System.err.print ("Range (Doc=" + version
-//				+ " Min=" + ((minimumVersion != null) ? minimumVersion.toString () : "*")
-//				+ " Max=" + ((maximumVersion != null) ? maximumVersion.toString () : "*"));
+//				+ " Min=" + ((minimum != null) ? minimum.toString () : "*")
+//				+ " Max=" + ((maximum != null) ? maximum.toString () : "*"));
 
-		boolean validMin = (minimumVersion != null) ? (version.compareTo (minimumVersion) >= 0) : true;
-		boolean validMax = (maximumVersion != null) ? (version.compareTo (maximumVersion) <= 0) : true;
+		boolean validMin = (minimum != null) ? (version.compareTo (minimum) >= 0) : true;
+		boolean validMax = (maximum != null) ? (version.compareTo (maximum) <= 0) : true;
 		
 //		System.err.println (") => " + (validMin & validMax));
 
@@ -90,31 +103,19 @@ public class VersionRangePrecondition extends Precondition
 	 */
 	public String toString ()
 	{
-		return ("minimum=" + ((minimum != null) ? minimum.toString () : "any") +
-				" maximum=" + ((maximum != null) ? maximum.toString () : "any"));	
+		return ("minimum=" + ((minimum != null) ? minimum.toString () : "any") + " " +
+				"maximum=" + ((maximum != null) ? maximum.toString () : "any"));	
 	}
-	
-	/**
-	 * The minimum FpML release to match against or <CODE>null</CODE>.
-	 * @since	TFP 1.5
-	 */
-	private final Release	minimum;
-	
-	/**
-	 * The maximum FpML release to match against or <CODE>null</CODE>.
-	 * @since	TFP 1.5
-	 */
-	private final Release	maximum;
 	
 	/**
 	 * The minimum FpML version number.
 	 * @since	TFP 1.5
 	 */
-	private final Version	minimumVersion;
+	private final Version	minimum;
 	
 	/**
 	 * The maximum FpML version number.
 	 * @since	TFP 1.5
 	 */
-	private final Version	maximumVersion;
+	private final Version	maximum;
 }

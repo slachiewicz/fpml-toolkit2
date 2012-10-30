@@ -1,4 +1,4 @@
-// Copyright (C),2005-2010 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -36,20 +36,34 @@ public final class VersionPrecondition extends Precondition
 {
 	/**
 	 * Constructs a <CODE>VersionPrecondition</CODE> that detects a specific
-	 * version number.
+	 * release.
 	 * 
 	 * @param 	release			The required FpML release.
 	 * @since	TFP 1.1
+	 * @deprecated
 	 */
 	public VersionPrecondition (final Release release)
 	{
-		targetVersion = Version.parse ((this.release = release).getVersion ());	
+		this (release.getVersion ());
 	}
 	
+	/**
+	 * Constructs a <CODE>VersionPrecondition</CODE> that detects a specific
+	 * version number.
+	 * 
+	 * @param 	version			The required FpML release.
+	 * @since	TFP 1.7
+	 */
+	public VersionPrecondition (final String version)
+	{
+		targetVersion = Version.parse (version);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * @since	TFP 1.0
 	 */
+	@Override
 	public boolean evaluate (final NodeIndex nodeIndex, Hashtable<Precondition, Boolean> cache)
 	{
 		Version 		version;
@@ -75,14 +89,8 @@ public final class VersionPrecondition extends Precondition
 	 */
 	public String toString ()
 	{
-		return ("release=" + release);
+		return ("targetVersion=" + targetVersion);
 	}
-	
-	/**
-	 * The specific FpML release to match against.
-	 * @since	TFP 1.1
-	 */
-	private final Release	release;
 	
 	/**
 	 * The target FpML version number.

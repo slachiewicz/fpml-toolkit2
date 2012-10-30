@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2012 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -119,6 +119,31 @@ public abstract class Precondition
 	}
 	
 	/**
+	 * Creates and returns a <CODE>Precondition</CODE> instance that will
+	 * evaluate the logical AND of a list of two or more <CODE>Precondition</CODE>
+	 * instances.
+	 * 
+	 * @param 	list		A list of two or more <CODE>Precondition</CODE> instances.
+	 * @return	A <CODE>Precondition</CODE> instance that evaluates the
+	 * 			logical AND of all the input <CODE>Precondition</CODE>
+	 * 			instances.
+	 * @since	TFP 1.7
+	 */
+	public static Precondition and (final Precondition [] list)
+	{
+		if (list.length < 2)
+			throw new IllegalArgumentException (
+					"A list of at least two Preconditions must be provided");
+		
+		Precondition 	result = new And (list [0], list [1]);
+		
+		for (int index = 2; index < list.length; ++index)
+			result = new And (list [index], result);
+		
+		return (result);
+	}
+	
+	/**
 	 * Creates and returns a <CODE>Precondition</CODE> which will connect
 	 * the indicated <CODE>Precondition</CODE> instances with a logical or.
 	 * 
@@ -130,6 +155,31 @@ public abstract class Precondition
 	public static Precondition or (final Precondition lhs, final Precondition rhs)
 	{
 		return (new Or (lhs, rhs));
+	}
+	
+	/**
+	 * Creates and returns a <CODE>Precondition</CODE> instance that will
+	 * evaluate the logical OR of a list of two or more <CODE>Precondition</CODE>
+	 * instances.
+	 * 
+	 * @param 	list		A list of two or more <CODE>Precondition</CODE> instances.
+	 * @return	A <CODE>Precondition</CODE> instance that evaluates the
+	 * 			logical OR of all the input <CODE>Precondition</CODE>
+	 * 			instances.
+	 * @since	TFP 1.7
+	 */
+	public static Precondition or (final Precondition [] list)
+	{
+		if (list.length < 2)
+			throw new IllegalArgumentException (
+					"A list of at least two Preconditions must be provided");
+		
+		Precondition 	result = new Or (list [0], list [1]);
+		
+		for (int index = 2; index < list.length; ++index)
+			result = new Or (list [index], result);
+		
+		return (result);
 	}
 	
 	/**

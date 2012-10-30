@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.handcoded.validation.Precondition;
 import com.handcoded.validation.Rule;
 import com.handcoded.validation.RuleSet;
 import com.handcoded.validation.ValidationErrorHandler;
@@ -37,13 +38,63 @@ import com.handcoded.xml.XPath;
 public final class EqdRules extends FpMLRuleSet
 {
 	/**
+	 * A <CODE>Precondition</CODE> instance that detects documents containing
+	 * at least one equity derivative product.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition	EQD_PRODUCTS
+		= new ContentPrecondition (
+				new String [] {
+						"equityOption",
+						"equityForward",
+						"brokerEquityOption",
+						"returnSwap",
+						"equitySwapTransactionSupplement",
+						"varianceOptionTransactionSupplement",
+						"varianceSwap",
+						"varianceSwapTransationSupplement"
+				},
+				new String [] {
+						"EquityOption",
+						"EquityForward",
+						"BrokerEquityOption",
+						"ReturnSwap",
+						"EquitySwapTransactionSupplement",
+						"VarianceOptionTransactionSupplement",
+						"VarianceSwap",
+						"VarianceSwapTransationSupplement"
+				});
+	
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 4.0 or later
+	 * confirmation document containing at least one equity derivative product.
+	 * @since	TFP 1.7
+	 */	
+	private static final Precondition R4_0__LATER
+		= Precondition.and (new Precondition [] {
+				EQD_PRODUCTS,
+				Preconditions.R4_0__LATER,
+				Preconditions.CONFIRMATION });
+	
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects any FpML 4.*
+	 * confirmation document containing at least one equity derivative product.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition R4_0__R4_X
+		= Precondition.and (new Precondition [] {
+				EQD_PRODUCTS,
+				Preconditions.R4_0__R4_X,
+				Preconditions.CONFIRMATION });
+	
+	/**
 	 * A <CODE>Rule</CODE> instance that ensures the unadjusted expiration
 	 * date is after the trade date for American options.
 	 * <P>
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE02	= new Rule (Preconditions.R4_0__LATER, "eqd-2")
+	public static final Rule	RULE02	= new Rule (R4_0__LATER, "eqd-2")
 		{
 			/**
 			 * {@inheritDoc}
@@ -83,7 +134,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 until 5.0.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule	RULE02B	= new Rule (Preconditions.R4_0__R4_X, "eqd-2b")
+	public static final Rule	RULE02B	= new Rule (R4_0__R4_X, "eqd-2b")
 		{
 			/**
 			 * {@inheritDoc}
@@ -123,7 +174,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE03	= new Rule (Preconditions.R4_0__LATER, "eqd-3")
+	public static final Rule	RULE03	= new Rule (R4_0__LATER, "eqd-3")
 		{
 			/**
 			 * {@inheritDoc}
@@ -163,7 +214,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE04	= new Rule (Preconditions.R4_0__LATER, "eqd-4")
+	public static final Rule	RULE04	= new Rule (R4_0__LATER, "eqd-4")
 		{
 			/**
 			 * {@inheritDoc}
@@ -203,7 +254,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule	RULE04B	= new Rule (Preconditions.R4_0__R4_X, "eqd-4b")
+	public static final Rule	RULE04B	= new Rule (R4_0__R4_X, "eqd-4b")
 		{
 			/**
 			 * {@inheritDoc}
@@ -243,7 +294,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE05	= new Rule (Preconditions.R4_0__LATER, "eqd-5")
+	public static final Rule	RULE05	= new Rule (R4_0__LATER, "eqd-5")
 		{
 			/**
 			 * {@inheritDoc}
@@ -283,7 +334,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE06	= new Rule (Preconditions.R4_0__LATER, "eqd-6")
+	public static final Rule	RULE06	= new Rule (R4_0__LATER, "eqd-6")
 		{
 			/**
 			 * {@inheritDoc}
@@ -324,7 +375,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * @since	TFP 1.0
 	 * @deprecated
 	 */
-	public static final Rule	RULE07	= new Rule (Preconditions.R4_0__LATER, "eqd-7")
+	public static final Rule	RULE07	= new Rule (R4_0__LATER, "eqd-7")
 		{
 			/**
 			 * {@inheritDoc}
@@ -364,7 +415,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE08	= new Rule (Preconditions.R4_0__LATER, "eqd-8")
+	public static final Rule	RULE08	= new Rule (R4_0__LATER, "eqd-8")
 		{
 			/**
 			 * {@inheritDoc}
@@ -405,7 +456,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE09	= new Rule (Preconditions.R4_0__LATER, "eqd-9")
+	public static final Rule	RULE09	= new Rule (R4_0__LATER, "eqd-9")
 		{
 			/**
 			 * {@inheritDoc}
@@ -446,7 +497,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE10	= new Rule (Preconditions.R4_0__LATER, "eqd-10")
+	public static final Rule	RULE10	= new Rule (R4_0__LATER, "eqd-10")
 		{
 			/**
 			 * {@inheritDoc}
@@ -486,7 +537,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE12	= new Rule (Preconditions.R4_0__LATER, "eqd-12")
+	public static final Rule	RULE12	= new Rule (R4_0__LATER, "eqd-12")
 		{
 			/**
 			 * {@inheritDoc}
@@ -526,7 +577,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE13	= new Rule (Preconditions.R4_0__LATER, "eqd-13")
+	public static final Rule	RULE13	= new Rule (R4_0__LATER, "eqd-13")
 		{
 			/**
 			 * {@inheritDoc}
@@ -566,7 +617,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE14	= new Rule (Preconditions.R4_0__LATER, "eqd-14")
+	public static final Rule	RULE14	= new Rule (R4_0__LATER, "eqd-14")
 		{
 			/**
 			 * {@inheritDoc}
@@ -606,7 +657,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE15	= new Rule (Preconditions.R4_0__LATER, "eqd-15")
+	public static final Rule	RULE15	= new Rule (R4_0__LATER, "eqd-15")
 		{
 			/**
 			 * {@inheritDoc}
@@ -645,7 +696,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE17	= new Rule (Preconditions.R4_0__LATER, "eqd-17")
+	public static final Rule	RULE17	= new Rule (R4_0__LATER, "eqd-17")
 		{
 			/**
 			 * {@inheritDoc}
@@ -693,7 +744,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE18	= new Rule (Preconditions.R4_0__LATER, "eqd-18")
+	public static final Rule	RULE18	= new Rule (R4_0__LATER, "eqd-18")
 		{
 			/**
 			 * {@inheritDoc}
@@ -741,7 +792,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE19	= new Rule (Preconditions.R4_0__LATER, "eqd-19")
+	public static final Rule	RULE19	= new Rule (R4_0__LATER, "eqd-19")
 		{
 			/**
 			 * {@inheritDoc}
@@ -790,7 +841,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE20	= new Rule (Preconditions.R4_0__LATER, "eqd-20")
+	public static final Rule	RULE20	= new Rule (R4_0__LATER, "eqd-20")
 		{
 			/**
 			 * {@inheritDoc}
@@ -842,7 +893,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * @since	TFP 1.0
 	 * @deprecated
 	 */
-	public static final Rule	RULE21	= new Rule (Preconditions.R4_0__LATER, "eqd-21")
+	public static final Rule	RULE21	= new Rule (R4_0__LATER, "eqd-21")
 		{
 			/**
 			 * {@inheritDoc}
@@ -882,7 +933,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE22	= new Rule (Preconditions.R4_0__LATER, "eqd-22")
+	public static final Rule	RULE22	= new Rule (R4_0__LATER, "eqd-22")
 		{
 			/**
 			 * {@inheritDoc}
@@ -926,7 +977,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE23	= new Rule (Preconditions.R4_0__LATER, "eqd-23")
+	public static final Rule	RULE23	= new Rule (R4_0__LATER, "eqd-23")
 		{
 			/**
 			 * {@inheritDoc}
@@ -969,7 +1020,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE24	= new Rule (Preconditions.R4_0__LATER, "eqd-24")
+	public static final Rule	RULE24	= new Rule (R4_0__LATER, "eqd-24")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1008,7 +1059,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE25	= new Rule (Preconditions.R4_0__LATER, "eqd-25")
+	public static final Rule	RULE25	= new Rule (R4_0__LATER, "eqd-25")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1055,7 +1106,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule	RULE26 = new Rule (Preconditions.R4_0__LATER, "eqd-26")
+	public static final Rule	RULE26 = new Rule (R4_0__LATER, "eqd-26")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1099,7 +1150,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule	RULE26B = new Rule (Preconditions.R4_0__LATER, "eqd-26b")
+	public static final Rule	RULE26B = new Rule (R4_0__LATER, "eqd-26b")
 	{
 		public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 		{
@@ -1143,7 +1194,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule	RULE27 = new Rule (Preconditions.R4_0__LATER, "eqd-27")
+	public static final Rule	RULE27 = new Rule (R4_0__LATER, "eqd-27")
 	{
 		public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 		{
@@ -1182,7 +1233,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule	RULE28 = new Rule (Preconditions.R4_0__LATER, "eqd-28")
+	public static final Rule	RULE28 = new Rule (R4_0__LATER, "eqd-28")
 	{
 		public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 		{
@@ -1224,7 +1275,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule	RULE29 = new Rule (Preconditions.R4_0__LATER, "eqd-29")
+	public static final Rule	RULE29 = new Rule (R4_0__LATER, "eqd-29")
 	{
 		public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 		{
@@ -1266,7 +1317,7 @@ public final class EqdRules extends FpMLRuleSet
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.6
 	 */
-	public static final Rule	RULE31 = new Rule (Preconditions.R4_0__LATER, "eqd-31")
+	public static final Rule	RULE31 = new Rule (R4_0__LATER, "eqd-31")
 	{
 		public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 		{

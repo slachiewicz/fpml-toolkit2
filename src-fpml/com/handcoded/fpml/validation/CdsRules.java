@@ -42,14 +42,14 @@ import com.handcoded.xml.XPath;
 public final class CdsRules extends FpMLRuleSet
 {
 	/**
-	 * A <CODE>Precondition</CODE> instance that detect documents containing
+	 * A <CODE>Precondition</CODE> instance that detects documents containing
 	 * at least one credit product.
 	 * @since	TFP 1.6
 	 */
 	private static final Precondition	CDS_PRODUCT
 		= new ContentPrecondition (
 				new String [] { "creditDefaultSwap", "creditDefaultSwapOption" },
-				new String [] { "CreditDefaultSwap", "CreditDeafultSwapOption" });
+				new String [] { "CreditDefaultSwap", "CreditDefaultSwapOption" });
 	
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML 4.0 or later
@@ -57,7 +57,10 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	private static final Precondition	R4_0__LATER
-		= Precondition.and (CDS_PRODUCT, Preconditions.R4_0__LATER);
+		= Precondition.and (new Precondition [] {
+				CDS_PRODUCT,
+				Preconditions.R4_0__LATER,
+				Preconditions.CONFIRMATION });
 	
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML 4.x
@@ -65,7 +68,10 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	private static final Precondition	R4_0__R4_X
-		= Precondition.and (CDS_PRODUCT, Preconditions.R4_0__R4_X);
+		= Precondition.and (new Precondition [] {
+				CDS_PRODUCT,
+				Preconditions.R4_0__R4_X,
+				Preconditions.CONFIRMATION });
 	
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML 4.2 or later
@@ -73,7 +79,10 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	private static final Precondition	R4_2__LATER
-	= Precondition.and (CDS_PRODUCT, Preconditions.R4_2__LATER);
+	= Precondition.and (new Precondition [] {
+			CDS_PRODUCT,
+			Preconditions.R4_2__LATER,
+			Preconditions.CONFIRMATION });
 
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML 4.3 or later
@@ -81,7 +90,10 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	private static final Precondition	R4_3__LATER
-	= Precondition.and (CDS_PRODUCT, Preconditions.R4_3__LATER);
+	= Precondition.and (new Precondition [] {
+			CDS_PRODUCT,
+			Preconditions.R4_3__LATER,
+			Preconditions.CONFIRMATION });
 
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML 5.0 or later
@@ -89,7 +101,10 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	private static final Precondition	R5_0__LATER
-		= Precondition.and (CDS_PRODUCT, Preconditions.R5_0__LATER);
+		= Precondition.and (new Precondition [] {
+				CDS_PRODUCT,
+				Preconditions.R5_0__LATER,
+				Preconditions.CONFIRMATION });
 	
 	/**
 	 * A <CODE>Rule</CODE> that ensures <CODE>tradeHeader/tradeDate</CODE> is before
@@ -482,11 +497,11 @@ public final class CdsRules extends FpMLRuleSet
 	 * exists, then <CODE>effectiveDate/unadjustedDate</CODE> &lt;
 	 * <CODE>scheduledTerminationDate/adjustableDate/unadjustedDate</CODE>.
 	 * <P>
-	 * Applies to FpML 4.0 and later.
+	 * Applies to FpML 4.0 thru 4.x.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE05
-		= new Rule (R4_0__LATER, "cd-5")
+	public static final Rule	RULE05_OLD
+		= new Rule (R4_0__R4_X, "cd-5[OLD]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -525,6 +540,52 @@ public final class CdsRules extends FpMLRuleSet
 							// Syntax errors handled elsewhere.
 						}
 					}
+				}
+				return (result);
+			}
+		};
+
+	/**
+	 * A <CODE>Rule</CODE> that ensures if <CODE>scheduledTerminationDate/adjustableDate</CODE>
+	 * exists, then <CODE>effectiveDate/unadjustedDate</CODE> &lt;
+	 * <CODE>scheduledTerminationDate/adjustableDate/unadjustedDate</CODE>.
+	 * <P>
+	 * Applies to FpML 4.0 and later.
+	 * @since	TFP 1.0
+	 */
+	public static final Rule	RULE05
+		= new Rule (R5_0__LATER, "cd-5")
+		{
+			/**
+			 * {@inheritDoc}
+			 */
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "GeneralTerms"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("generalTerms"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result 	= true;
+
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context = (Element) list.item (index);
+
+					Element		effectiveDate = XPath.path (context, "effectiveDate", "unadjustedDate");
+					Element		terminationDate = XPath.path (context, "scheduledTerminationDate", "unadjustedDate");
+				
+					if ((effectiveDate == null) || (terminationDate == null) ||
+							less (toDate (effectiveDate), toDate (terminationDate)))
+						continue;
+					
+					errorHandler.error ("305", context,
+							"The scheduled termination date must be later than the effective date",
+							getDisplayName (), null);
+					
+					result = false;
 				}
 				return (result);
 			}

@@ -16,6 +16,7 @@ package com.handcoded.fpml.validation;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.handcoded.validation.Precondition;
 import com.handcoded.validation.Rule;
 import com.handcoded.validation.RuleSet;
 import com.handcoded.validation.ValidationErrorHandler;
@@ -29,12 +30,22 @@ import java.math.BigDecimal;
  * The <CODE>LoanRules</CODE> class contains a <CODE>RuleSet</CODE>
  * initialised with FpML defined validation rules for syndicated loan messages.
  * <P>
- * @author 	Goonie
+ * @author 	Goonie & BitWise
  * @version	$Id$
  * @since	TFP 1.2
  */
 public final class LoanRules extends FpMLRuleSet 
 {
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 4-4 and later
+	 * confirmation view documents.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition	R4_4__LATER
+		= Precondition.and (
+				Preconditions.R4_4__LATER,
+				Preconditions.CONFIRMATION);
+	
 	/**
 	 * A <CODE>Rule</CODE> that ensures that the effective date of a loan contract 
 	 * is not after the start date of the interest period.
@@ -42,7 +53,7 @@ public final class LoanRules extends FpMLRuleSet
 	 * Applies to FpML 4.4 and later.
 	 * @since	TFP 1.2
 	 */
-	public static final Rule RULE01 = new Rule (Preconditions.R4_4__LATER, "ln-1")
+	public static final Rule RULE01 = new Rule (R4_4__LATER, "ln-1")
 		{	
 			/**
 			 * {@inheritDoc}
@@ -88,7 +99,7 @@ public final class LoanRules extends FpMLRuleSet
 	 * Applies to FpML 4.4 and later.
 	 * @since	TFP 1.2
 	 */
-	public static final Rule RULE02 = new Rule (Preconditions.R4_4__LATER, "ln-2")
+	public static final Rule RULE02 = new Rule (R4_4__LATER, "ln-2")
 		{
 			/**
 			 * {@inheritDoc}
@@ -138,7 +149,7 @@ public final class LoanRules extends FpMLRuleSet
 	 * Applies to FpML 4.4 and later.
 	 * @since	TFP 1.2
 	 */
-	public static final Rule RULE03 = new Rule (Preconditions.R4_4__LATER, "ln-3")
+	public static final Rule RULE03 = new Rule (R4_4__LATER, "ln-3")
 		{
 			/**
 			 * {@inheritDoc}
@@ -196,7 +207,7 @@ public final class LoanRules extends FpMLRuleSet
 	 * Applies to FpML 4.4 and later.
 	 * @since	TFP 1.2
 	 */
-	public static final Rule RULE04 = new Rule (Preconditions.R4_4__LATER, "ln-4")
+	public static final Rule RULE04 = new Rule (R4_4__LATER, "ln-4")
 		{
 			/**
 			 * {@inheritDoc}
@@ -247,7 +258,7 @@ public final class LoanRules extends FpMLRuleSet
 	 * Applies to FpML 4.4 and later.
 	 * @since	TFP 1.2
 	 */
-	public static final Rule RULE05 = new Rule (Preconditions.R4_4__LATER, "ln-5")
+	public static final Rule RULE05 = new Rule (R4_4__LATER, "ln-5")
 		{
 			/**
 			 * {@inheritDoc}
@@ -295,7 +306,7 @@ public final class LoanRules extends FpMLRuleSet
 			}
 		};
 	
-	public static final Rule RULE10 = new Rule (Preconditions.R4_4__LATER, "ln-10")
+	public static final Rule RULE10 = new Rule (R4_4__LATER, "ln-10")
 		{
 			/**
 			 * {@inheritDoc}
