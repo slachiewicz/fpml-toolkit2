@@ -166,6 +166,7 @@ public final class CdsRules extends FpMLRuleSet
 	 * <P>
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
+	 * @deprecated
 	 */
 	public static final Rule	RULE01B
 		= new Rule (R4_0__LATER, "cd-1b")
@@ -1407,11 +1408,11 @@ public final class CdsRules extends FpMLRuleSet
 	 * A <CODE>Rule</CODE> that ensures a short form contract does not
 	 * contain invalid elements.
 	 * <P>
-	 * Applies to FpML 4.0 and later.
+	 * Applies to FpML 4.*.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE21
-		= new Rule (R4_0__LATER, "cd-21")
+	public static final Rule	RULE21_OLD
+		= new Rule (R4_0__R4_X, "cd-21[OLD]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1484,11 +1485,88 @@ public final class CdsRules extends FpMLRuleSet
 	 * A <CODE>Rule</CODE> that ensures a short form contract does not
 	 * contain invalid elements.
 	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.7
+	 */
+	public static final Rule	RULE21
+		= new Rule (R5_0__LATER, "cd-21")
+		{
+			/**
+			 * {@inheritDoc}
+			 */
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler)
+					  & validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Contract"), errorHandler));
+						
+				return (
+					  validate (nodeIndex.getElementsByName ("trade"), errorHandler)
+					& validate (nodeIndex.getElementsByName ("contract"), errorHandler));
+			}
+
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result 	= true;
+
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		trade = (Element) list.item (index);
+
+					if (isShortForm (trade)) {
+						Element context = XPath.path (trade, "creditDefaultSwap");
+
+						if ((context == null) || !isSingleName (context)) continue;
+
+						result &=
+							  validate (context, XPath.path (context, "cashSettlementTerms", "settlementCurrency"), errorHandler)
+							& validate (context, XPath.path (context, "cashSettlementTerms", "valuationDate"), errorHandler)
+							& validate (context, XPath.path (context, "cashSettlementTerms", "valuationTime"), errorHandler)
+							& validate (context, XPath.path (context, "cashSettlementTerms", "quotationMethod"), errorHandler)
+							& validate (context, XPath.path (context, "cashSettlementTerms", "quotationAmount"), errorHandler)
+							& validate (context, XPath.path (context, "cashSettlementTerms", "minimumQuotationAmount"), errorHandler)
+							& validate (context, XPath.path (context, "cashSettlementTerms", "dealer"), errorHandler)
+							& validate (context, XPath.path (context, "cashSettlementTerms", "cashSettlementBusinessDays"), errorHandler)
+							& validate (context, XPath.path (context, "cashSettlementTerms", "accruedInterest"), errorHandler)
+							& validate (context, XPath.path (context, "cashSettlementTerms", "valuationMethod"), errorHandler)
+							& validate (context, XPath.path (context, "physicalSettlementTerms"), errorHandler)
+							& validate (context, XPath.path (context, "feeLeg", "periodicPayment", "fixedAmountCalculation", "calculationAmount"), errorHandler)
+							& validate (context, XPath.path (context, "feeLeg", "periodicPayment", "fixedAmountCalculation", "dayCountFraction"), errorHandler)
+							& validate (context, XPath.path (context, "protectionTerms", "obligations"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "referenceInformation", "allGuarantees"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "referenceInformation", "referencePrice"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "effectiveDate", "dateAdjustments"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "effectiveDate", "dateAdjustmentsReference"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "scheduledTerminationDate", "dateAdjustments"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "scheduledTerminationDate", "dateAdjustmentsReference"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "dateAdjustments"), errorHandler);
+					}
+				}
+				return (result);
+			}
+
+			private boolean validate (final Element context, final Element illegal, ValidationErrorHandler errorHandler)
+			{
+				if (illegal != null) {
+					errorHandler.error ("305", context,
+						"Illegal element found in short form credit default swap",
+						getDisplayName (), XPath.forNode (illegal));
+
+					return (false);
+				}
+				return (true);
+			}
+		};
+
+	/**
+	 * A <CODE>Rule</CODE> that ensures a short form contract does not
+	 * contain invalid elements.
+	 * <P>
 	 * Applies to FpML 4.0 and later.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE21B
-		= new Rule (R4_0__LATER, "cd-21b")
+	public static final Rule	RULE21B_OLD
+		= new Rule (R4_0__R4_X, "cd-21b[OLD]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1528,6 +1606,71 @@ public final class CdsRules extends FpMLRuleSet
 							& validate (context, XPath.path (context, "generalTerms", "effectiveDate", "dateAdjustmentsReference"), errorHandler)
 							& validate (context, XPath.path (context, "generalTerms", "scheduledTerminationDate", "adjustableDate", "dateAdjustments"), errorHandler)
 							& validate (context, XPath.path (context, "generalTerms", "scheduledTerminationDate", "adjustableDate", "dateAdjustmentsReference"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "dateAdjustments"), errorHandler);
+					}
+				}
+				return (result);
+			}
+
+			private boolean validate (final Element context, final Element illegal, ValidationErrorHandler errorHandler)
+			{
+				if (illegal != null) {
+					errorHandler.error ("305", context,
+						"Illegal element found in short form credit default swap",
+						getDisplayName (), XPath.forNode (illegal));
+
+					return (false);
+				}
+				return (true);
+			}
+		};
+
+	/**
+	 * A <CODE>Rule</CODE> that ensures a short form contract does not
+	 * contain invalid elements.
+	 * <P>
+	 * Applies to FpML 4.0 and later.
+	 * @since	TFP 1.7
+	 */
+	public static final Rule	RULE21B
+		= new Rule (R5_0__LATER, "cd-21b")
+		{
+			/**
+			 * {@inheritDoc}
+			 */
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (
+						validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "Trade"), errorHandler));
+						
+				return (
+					  validate (nodeIndex.getElementsByName ("trade"), errorHandler));
+			}
+
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result 	= true;
+
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		trade = (Element) list.item (index);
+
+					if (isShortForm (trade)) {
+						Element context = XPath.path (trade, "creditDefaultSwap");
+
+						if (!isCreditIndex (context)) continue;
+
+						result &=
+							  validate (context, XPath.path (context, "cashSettlementTerms"), errorHandler)
+							& validate (context, XPath.path (context, "physicalSettlementTerms"), errorHandler)
+							& validate (context, XPath.path (context, "feeLeg", "periodicPayment", "fixedAmountCalculation", "calculationAmount"), errorHandler)
+							& validate (context, XPath.path (context, "feeLeg", "periodicPayment", "fixedAmountCalculation", "dayCountFraction"), errorHandler)
+							& validate (context, XPath.path (context, "protectionTerms", "obligations"), errorHandler)
+							& validate (context, XPath.path (context, "protectionTerms", "creditEvents"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "effectiveDate", "dateAdjustments"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "effectiveDate", "dateAdjustmentsReference"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "scheduledTerminationDate", "dateAdjustments"), errorHandler)
+							& validate (context, XPath.path (context, "generalTerms", "scheduledTerminationDate", "dateAdjustmentsReference"), errorHandler)
 							& validate (context, XPath.path (context, "generalTerms", "dateAdjustments"), errorHandler);
 					}
 				}
@@ -1992,11 +2135,11 @@ public final class CdsRules extends FpMLRuleSet
 	 * A <CODE>Rule</CODE> that ensures if a first payment date is present it
 	 * falls before the termination date.
 	 * <P>
-	 * Applies to FpML 4.0 and later.
+	 * Applies to FpML 4.*.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE29
-		= new Rule (R4_0__LATER, "cd-29")
+	public static final Rule	RULE29_OLD
+		= new Rule (R4_0__R4_X, "cd-29[OLD]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2036,14 +2179,61 @@ public final class CdsRules extends FpMLRuleSet
 		};
 
 	/**
+	 * A <CODE>Rule</CODE> that ensures if a first payment date is present it
+	 * falls before the termination date.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.7
+	 */
+	public static final Rule	RULE29
+		= new Rule (R5_0__LATER, "cd-29")
+		{
+			/**
+			 * {@inheritDoc}
+			 */
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result 	= true;
+
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context = (Element) list.item (index);
+					Element		paymentDate;
+					Element		terminationDate;
+
+					if (and (
+						exists (paymentDate = XPath.path (context, "feeLeg", "periodicPayment", "firstPaymentDate")),
+						exists (terminationDate = XPath.path (context, "generalTerms", "scheduledTerminationDate", "unadjustedDate")))) {
+						if (less (paymentDate, terminationDate)) continue;
+
+						errorHandler.error ("305", context,
+							"First periodic payment date '" + DOM.getInnerText (paymentDate) + "' " +
+							"must be before the termination date '" + DOM.getInnerText (terminationDate) + "'",
+							getDisplayName (), null);
+
+						result = false;
+					}
+				}
+				return (result);
+			}
+		};
+
+	/**
 	 * A <CODE>Rule</CODE> that ensures if a last regular payment date is present
 	 * it falls before the termination date.
 	 * <P>
-	 * Applies to FpML 4.0 and later.
+	 * Applies to FpML 4.*.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE30
-		= new Rule (R4_0__LATER, "cd-30")
+	public static final Rule	RULE30_OLD
+		= new Rule (R4_0__R4_X, "cd-30[OLD]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2068,6 +2258,53 @@ public final class CdsRules extends FpMLRuleSet
 					if (and (
 						exists (paymentDate = XPath.path (context, "feeLeg", "periodicPayment", "lastRegularPaymentDate")),
 						exists (terminationDate = XPath.path (context, "generalTerms", "scheduledTerminationDate", "adjustableDate", "unadjustedDate")))) {
+						if (less (paymentDate, terminationDate)) continue;
+
+						errorHandler.error ("305", context,
+							"Last regular periodic payment date '" + DOM.getInnerText (paymentDate) + "' " +
+							"must be before the termination date '" + DOM.getInnerText (terminationDate) + "'",
+							getDisplayName (), null);
+
+						result = false;
+					}
+				}
+				return (result);
+			}
+		};
+		
+	/**
+	 * A <CODE>Rule</CODE> that ensures if a last regular payment date is present
+	 * it falls before the termination date.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.7
+	 */
+	public static final Rule	RULE30
+		= new Rule (R5_0__LATER, "cd-30")
+		{
+			/**
+			 * {@inheritDoc}
+			 */
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation ())
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "CreditDefaultSwap"), errorHandler));
+				
+				return (validate (nodeIndex.getElementsByName ("creditDefaultSwap"), errorHandler));
+			}
+			
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result 	= true;
+
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element		context = (Element) list.item (index);
+					Element		paymentDate;
+					Element		terminationDate;
+
+					if (and (
+						exists (paymentDate = XPath.path (context, "feeLeg", "periodicPayment", "lastRegularPaymentDate")),
+						exists (terminationDate = XPath.path (context, "generalTerms", "scheduledTerminationDate", "unadjustedDate")))) {
 						if (less (paymentDate, terminationDate)) continue;
 
 						errorHandler.error ("305", context,
