@@ -250,7 +250,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					if ((rate == null) || (forward == null) || (spot == null)) continue;
 					
-					if (toDecimal (rate).equals(toDecimal (spot).add (toDecimal (forward))))
+					if (toDecimal (rate).compareTo (toDecimal (spot).add (toDecimal (forward))) == 0)
 						continue;
 					
 					errorHandler.error ("305", context,
@@ -2150,7 +2150,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					if ((rate == null) || (forward == null) || (spot == null)) continue;
 					
-					if (toDecimal (rate).equals(toDecimal (spot).add (toDecimal (forward))))
+					if (toDecimal (rate).compareTo(toDecimal (spot).add (toDecimal (forward))) == 0)
 						continue;
 					
 					errorHandler.error ("305", context,

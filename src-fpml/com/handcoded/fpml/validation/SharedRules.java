@@ -1187,7 +1187,6 @@ public final class SharedRules extends FpMLRuleSet
 			{
 				boolean			result	= true;
 				Vector<Identifier> identifiers = new Vector<Identifier> ();
-				Vector<String>	names = new Vector<String> ();
 				
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context 	= (Element) list.item (index);
@@ -1208,7 +1207,6 @@ public final class SharedRules extends FpMLRuleSet
 				}
 				
 				identifiers.clear ();
-				names.clear ();
 				
 				return (result);
 			}

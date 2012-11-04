@@ -133,11 +133,11 @@ public final class CollateralRules extends FpMLRuleSet
 				
 				for (int index = 0; index < list.getLength (); ++index) {
 					Element		context = (Element) list.item (index);
-					Element		callResult	= XPath.path (context, "marginCallResult", "segregatedIndependentAmount ");
-					Element		requirement	= XPath.path (context, "marginRequirement", "segregatedIndependentAmount ");
-					
+					Element		callResult	= XPath.path (context, "marginCallResult", "segregatedIndependentAmount");
+					Element		requirement	= XPath.path (context, "marginRequirement", "segregatedIndependentAmount");
+		
 					if (!exists (callResult) || !exists (requirement)) continue;
-					
+		
 					Element		callCurrency = XPath.path (callResult, "marginCallAmount", "currency");
 					Element		reqdCurrency = XPath.path (requirement, "deliver", "currency");
 					
@@ -145,8 +145,8 @@ public final class CollateralRules extends FpMLRuleSet
 							!isSameCurrency (callCurrency, reqdCurrency)) continue;
 					
 					Element		callAmount = XPath.path (callResult, "marginCallAmount", "amount");
-					Element		deliverAmount = XPath.path (callResult, "deliver", "amount");
-					Element		returnAmount = XPath.path (callResult, "return", "amount");
+					Element		deliverAmount = XPath.path (requirement, "deliver", "amount");
+					Element		returnAmount = XPath.path (requirement, "return", "amount");
 					
 					BigDecimal	callValue = toDecimal (callAmount);
 					BigDecimal	reqdValue = sum (toDecimal (deliverAmount), toDecimal (returnAmount));
@@ -484,7 +484,7 @@ public final class CollateralRules extends FpMLRuleSet
 					ValidationErrorHandler errorHandler)
 			{
 				if (nodeIndex.hasTypeInformation ()) 
-					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "InterestCalculationDetails "), errorHandler));
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "InterestCalculationDetails"), errorHandler));
 					
 				return (validate (nodeIndex.getElementsByName ("interestCalculationDetails"), errorHandler));
 			}
