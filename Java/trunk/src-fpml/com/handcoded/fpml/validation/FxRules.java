@@ -56,16 +56,6 @@ public final class FxRules extends FpMLRuleSet
 				Preconditions.CONFIRMATION);
 
 	/**
-	 * A <CODE>Precondition</CODE> instance that detects any FpML 4-*
-	 * confirmation view document.
-	 * @since	TFP 1.7
-	 */
-	private static final Precondition	R4_0__R4_X
-		= Precondition.and (
-				Preconditions.R4_0__R4_X,
-				Preconditions.CONFIRMATION);
-
-	/**
 	 * A <CODE>Precondition</CODE> instance that detects any FpML 3-0 or later
 	 * confirmation view document.
 	 * @since	TFP 1.7
@@ -76,6 +66,16 @@ public final class FxRules extends FpMLRuleSet
 				Preconditions.CONFIRMATION);
 	
 	/**
+	 * A <CODE>Precondition</CODE> instance that detects any FpML 4-*
+	 * confirmation view document.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition	R4_0__R4_X
+		= Precondition.and (
+				Preconditions.R4_0__R4_X,
+				Preconditions.CONFIRMATION);
+
+	/**
 	 * A <CODE>Precondition</CODE> instance that detects any FpML 4-0 or later
 	 * confirmation view document.
 	 * @since	TFP 1.7
@@ -83,6 +83,26 @@ public final class FxRules extends FpMLRuleSet
 	private static final Precondition	R4_0__LATER
 		= Precondition.and (
 				Preconditions.R4_0__LATER,
+				Preconditions.CONFIRMATION);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects any FpML 4-2 thru 4.*
+	 * confirmation view document.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition	R4_2__R4_X
+		= Precondition.and (
+				Preconditions.R4_2__R4_X,
+				Preconditions.CONFIRMATION);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects any FpML 4-2 or later
+	 * confirmation view document.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition	R4_2__LATER
+		= Precondition.and (
+				Preconditions.R4_2__LATER,
 				Preconditions.CONFIRMATION);
 
 	/**
@@ -1276,7 +1296,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE18
-		= new Rule (Precondition.and (FX_SINGLE_LEG, Preconditions.R5_1__LATER), "fx-18")
+		= new Rule (Precondition.and (FX_SINGLE_LEG, R5_1__LATER), "fx-18")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1333,7 +1353,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE19_OLD
-		= new Rule (Precondition.and (FX_SINGLE_LEG, Preconditions.R3_0__R4_X), "fx-19[OLD]")
+		= new Rule (Precondition.and (FX_SINGLE_LEG, R3_0__R4_X), "fx-19[OLD]")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1377,7 +1397,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE19
-		= new Rule (Precondition.and (FX_SINGLE_LEG, Preconditions.R5_1__LATER), "fx-19")
+		= new Rule (Precondition.and (FX_SINGLE_LEG, R5_1__LATER), "fx-19")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1418,7 +1438,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE20_OLD
-		= new Rule (Precondition.and (FX_SINGLE_LEG, Preconditions.R3_0__R4_X), "fx-20[OLD]")
+		= new Rule (Precondition.and (FX_SINGLE_LEG, R3_0__R4_X), "fx-20[OLD]")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1462,7 +1482,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	public static final Rule	RULE20
-		= new Rule (Precondition.and (FX_SINGLE_LEG, Preconditions.R5_1__LATER), "fx-20")
+		= new Rule (Precondition.and (FX_SINGLE_LEG, R5_1__LATER), "fx-20")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1506,7 +1526,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE21_OLD
-		= new Rule (Precondition.and (FX_SINGLE_LEG, Preconditions.R3_0__R4_X), "fx-21[OLD]")
+		= new Rule (Precondition.and (FX_SINGLE_LEG, R3_0__R4_X), "fx-21[OLD]")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -1549,7 +1569,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	public static final Rule	RULE21
-		= new Rule (Precondition.and (FX_SINGLE_LEG, Preconditions.R5_1__LATER), "fx-21")
+		= new Rule (Precondition.and (FX_SINGLE_LEG, R5_1__LATER), "fx-21")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -2427,7 +2447,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE36_OLD
-		= new Rule (Precondition.and (TRADE, Preconditions.R3_0__R4_X), "fx-36[OLD]")
+		= new Rule (Precondition.and (TRADE, R3_0__R4_X), "fx-36[OLD]")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -2469,7 +2489,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	public static final Rule	RULE36
-		= new Rule (Precondition.and (TRADE, Preconditions.R5_1__LATER), "fx-36")
+		= new Rule (Precondition.and (TRADE, R5_1__LATER), "fx-36")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -2511,7 +2531,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE36B_OLD
-		= new Rule (Precondition.and (CONTRACT, Preconditions.R4_2__R4_X), "fx-36b[OLD]")
+		= new Rule (Precondition.and (CONTRACT, R4_2__R4_X), "fx-36b[OLD]")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -2553,7 +2573,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE37_OLD
-		= new Rule (Precondition.and (TRADE, Preconditions.R3_0__R4_X), "fx-37[OLD]")
+		= new Rule (Precondition.and (TRADE, R3_0__R4_X), "fx-37[OLD]")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -2595,7 +2615,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE37B_OLD
-		= new Rule (Precondition.and (CONTRACT, Preconditions.R4_2__R4_X), "fx-37b[OLD]")
+		= new Rule (Precondition.and (CONTRACT, R4_2__R4_X), "fx-37b[OLD]")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -2637,7 +2657,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE38_OLD
-		= new Rule (Precondition.and (TRADE, Preconditions.R3_0__R4_X), "fx-38[OLD]")
+		= new Rule (Precondition.and (TRADE, R3_0__R4_X), "fx-38[OLD]")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -2679,7 +2699,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	public static final Rule	RULE38
-		= new Rule (Precondition.and (TRADE, Preconditions.R5_1__LATER), "fx-38")
+		= new Rule (Precondition.and (TRADE, R5_1__LATER), "fx-38")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -2721,7 +2741,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE38B_OLD
-		= new Rule (Precondition.and (CONTRACT, Preconditions.R4_2__R4_X), "fx-38b[OLD]")
+		= new Rule (Precondition.and (CONTRACT, R4_2__R4_X), "fx-38b[OLD]")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -2763,7 +2783,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE39
-		= new Rule (Precondition.and (TRADE, Preconditions.R3_0__LATER), "fx-39")
+		= new Rule (Precondition.and (TRADE, R3_0__LATER), "fx-39")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -2829,7 +2849,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE39B_OLD
-		= new Rule (Precondition.and (CONTRACT, Preconditions.R4_2__LATER), "fx-39b[OLD]")
+		= new Rule (Precondition.and (CONTRACT, R4_2__LATER), "fx-39b[OLD]")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -2896,7 +2916,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE40_OLD
-		= new Rule (Precondition.and (TRADE, Preconditions.R3_0__R4_X), "fx-40[OLD]")
+		= new Rule (Precondition.and (TRADE, R3_0__R4_X), "fx-40[OLD]")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -2968,7 +2988,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	public static final Rule	RULE40
-		= new Rule (Precondition.and (TRADE, Preconditions.R5_1__LATER), "fx-40")
+		= new Rule (Precondition.and (TRADE, R5_1__LATER), "fx-40")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -3078,7 +3098,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.2
 	 */
 	public static final Rule	RULE40B
-		= new Rule (Precondition.and (CONTRACT, Preconditions.R4_2__R4_X), "fx-40b[OLD]")
+		= new Rule (Precondition.and (CONTRACT, R4_2__R4_X), "fx-40b[OLD]")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -3567,7 +3587,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	public static final Rule 	RULE49
-		= new Rule (Precondition.and (FX_SWAP_LEG, Preconditions.R5_1__LATER), "fx-49")
+		= new Rule (Precondition.and (FX_SWAP_LEG, R5_1__LATER), "fx-49")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -3611,7 +3631,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	public static final Rule 	RULE50
-		= new Rule (Precondition.and (FX_SWAP_LEG, Preconditions.R5_1__LATER), "fx-50")
+		= new Rule (Precondition.and (FX_SWAP_LEG, R5_1__LATER), "fx-50")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -3654,7 +3674,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	public static final Rule 	RULE51
-		= new Rule (Precondition.and (FX_SWAP_LEG, Preconditions.R5_1__LATER), "fx-51")
+		= new Rule (Precondition.and (FX_SWAP_LEG, R5_1__LATER), "fx-51")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -3696,7 +3716,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	public static final Rule 	RULE52
-		= new Rule (Precondition.and (TRADE, Preconditions.R5_1__LATER), "fx-52")
+		= new Rule (Precondition.and (TRADE, R5_1__LATER), "fx-52")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{
@@ -3737,7 +3757,7 @@ public final class FxRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	public static final Rule 	RULE53
-		= new Rule (Precondition.and (TRADE, Preconditions.R5_1__LATER), "fx-53")
+		= new Rule (Precondition.and (TRADE, R5_1__LATER), "fx-53")
 		{
 			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
 			{

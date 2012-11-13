@@ -79,10 +79,10 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	private static final Precondition	R4_2__LATER
-	= Precondition.and (new Precondition [] {
-			CDS_PRODUCT,
-			Preconditions.R4_2__LATER,
-			Preconditions.CONFIRMATION });
+		= Precondition.and (new Precondition [] {
+				CDS_PRODUCT,
+				Preconditions.R4_2__LATER,
+				Preconditions.CONFIRMATION });
 
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML 4.3 or later
@@ -90,10 +90,10 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.6
 	 */
 	private static final Precondition	R4_3__LATER
-	= Precondition.and (new Precondition [] {
-			CDS_PRODUCT,
-			Preconditions.R4_3__LATER,
-			Preconditions.CONFIRMATION });
+		= Precondition.and (new Precondition [] {
+				CDS_PRODUCT,
+				Preconditions.R4_3__LATER,
+				Preconditions.CONFIRMATION });
 
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML 5.0 or later
@@ -600,7 +600,7 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.0
 	 */
 	public static final Rule	RULE06
-		= new Rule (Preconditions.R4_0__LATER, "cd-6")
+		= new Rule (R4_0__LATER, "cd-6")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1078,7 +1078,7 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.0
 	 */
 	public static final Rule	RULE15
-		= new Rule (Preconditions.R4_0__LATER, "cd-15")
+		= new Rule (R4_0__LATER, "cd-15")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2327,7 +2327,7 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.0
 	 */
 	public static final Rule	RULE31
-		= new Rule (Preconditions.R4_0__LATER, "cd-31")
+		= new Rule (R4_0__LATER, "cd-31")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2429,7 +2429,7 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.0
 	 */
 	public static final Rule	RULE33
-		= new Rule (Preconditions.R4_0__LATER, "cd-33")
+		= new Rule (R4_0__LATER, "cd-33")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2479,7 +2479,7 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.0
 	 */
 	public static final Rule	RULE34
-		= new Rule (Preconditions.R4_0__LATER, "cd-34")
+		= new Rule (R4_0__LATER, "cd-34")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2526,7 +2526,7 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.0
 	 */
 	public static final Rule	RULE35
-		= new Rule (Preconditions.R4_0__LATER, "cd-35")
+		= new Rule (R4_0__LATER, "cd-35")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2567,7 +2567,7 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.0
 	 */
 	public static final Rule	RULE36
-		= new Rule (Preconditions.R4_0__LATER, "cd-36")
+		= new Rule (R4_0__LATER, "cd-36")
 		{
 			/**
 			 * {@inheritDoc}
@@ -2611,7 +2611,7 @@ public final class CdsRules extends FpMLRuleSet
 	 * @since	TFP 1.0
 	 */
 	public static final Rule	RULE37
-		= new Rule (Preconditions.R4_0__LATER, "cd-37")
+		= new Rule (R4_0__LATER, "cd-37")
 		{
 			/**
 			 * {@inheritDoc}
