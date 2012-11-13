@@ -946,7 +946,7 @@ public final class SchemeRules
 	 * @since	TFP 1.6	
 	 */
 	public static final Rule	RULE77
-		= new SchemeRule (Preconditions.R4_2__LATER, "scheme-7", 
+		= new SchemeRule (Preconditions.R4_2__LATER, "scheme-77", 
 				new ElementContext ("matrixSource"),
 				new TypeContext ("MatrixSource"), "settledEntityMatrixSourceScheme");
 	
@@ -990,21 +990,503 @@ public final class SchemeRules
 	
 	// FpML 4.3 ------------------------------------------------------------
 
-	// designatedPriorityScheme
+	/**
+	 * Rule 81: The value of any <CODE>FacilityType</CODE> type element must
+	 * be valid within the domain defined by its <CODE>facilityTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.3 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE81
+		= new SchemeRule (Preconditions.R4_3__LATER, "scheme-81", 
+				new ElementContext ("facilityType"),
+				new TypeContext ("FacilityType"), "facilityTypeScheme");
 	
-
-	// loanTypeScheme
-	// mortgageSectorScheme
-	// positionStatusScheme
+	/**
+	 * Rule 82: The value of any <CODE>Lien</CODE> type element must
+	 * be valid within the domain defined by its <CODE>lienScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.3 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE82
+		= new SchemeRule (Preconditions.R4_3__LATER, "scheme-82", 
+				new ElementContext ("lien"),
+				new TypeContext ("Lien"), "lienScheme");
+	
+	/**
+	 * Rule 83: The value of any <CODE>UnderlyingAssetTranche</CODE> type element must
+	 * be valid within the domain defined by its <CODE>loanTrancheScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.3 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE83
+		= new SchemeRule (Preconditions.R4_3__LATER, "scheme-83", 
+				new ElementContext ("tranche"),
+				new TypeContext ("UnderlyingAssetTranche"), "loanTrancheScheme");
+	
+	/**
+	 * Rule 84: The value of any <CODE>MortgateSector</CODE> type element must
+	 * be valid within the domain defined by its <CODE>mortgageSectorScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.3 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE84
+		= new SchemeRule (Preconditions.R4_3__LATER, "scheme-84", 
+				new ElementContext ("sector"),
+				new TypeContext ("MortgateSector"), "mortgageSectorScheme");
+	
+	/**
+	 * Rule 85: The value of any <CODE>PositionMatchStatus</CODE> type element must
+	 * be valid within the domain defined by its <CODE>positionStatusScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.3 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE85
+		= new SchemeRule (Preconditions.R4_3__R4_X, "scheme-85", 
+				new ElementContext ("positionMatchResult", "status"),
+				new TypeContext ("PositionMatchStatus"), "positionStatusScheme");
 	
 	// FpML 4.4 ------------------------------------------------------------
 
-	// creditSupportAgreementTypeScheme
+	/**
+	 * Rule 86: The value of any <CODE>CreditSupportAgreementType</CODE> type element must
+	 * be valid within the domain defined by its <CODE>creditSupportAgreementTypeScheme</CODE>
+	 * attribute.
+	 * <P>
+	 * Applies to FpML 4.4 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE86
+		= new SchemeRule (Preconditions.R4_4__LATER, "scheme-86", 
+				new ElementContext ("creditSupportAgreement", "type"),
+				new TypeContext ("CreditSupportAgreementType"), "creditSupportAgreementTypeScheme");
 	
 	// FpML 4.5 ------------------------------------------------------------
 	
-	// commodityMarketDisruptionFallbackScheme
-	// commodityMarketDisruptionScheme
+	/**
+	 * Rule 87: The value of any <CODE>CommodityBusinessCalendar</CODE> type element must
+	 * be valid within the domain defined by its <CODE>commodityBusinessCalendarScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.5 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE87
+		= new SchemeRule (Preconditions.R4_5__LATER, "scheme-87", 
+				new ElementContext (
+						new String [] { "startTime", "endTime" },
+						new String [] { "businessCalendar", "businessCalendar" }),
+				new TypeContext ("CommodityBusinessCalendar"), "commodityBusinessCalendarScheme");
+	
+	/**
+	 * Rule 88: The value of any <CODE>CommodityFrequencyType</CODE> type element must
+	 * be valid within the domain defined by its <CODE>commodityFrequencyTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.5 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE88
+		= new SchemeRule (Preconditions.R4_5__LATER, "scheme-88", 
+				new ElementContext ("dayDistribution"),
+				new TypeContext ("CommodityFrequencyType"), "commodityFrequencyTypeScheme");
+	
+	/**
+	 * Rule 89: The value of any <CODE>CommodityFxType</CODE> type element must
+	 * be valid within the domain defined by its <CODE>commodityFxTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.5 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE89
+		= new SchemeRule (Preconditions.R4_5__LATER, "scheme-89", 
+				new ElementContext ("fxType"),
+				new TypeContext ("CommodityFxType"), "commodityFxTypeScheme");
+	
+	/**
+	 * Rule 90: The value of any <CODE>DisruptionFallback</CODE> type element must
+	 * be valid within the domain defined by its <CODE>commodityMarketDisruptionFallbackScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.5 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE90
+		= new SchemeRule (Preconditions.R4_5__LATER, "scheme-90", 
+				new ElementContext ("disruptionFallback", "fallback"),
+				new TypeContext ("DisruptionFallback"), "commodityMarketDisruptionFallbackScheme");
+	
+	/**
+	 * Rule 91: The value of any <CODE>MarketDisruptionEvent</CODE> type element must
+	 * be valid within the domain defined by its <CODE>commodityMarketDisruptionScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.5 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE91
+		= new SchemeRule (Preconditions.R4_5__LATER, "scheme-91", 
+				new ElementContext ("marketDisruptionEvent"),
+				new TypeContext ("MarketDisruptionEvent"), "commodityMarketDisruptionScheme");
+	
+	/**
+	 * Rule 92: The value of any <CODE>MasterAgreementVersion</CODE> type element must
+	 * be valid within the domain defined by its <CODE>masterAgreementVersionScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.5 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE92
+		= new SchemeRule (Preconditions.R4_5__LATER, "scheme-92", 
+				new ElementContext ("masterAgreementVersion"),
+				new TypeContext ("MasterAgreementVersion"), "masterAgreementVersionScheme");
+	
+	/**
+	 * Rule 93: The value of any <CODE>CommodityQuantityFrequency</CODE> type element must
+	 * be valid within the domain defined by its <CODE>quantityFrequencyScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.5 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE93
+		= new SchemeRule (Preconditions.R4_5__LATER, "scheme-93", 
+				new ElementContext ("quantityFrequency"),
+				new TypeContext ("CommodityQuantityFrequency"), "quantityFrequencyScheme");
+	
+	/**
+	 * Rule 94: The value of any <CODE>QuantityUnit</CODE> type element must
+	 * be valid within the domain defined by its <CODE>quantityUnitScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.5 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE94
+		= new SchemeRule (Preconditions.R4_5__LATER, "scheme-94", 
+				new ElementContext (
+						new String [] { "unit", "quantityUnit", "priceUnit" }),
+				new TypeContext ("QuantityUnit"), "quantityUnitScheme");
+	
+	// FpML 4.6 ------------------------------------------------------------
+	
+	/**
+	 * Rule 95: The value of any <CODE>BullionDeliveryLocation</CODE> type element must
+	 * be valid within the domain defined by its <CODE>bullionDeliveryLocationScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.6 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE95
+		= new SchemeRule (Preconditions.R4_6__LATER, "scheme-95", 
+				new ElementContext ("deliveryLocation"),
+				new TypeContext ("BullionDeliveryLocation"), "bullionDeliveryLocationScheme");
+	
+	/**
+	 * Rule 96: The value of any <CODE>CoalQualityAdjustments</CODE> type element must
+	 * be valid within the domain defined by its <CODE>commodityCoalProductTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.6 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE96
+		= new SchemeRule (Preconditions.R4_6__LATER, "scheme-96", 
+				new ElementContext (
+						new String [] { "gas", "gas" },
+						new String [] { "btuQualityAdjustments", "so2QualityAdjustments" }),
+				new TypeContext ("CoalQualityAdjustments"), "commodityCoalProductTypeScheme");
+	
+	/**
+	 * Rule 97: The value of any <CODE>CoalTransportationEquipment</CODE> type element must
+	 * be valid within the domain defined by its <CODE>commodityCoalTransportationEquipmentScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.6 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE97
+		= new SchemeRule (Preconditions.R4_6__LATER, "scheme-97", 
+				new ElementContext ("transportationEquipment"),
+				new TypeContext ("CoalTransportationEquipment"), "commodityCoalTransportationEquipmentScheme");
+	
+	/**
+	 * Rule 98: The value of any <CODE>OilProductType</CODE> type element must
+	 * be valid within the domain defined by its <CODE>commodityOilProductTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.6 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE98
+		= new SchemeRule (Preconditions.R4_6__LATER, "scheme-98", 
+				new ElementContext ("oil", "type"),
+				new TypeContext ("OilProductType"), "commodityOilProductTypeScheme");
+	
+	/**
+	 * Rule 99: The value of any <CODE>CommodityPayRelativeToEvent</CODE> type element must
+	 * be valid within the domain defined by its <CODE>commodityPayRelativeToEventScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.6 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE99
+		= new SchemeRule (Preconditions.R4_6__LATER, "scheme-99", 
+				new ElementContext ("payRelativeToEvent"),
+				new TypeContext ("CommodityPayRelativeToEvent"), "commodityPayRelativeToEventScheme");
+	
+	/**
+	 * Rule 100: The value of any <CODE>CommodityDeliveryRisk</CODE> type element must
+	 * be valid within the domain defined by its <CODE>deliveryRiskScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.6 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE100
+		= new SchemeRule (Preconditions.R4_6__LATER, "scheme-100", 
+				new ElementContext ("risk"),
+				new TypeContext ("CommodityDeliveryRisk"), "deliveryRiskScheme");
+	
+	/**
+	 * Rule 101: The value of any <CODE>DeterminationMethod</CODE> type element must
+	 * be valid within the domain defined by its <CODE>determinationMethodScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.6 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE101
+		= new SchemeRule (Preconditions.R4_6__LATER, "scheme-101", 
+				new ElementContext ("determinationMethod"),
+				new TypeContext ("DeterminationMethod"), "determinationMethodScheme");
+	
+	/**
+	 * Rule 102: The value of any <CODE>ElectricityTransmissionContingencyType</CODE> type element must
+	 * be valid within the domain defined by its <CODE>electricityTransmissionContingencyScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.6 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE102
+		= new SchemeRule (Preconditions.R4_6__LATER, "scheme-102", 
+				new ElementContext ("contingency"),
+				new TypeContext ("ElectricityTransmissionContingencyType"), "electricityTransmissionContingencyScheme");
+	
+	/**
+	 * Rule 103: The value of any <CODE>GasQuality</CODE> type element must
+	 * be valid within the domain defined by its <CODE>gasQualityScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.6 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE103
+		= new SchemeRule (Preconditions.R4_6__LATER, "scheme-103", 
+				new ElementContext ("gas", "quality"),
+				new TypeContext ("GasQuality"), "gasQualityScheme");
+	
+	/**
+	 * Rule 104: The value of any <CODE>MasterConfirmationAnnexType</CODE> type element must
+	 * be valid within the domain defined by its <CODE>masterConfirmationAnnexTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.6 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE104
+		= new SchemeRule (Preconditions.R4_6__LATER, "scheme-104", 
+				new ElementContext ("masterConfirmationAnnexType"),
+				new TypeContext ("MasterConfirmationAnnexType"), "masterConfirmationAnnexTypeScheme");
+	
+	/**
+	 * Rule 105: The value of any <CODE>TZLocation</CODE> type element must
+	 * be valid within the domain defined by its <CODE>tzLocationScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.7 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE105
+		= new SchemeRule (Preconditions.R4_6, "scheme-105", 
+				new ElementContext (
+						new String [] { "time", "supplyStartTime", "supplyEndTime" },
+						new String [] { "location", "location", "location" }),
+				new TypeContext ("TZLocation"), "tzLocationScheme");
+		
+	// FpML 4.7 ------------------------------------------------------------
+	
+	/**
+	 * Rule 106: The value of any <CODE>CoalProductSource</CODE> type element must
+	 * be valid within the domain defined by its <CODE>commodityCoalProductSourceScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.7 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE106
+		= new SchemeRule (Preconditions.R4_7__LATER, "scheme-106", 
+				new ElementContext ("coal", "type"),
+				new TypeContext ("CoalProductSource"), "commodityCoalProductSourceScheme");
+		
+	/**
+	 * Rule 107: The value of any <CODE>CoalQualityAdjustments</CODE> type element must
+	 * be valid within the domain defined by its <CODE>commodityCoalQualityAdjustmentsScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.7 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE107
+		= new SchemeRule (Preconditions.R4_7__LATER, "scheme-107", 
+				new ElementContext (
+						new String [] { "coal", "coal" },
+						new String [] { "btuQualityAdjustments", "so2QualityAdjustments" }),
+				new TypeContext ("CoalQualityAdjustments"), "commodityCoalQualityAdjustmentsScheme");
+		
+	/**
+	 * Rule 108: The value of any <CODE>SettlementPriceDefaultElection</CODE> type element must
+	 * be valid within the domain defined by its <CODE>settlementPriceDefaultElectionScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.7 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE108
+		= new SchemeRule (Preconditions.R4_7__LATER, "scheme-108", 
+				new ElementContext ("settlementPriceDefaultElection"),
+				new TypeContext ("SettlementPriceDefaultElection"), "settlementPriceDefaultElectionScheme");
+		
+	/**
+	 * Rule 109: The value of any <CODE>TimezoneLocation</CODE> type element must
+	 * be valid within the domain defined by its <CODE>timezoneLocationScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.7 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE109
+		= new SchemeRule (Preconditions.R4_7__LATER, "scheme-109", 
+				new ElementContext (
+						new String [] { "time", "supplyStartTime", "supplyEndTime" },
+						new String [] { "location", "location", "location" }),
+				new TypeContext ("TimezoneLocation"), "timezoneLocationScheme");
+		
+	// FpML 4.8 ------------------------------------------------------------
+	
+	/**
+	 * Rule 110: The value of any <CODE>CommodityExpireRelativeToEvent</CODE> type element must
+	 * be valid within the domain defined by its <CODE>commodityExpireRelativeToEventScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.8 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE110
+		= new SchemeRule (Preconditions.R4_8__LATER, "scheme-110", 
+				new ElementContext ("expireRelativeToEvent"),
+				new TypeContext ("CommodityExpireRelativeToEvent"), "commodityExpireRelativeToEventScheme");
+		
+	// FpML 5.0 ------------------------------------------------------------
+	
+	/**
+	 * Rule 111: The value of any <CODE>AssetClass</CODE> type element must
+	 * be valid within the domain defined by its <CODE>assetClassScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE111
+		= new SchemeRule (Preconditions.R5_0__LATER, "scheme-111", 
+				new ElementContext ("assetClass"),
+				new TypeContext ("AssetClass"), "assetClassScheme");
+		
+	/**
+	 * Rule 112: The value of any <CODE>CreditRating</CODE> type element must
+	 * be valid within the domain defined by its <CODE>creditRatingScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE112
+		= new SchemeRule (Preconditions.R5_0__LATER, "scheme-112", 
+				new ElementContext ("creditRating"),
+				new TypeContext ("CreditRating"), "creditRatingScheme");
+		
+	/**
+	 * Rule 113: The value of any <CODE>EventStatus</CODE> type element must
+	 * be valid within the domain defined by its <CODE>eventStatusScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE113
+		= new SchemeRule (Preconditions.R5_0__LATER, "scheme-113", 
+				new ElementContext ("statusItem", "status"),
+				new TypeContext ("EventStatus"), "eventStatusScheme");
+		
+	/**
+	 * Rule 114: The value of any <CODE>IndustryClassification</CODE> type element must
+	 * be valid within the domain defined by its <CODE>industryClassificationScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE114
+		= new SchemeRule (Preconditions.R5_0__LATER, "scheme-114", 
+				new ElementContext ("classification"),
+				new TypeContext ("IndustryClassification"), "industryClassificationScheme");
+		
+	/**
+	 * Rule 115: The value of any <CODE>PartyRole</CODE> type element must
+	 * be valid within the domain defined by its <CODE>partyRoleScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE115
+		= new SchemeRule (Preconditions.R5_0__LATER, "scheme-115", 
+				new ElementContext ("relatedParty", "role"),
+				new TypeContext ("PartyRole"), "partyRoleScheme");
+		
+	/**
+	 * Rule 116: The value of any <CODE>PartyRoleType</CODE> type element must
+	 * be valid within the domain defined by its <CODE>partyRoleTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE116
+		= new SchemeRule (Preconditions.R5_0__LATER, "scheme-116", 
+				new ElementContext ("relatedParty", "type"),
+				new TypeContext ("PartyRoleType"), "partyRoleTypeScheme");
+		
+	/**
+	 * Rule 117: The value of any <CODE>PositionUpdateReasonCode</CODE> type element must
+	 * be valid within the domain defined by its <CODE>positionUpdateReasonCodeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE117
+		= new SchemeRule (Preconditions.R5_0__LATER, "scheme-117", 
+				new ElementContext ("reason", "code"),
+				new TypeContext ("PositionUpdateReasonCode"), "positionUpdateReasonCodeScheme");
+		
+	/**
+	 * Rule 118: The value of any <CODE>ReportingCurrencyType</CODE> type element must
+	 * be valid within the domain defined by its <CODE>reportingCurrencyTypeScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 5.0 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE118
+		= new SchemeRule (Preconditions.R5_0__LATER, "scheme-118", 
+				new ElementContext ("currencyType"),
+				new TypeContext ("ReportingCurrencyType"), "reportingCurrencyTypeScheme");
+		
+	// FpML 5.2 ------------------------------------------------------------
+	
+	/**
+	 * Rule 119: The value of any <CODE>ClearingStatus</CODE> type element must
+	 * be valid within the domain defined by its <CODE>clearingStatusScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 5.2 and later.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE119
+		= new SchemeRule (Preconditions.R5_2__LATER, "scheme-119", 
+				new ElementContext ("clearingStatusValue"),
+				new TypeContext ("ClearingStatusValue"), "clearingStatusScheme");
+		
+	
+	
+	
 	
 	// FpML 5.3 ------------------------------------------------------------
 	

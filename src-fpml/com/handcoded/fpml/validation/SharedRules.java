@@ -285,7 +285,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to all FpML versions.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE04 = new Rule ("shared-4")
+	public static final Rule	RULE04 = new Rule (R1_0__LATER, "shared-4")
 		{
 			/**
 			 * {@inheritDoc}
@@ -329,7 +329,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to all FpML versions.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE05 = new Rule ("shared-5")
+	public static final Rule	RULE05 = new Rule (R1_0__LATER, "shared-5")
 		{
 			/**
 			 * {@inheritDoc}
@@ -368,8 +368,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 3-0 and later.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule 	RULE06
-		= new Rule (R3_0__LATER, "shared-6")
+	public static final Rule 	RULE06	= new Rule (R3_0__LATER, "shared-6")
 		{
 			/**
 			 * {@inheritDoc}
@@ -403,8 +402,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 3-0 and later.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule 	RULE07 
-		= new Rule (R3_0__LATER, "shared-7")
+	public static final Rule 	RULE07 	= new Rule (R3_0__LATER, "shared-7")
 		{
 			/**
 			 * {@inheritDoc}
@@ -448,8 +446,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 3-0 and later.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE08 
-		= new Rule (R3_0__LATER, "shared-8")
+	public static final Rule	RULE08 	= new Rule (R3_0__LATER, "shared-8")
 		{
 			/**
 			 * {@inheritDoc}
@@ -505,8 +502,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 3-0 and later.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE09 
-		= new Rule (R3_0__LATER, "shared-9")
+	public static final Rule	RULE09 	= new Rule (R3_0__LATER, "shared-9")
 		{
 			/**
 			 * {@inheritDoc}
@@ -564,7 +560,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to all FpML versions.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE10 = new Rule ("shared-10")
+	public static final Rule	RULE10 = new Rule (R1_0__LATER, "shared-10")
 		{
 			/**
 			 * {@inheritDoc}
@@ -604,8 +600,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 3-0 and later.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE11 
-		= new Rule (R3_0__LATER, "shared-11")
+	public static final Rule	RULE11 	= new Rule (R3_0__LATER, "shared-11")
 		{
 			/**
 			 * {@inheritDoc}
@@ -670,8 +665,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 1-0 and 2-0.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE12_XLINK
-		= new Rule (R1_0__R2_0, "shared-12[XLINK]")
+	public static final Rule	RULE12_XLINK = new Rule (R1_0__R2_0, "shared-12[XLINK]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -714,8 +708,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 3-0 and later.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE12
-		= new Rule (R3_0__LATER, "shared-12")
+	public static final Rule	RULE12	= new Rule (R3_0__LATER, "shared-12")
 		{
 			/**
 			 * {@inheritDoc}
@@ -749,8 +742,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 1-0 and 2-0.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE13_XLINK
-		= new Rule (R1_0__R2_0, "shared-13[XLINK]")
+	public static final Rule	RULE13_XLINK	= new Rule (R1_0__R2_0, "shared-13[XLINK]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -793,8 +785,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 3-0 and later. 
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE13
-		= new Rule (R3_0__LATER, "shared-13")
+	public static final Rule	RULE13	= new Rule (R3_0__LATER, "shared-13")
 		{
 			/**
 			 * {@inheritDoc}
@@ -828,8 +819,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 1-0 and 2-0. 
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE14_XLINK
-		= new Rule (R1_0__R2_0, "shared-14[XLINK]")
+	public static final Rule	RULE14_XLINK	= new Rule (R1_0__R2_0, "shared-14[XLINK]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -872,8 +862,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to FpML 3-0 and later. 
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE14
-		= new Rule (R3_0__LATER, "shared-14")
+	public static final Rule	RULE14	= new Rule (R3_0__LATER, "shared-14")
 		{
 			/**
 			 * {@inheritDoc}
@@ -907,7 +896,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to all FpML versions.
 	 * @since	TFP 1.0	
 	 */
-	public static final Rule	RULE15 = new Rule ("shared-15")
+	public static final Rule	RULE15 = new Rule (R1_0__LATER, "shared-15")
 		{
 			/**
 			 * {@inheritDoc}
@@ -1535,7 +1524,7 @@ public final class SharedRules extends FpMLRuleSet
 	 * Applies to all FpML versions.
 	 * @since	TFP 1.6	
 	 */
-	public static final Rule	RULE29 = new Rule ("shared-29")
+	public static final Rule	RULE29 = new Rule (R1_0__LATER, "shared-29")
 		{
 			/**
 			 * {@inheritDoc}

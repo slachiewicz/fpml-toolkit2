@@ -115,6 +115,9 @@ public class SchemeRule extends Rule
 				fpml = DOM.getParent (fpml);
 			}
 			
+			if (version == null)
+				errorHandler.error ("999", list.item (0), "", "", "");
+			
 			SchemeCollection 	schemes =
 				((SchemeAccess) (Releases.FPML.getReleaseForVersion (version))).getSchemeCollection ();
 		
