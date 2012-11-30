@@ -41,9 +41,9 @@ public final class LoanRules extends FpMLRuleSet
 	 * confirmation view documents.
 	 * @since	TFP 1.7
 	 */
-	private static final Precondition	R4_4__LATER
+	private static final Precondition	R4_4__R4_X
 		= Precondition.and (
-				Preconditions.R4_4__LATER,
+				Preconditions.R4_4__R4_X,
 				Preconditions.CONFIRMATION);
 	
 	/**
@@ -53,7 +53,7 @@ public final class LoanRules extends FpMLRuleSet
 	 * Applies to FpML 4.4 and later.
 	 * @since	TFP 1.2
 	 */
-	public static final Rule RULE01 = new Rule (R4_4__LATER, "ln-1")
+	public static final Rule RULE01 = new Rule (R4_4__R4_X, "ln-1")
 		{	
 			/**
 			 * {@inheritDoc}
@@ -99,7 +99,7 @@ public final class LoanRules extends FpMLRuleSet
 	 * Applies to FpML 4.4 and later.
 	 * @since	TFP 1.2
 	 */
-	public static final Rule RULE02 = new Rule (R4_4__LATER, "ln-2")
+	public static final Rule RULE02 = new Rule (R4_4__R4_X, "ln-2")
 		{
 			/**
 			 * {@inheritDoc}
@@ -149,7 +149,7 @@ public final class LoanRules extends FpMLRuleSet
 	 * Applies to FpML 4.4 and later.
 	 * @since	TFP 1.2
 	 */
-	public static final Rule RULE03 = new Rule (R4_4__LATER, "ln-3")
+	public static final Rule RULE03 = new Rule (R4_4__R4_X, "ln-3")
 		{
 			/**
 			 * {@inheritDoc}
@@ -207,7 +207,7 @@ public final class LoanRules extends FpMLRuleSet
 	 * Applies to FpML 4.4 and later.
 	 * @since	TFP 1.2
 	 */
-	public static final Rule RULE04 = new Rule (R4_4__LATER, "ln-4")
+	public static final Rule RULE04 = new Rule (R4_4__R4_X, "ln-4")
 		{
 			/**
 			 * {@inheritDoc}
@@ -258,7 +258,7 @@ public final class LoanRules extends FpMLRuleSet
 	 * Applies to FpML 4.4 and later.
 	 * @since	TFP 1.2
 	 */
-	public static final Rule RULE05 = new Rule (R4_4__LATER, "ln-5")
+	public static final Rule RULE05 = new Rule (R4_4__R4_X, "ln-5")
 		{
 			/**
 			 * {@inheritDoc}
@@ -306,7 +306,7 @@ public final class LoanRules extends FpMLRuleSet
 			}
 		};
 	
-	public static final Rule RULE10 = new Rule (R4_4__LATER, "ln-10")
+	public static final Rule RULE10 = new Rule (R4_4__R4_X, "ln-10")
 		{
 			/**
 			 * {@inheritDoc}
@@ -319,7 +319,7 @@ public final class LoanRules extends FpMLRuleSet
 						  validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "FacilityNotice"), errorHandler));					
 					
 				return (
-						  validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "FacilityNotice"), errorHandler));					
+						  validate (nodeIndex.getElementsByName ("facilityNotice"), errorHandler));					
 			}
 			
 			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
