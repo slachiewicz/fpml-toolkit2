@@ -15,13 +15,34 @@ package com.handcoded.finance;
 
 import java.util.Vector;
 
+/**
+ * An instance of the <CODE>CalendarSet</CODE> class holds a collection of
+ * <CODE>Calendar</CODE> instances used to define business days for date rolls.
+ * <P>
+ * A date is only considered a business day if it is business day in all the
+ * underlying <CODE>Calendar</CODE> instances.
+ * 
+ * @author 	BitWise
+ * @version	$Id$
+ * @since	TFP 1.7
+ */
 public final class CalendarSet extends Calendar
 {
+	/**
+	 * Constructs an empty <CODE>CalendarSet</CODE> instance.
+	 * @since	TFP 1.7
+	 */
 	public CalendarSet ()
 	{
 		super (null);
 	}
-	
+
+	/**
+	 * Adds the indicated <CODE>Calendar</CODE> to the underlying collection.
+	 * 
+	 * @param	calendar		The <CODE>Calendar</CODE> to be added.
+	 * @since	TFP 1.7
+	 */
 	public void add (Calendar calendar)
 	{
 		calendars.add (calendar);
@@ -46,5 +67,9 @@ public final class CalendarSet extends Calendar
 		return (true);
 	}
 
+	/**
+	 * The underlying set of <CODE>Calendar</CODE> instances.
+	 * @since	TFP 1.7
+	 */
 	private Vector<Calendar>	calendars = new Vector<Calendar> ();
 }
