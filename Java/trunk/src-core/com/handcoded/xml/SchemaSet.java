@@ -98,8 +98,12 @@ public final class SchemaSet
 					try {
 						String source = catalog.resolve (schema.getNamespaceUri());
 						
-						if (!sources.contains (source))
-							sources.add (source);
+						if (source == null)
+							logger.log (Level.SEVERE, "Failed to resolve namespace URI '" + schema.getNamespaceUri () +"'");
+						else  {
+							if (!sources.contains (source))
+								sources.add (source);
+						}
 					}
 					catch (SAXException error) {
 						logger.log (Level.SEVERE, "Unexpected SAX exception creating schema source", error);
