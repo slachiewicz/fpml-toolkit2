@@ -1,19 +1,22 @@
 RMDIR /Q /S distweb
 MKDIR distweb
 MKDIR distweb\jar
-MKDIR distweb\jar\files
-MKDIR distweb\jar\files\data
-MKDIR distweb\jar\files\schemas
+MKDIR distweb\jar\files-core
+MKDIR distweb\jar\files-fpml
+MKDIR distweb\jar\files-core\data
+MKDIR distweb\jar\files-fpml\schemas
 MKDIR distweb\doc
-MKDIR distweb\files\examples\fpml4-7
-COPY files\*.* distweb\jar\files
-XCOPY /S /I files\data distweb\jar\files\data
-XCOPY /S /I files\schemas distweb\jar\files\schemas
+MKDIR distweb\files-fpml\examples\fpml4-7
+COPY files-core\*.* distweb\jar\files-core
+COPY files-fpml\*.* distweb\jar\files-fpml
+XCOPY /S /I files-core\data distweb\jar\files-core\data
+XCOPY /S /I files-fpml\data distweb\jar\files-fpml\data
+XCOPY /S /I files-fpml\schemas distweb\jar\files-fpml\schemas
 XCOPY /S /I bin\*.* distweb\jar
 XCOPY /S /I doc distweb\doc
-XCOPY /S /I files\examples\fpml4-7 distweb\files\examples\fpml4-7
+XCOPY /S /I files-fpml\examples\fpml4-7 distweb\files-fpml\examples\fpml4-7
 CD distweb\jar
-"C:\Program Files\Java\jdk1.6.0_11\bin\jar" cvf ..\handcoded.jar *
+jar cvf ..\handcoded.jar *
 CD ..\..
 RMDIR /Q /S distweb\jar
 XCOPY /S /I lib distweb\lib

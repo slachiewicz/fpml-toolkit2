@@ -48,9 +48,9 @@ final class NextCatalogEntry extends RelativeEntry implements EntityRule, UriRul
 	public String applyTo (final String publicId, final String systemId,
 			Stack<GroupEntry> catalogs)
 		throws SAXException
-	{
+	{		
 		try {
-			return (CatalogManager.find (baseAsUri ().resolve (new URI (catalog)).toString ())
+			return (CatalogManager.find (resolveCatalog ())
 				.getDefinition ().applyRules (publicId, systemId, catalogs));
 		}
 		catch (URISyntaxException error) {
@@ -66,7 +66,7 @@ final class NextCatalogEntry extends RelativeEntry implements EntityRule, UriRul
 		throws SAXException
 	{
 		try {
-			return (CatalogManager.find (baseAsUri ().resolve (new URI (catalog)).toString ())
+			return (CatalogManager.find (resolveCatalog ())
 				.getDefinition ().applyRules (uri, catalogs));
 		}
 		catch (URISyntaxException error) {
@@ -89,4 +89,29 @@ final class NextCatalogEntry extends RelativeEntry implements EntityRule, UriRul
 	 * @since	TFP 1.0
 	 */
 	private final String		catalog;
+	
+	/**
+	 * Works out the URI for the chained catalog file checking for the case when
+	 * the catalog files are within the a JAR.
+	 * <P>
+	 * The standard implementation of the <CODE>URI.resolve<CODE> method fails
+	 * when the base URI is a JAR file reference.
+	 * 
+	 * @return	The correctly resolved URI string for the catalog.
+	 * @throws	URISyntaxException	If any of the URIs are invalid.
+	 * @since	TFP 1.7
+	 */
+	private String resolveCatalog ()
+		throws URISyntaxException
+	{
+		String		xmlbase = getXmlBase ();
+		
+		if (xmlbase.startsWith ("jar:file:")) {
+			URI			filePart = new URI (xmlbase.substring (9)).resolve (new URI (catalog));
+			
+			return ("jar:file:" + filePart.toString ());
+		}
+		else
+			return (new URI (xmlbase).resolve (new URI (catalog)).toString ());
+	}
 }

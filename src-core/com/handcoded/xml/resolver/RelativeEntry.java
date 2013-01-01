@@ -37,10 +37,12 @@ abstract class RelativeEntry extends CatalogComponent
 	{
 		if (xmlbase != null)
 			return (xmlbase);
-		else if (getParent () != null)
-			return (getParent ().getXmlBase ());
-		else
-			return (null);
+		else {
+			if (getParent () != null)
+				return (getParent ().getXmlBase ());
+			else
+				return (null);
+		}
 	}
 	
 	/**
@@ -69,9 +71,7 @@ abstract class RelativeEntry extends CatalogComponent
 	protected URI baseAsUri ()
 		throws URISyntaxException
 	{
-		String				xmlbase = getXmlBase ();
-		
-		return (new URI (xmlbase));
+		return (new URI (getXmlBase ()));
 	}
 	
 	/**
