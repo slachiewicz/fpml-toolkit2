@@ -227,6 +227,14 @@ public interface Preconditions
 		= new VersionRangePrecondition ("1-0", "4-6");
 
     /**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 1-0 up to
+	 * 4-9 compatible documents.
+	 * @since	TFP 1.7
+	 */
+	public static final Precondition	R1_0__R4_9
+		= new VersionRangePrecondition ("1-0", "4-9");
+
+    /**
 	 * A <CODE>Precondition</CODE> instance that detects either FpML 2-0 or
 	 * 3-0 compatible documents.
 	 * @since	TFP 1.0

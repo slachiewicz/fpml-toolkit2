@@ -1,4 +1,4 @@
-// Copyright (C),2005-2012 HandCoded Software Ltd.
+// Copyright (C),2005-2013 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -73,6 +73,17 @@ public final class IrdRules extends FpMLRuleSet
 				Preconditions.CONFIRMATION });
 
 	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 1-0 thru 4-9
+	 * confirmation view documents.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition	R1_0__R4_9
+		= Precondition.and (new Precondition [] {
+				IRD_PRODUCT,
+				Preconditions.R1_0__R4_9,
+				Preconditions.CONFIRMATION });
+
+	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML 1-0 and later
 	 * confirmation view documents.
 	 * @since	TFP 1.7
@@ -103,6 +114,17 @@ public final class IrdRules extends FpMLRuleSet
 		= Precondition.and (new Precondition [] {
 				IRD_PRODUCT,
 				Preconditions.R4_7__LATER,
+				Preconditions.CONFIRMATION });
+	
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5-0 and later
+	 * confirmation view documents.
+	 * @since	TFP 1.7
+	 */
+	private static final Precondition	R5_0__LATER
+		= Precondition.and (new Precondition [] {
+				IRD_PRODUCT,
+				Preconditions.R5_0__LATER,
 				Preconditions.CONFIRMATION });
 	
 	/**
@@ -517,7 +539,8 @@ public final class IrdRules extends FpMLRuleSet
 	 * Applies to all FpML releases.
 	 * @since	TFP 1.0
 	 */
-	public static final Rule	RULE08 = new Rule (INTEREST_RATE_STREAM, "ird-8")
+	public static final Rule	RULE08_OLD = new Rule (
+			Precondition.and (R1_0__R4_9, INTEREST_RATE_STREAM), "ird-8[OLD]")
 		{
 			/**
 			 * {@inheritDoc}
@@ -546,6 +569,55 @@ public final class IrdRules extends FpMLRuleSet
 							"The payer and receiver references must not be the same",
 							getDisplayName (), payer.getAttribute ("href"));
 						result = false;
+					}
+				}
+
+				return (result);
+			}
+		};
+
+	/**
+	 * A <CODE>Rule</CODE> that ensures the payer and receiver are not
+	 * the same party.
+	 * <P>
+	 * Applies to all FpML releases.
+	 * @since	TFP 1.0
+	 */
+	public static final Rule	RULE08 = new Rule (
+			Precondition.and (R5_0__LATER, INTEREST_RATE_STREAM), "ird-8")
+		{
+			/**
+			 * {@inheritDoc}
+			 */
+			public boolean validate (NodeIndex nodeIndex, ValidationErrorHandler errorHandler)
+			{
+				if (nodeIndex.hasTypeInformation()) 
+					return (validate (nodeIndex.getElementsByType (determineNamespace (nodeIndex), "InterestRateStream"), errorHandler));					
+					
+				return (
+					  validate (nodeIndex.getElementsByName ("swapStream"), errorHandler)
+					& validate (nodeIndex.getElementsByName ("capFloorStream"), errorHandler));
+			}
+
+			private boolean validate (NodeList list, ValidationErrorHandler errorHandler)
+			{
+				boolean		result = true;
+
+				for (int index = 0; index < list.getLength (); ++index) {
+					Element context = (Element) list.item (index);
+					Element payer	 = DOM.getElementByLocalName (context, "payerPartyReference");
+					Element receiver = DOM.getElementByLocalName (context, "receiverPartyReference");
+
+					if (payer.getAttribute ("href").equals (receiver.getAttribute ("href"))) {
+						payer	 = DOM.getElementByLocalName (context, "payerAccountReference");
+						receiver = DOM.getElementByLocalName (context, "receiverAccountReference");
+								
+						if (payer.getAttribute ("href").equals (receiver.getAttribute ("href"))) {
+							errorHandler.error ("305", context,
+								"The payer and receiver references must not be the same",
+								getDisplayName (), payer.getAttribute ("href"));
+							result = false;
+						}
 					}
 				}
 
