@@ -1,4 +1,4 @@
-// Copyright (C),2005-2012 HandCoded Software Ltd.
+// Copyright (C),2005-2013 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -86,8 +86,8 @@ public final class CollateralRules extends FpMLRuleSet
 							!isSameCurrency (callCurrency, reqdCurrency)) continue;
 					
 					Element		callAmount = XPath.path (callResult, "marginCallAmount", "amount");
-					Element		deliverAmount = XPath.path (callResult, "deliver", "amount");
-					Element		returnAmount = XPath.path (callResult, "return", "amount");
+					Element		deliverAmount = XPath.path (requirement, "deliver", "amount");
+					Element		returnAmount = XPath.path (requirement, "return", "amount");
 					
 					BigDecimal	callValue = toDecimal (callAmount);
 					BigDecimal	reqdValue = sum (toDecimal (deliverAmount), toDecimal (returnAmount));
