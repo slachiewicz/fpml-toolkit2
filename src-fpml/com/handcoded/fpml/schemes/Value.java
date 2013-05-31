@@ -1,4 +1,4 @@
-// Copyright (C),2005-2006 HandCoded Software Ltd.
+// Copyright (C),2005-2013 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -79,6 +79,7 @@ public final class Value
 	 * @return 	The hash code. 
 	 * @since	TFP 1.0
 	 */
+	@Override
 	public int hashCode ()
 	{
 		return (code.hashCode());
@@ -90,6 +91,7 @@ public final class Value
 	 * @return	A displayable string.
 	 * @since	TFP 1.0
 	 */
+	@Override
 	public String toString ()
 	{
 		return (getClass ().getName () + "{code=" + code + ",source=" + source + ",description=" + description);
