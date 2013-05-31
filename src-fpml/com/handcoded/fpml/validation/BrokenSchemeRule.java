@@ -1,4 +1,4 @@
-// Copyright (C),2005-2012 HandCoded Software Ltd.
+// Copyright (C),2005-2013 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -34,7 +34,6 @@ import com.handcoded.xml.NodeIndex;
  * @author	BitWise
  * @version	$Id$
  * @since	TFP 1.0
- *
  */
 public class BrokenSchemeRule extends Rule
 {
