@@ -1842,7 +1842,7 @@ public final class CdsRules extends FpMLRuleSet
 						if (!exists (XPath.path (context, "protectionTerms", "creditEvents", "creditEventNotice"))) {
 							errorHandler.error ("305", context,
 								"Long Form credit default swap is missing a mandatory element",
-								getDisplayName (), "protectionEvents/creditEvents/creditEventNotices");
+								getDisplayName (), "protectionTerms/creditEvents/creditEventNotices");
 
 							result = false;
 						}
