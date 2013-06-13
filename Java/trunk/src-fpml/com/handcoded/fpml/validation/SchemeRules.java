@@ -1176,7 +1176,7 @@ public final class SchemeRules
 	 * @since	TFP 1.7	
 	 */
 	public static final Rule	RULE95
-		= new SchemeRule (Preconditions.R4_6__LATER, "scheme-95", 
+		= new SchemeRule (Preconditions.R4_6, "scheme-95", 
 				new ElementContext ("deliveryLocation"),
 				new TypeContext ("BullionDeliveryLocation"), "bullionDeliveryLocationScheme");
 	
@@ -1184,15 +1184,29 @@ public final class SchemeRules
 	 * Rule 96: The value of any <CODE>CoalQualityAdjustments</CODE> type element must
 	 * be valid within the domain defined by its <CODE>commodityCoalProductTypeScheme</CODE> attribute.
 	 * <P>
-	 * Applies to FpML 4.6 and later.
+	 * Applies to FpML 4.6.
+	 * @since	TFP 1.7	
+	 */
+	public static final Rule	RULE96_OLD
+		= new SchemeRule (Preconditions.R4_6, "scheme-96[OLD]", 
+				new ElementContext (
+						new String [] { "coal", "coal" },
+						new String [] { "btuQualityAdjustments", "so2QualityAdjustments" }),
+				new TypeContext ("CoalQualityAdjustments"), "commodityCoalProductTypeScheme");
+	
+	/**
+	 * Rule 96: The value of any <CODE>CoalQualityAdjustments</CODE> type element must
+	 * be valid within the domain defined by its <CODE>commodityCoalQualityAdjustmentsScheme</CODE> attribute.
+	 * <P>
+	 * Applies to FpML 4.7 and later.
 	 * @since	TFP 1.7	
 	 */
 	public static final Rule	RULE96
-		= new SchemeRule (Preconditions.R4_6__LATER, "scheme-96", 
+		= new SchemeRule (Preconditions.R4_7__LATER, "scheme-96", 
 				new ElementContext (
-						new String [] { "gas", "gas" },
+						new String [] { "coal", "coal" },
 						new String [] { "btuQualityAdjustments", "so2QualityAdjustments" }),
-				new TypeContext ("CoalQualityAdjustments"), "commodityCoalProductTypeScheme");
+				new TypeContext ("CoalQualityAdjustments"), "commodityCoalQualityAdjustmentsScheme");
 	
 	/**
 	 * Rule 97: The value of any <CODE>CoalTransportationEquipment</CODE> type element must
