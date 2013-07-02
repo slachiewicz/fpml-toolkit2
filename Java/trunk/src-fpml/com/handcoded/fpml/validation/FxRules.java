@@ -2807,7 +2807,7 @@ public final class FxRules extends FpMLRuleSet
 					
 					if (tradeDate != null) {
 						if (valueDate != null) {
-							if (less (toDate (tradeDate), toDate (valueDate))) continue;
+							if (lessOrEqual (toDate (tradeDate), toDate (valueDate))) continue;
 							
 							errorHandler.error ("305", context,
 									"value date must be after trade date.",
@@ -2817,7 +2817,7 @@ public final class FxRules extends FpMLRuleSet
 						}
 						
 						if (value1Date != null) {
-							if (less (toDate (tradeDate), toDate (value1Date))) continue;
+							if (lessOrEqual (toDate (tradeDate), toDate (value1Date))) continue;
 							
 							errorHandler.error ("305", context,
 									"value1date must be after trade date.",
@@ -2827,7 +2827,7 @@ public final class FxRules extends FpMLRuleSet
 						}
 
 						if (value2Date != null) {
-							if (less (toDate (tradeDate), toDate (value2Date))) continue;
+							if (lessOrEqual (toDate (tradeDate), toDate (value2Date))) continue;
 							
 							errorHandler.error ("305", context,
 									"value2date must be after trade date.",
