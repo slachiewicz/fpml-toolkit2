@@ -1,4 +1,4 @@
-// Copyright (C),2005-2012 HandCoded Software Ltd.
+// Copyright (C),2005-2013 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -270,6 +270,86 @@ public final class Releases
 	 */
 	public static SchemaRelease	R5_4_TRANSPARENCY
 		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-4", "http://www.fpml.org/FpML-5/transparency");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-5 confirmation view working draft.
+	 * @since	TFP 1.7
+	 */
+	public static SchemaRelease	R5_5_CONFIRMATION
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-5", "http://www.fpml.org/FpML-5/confirmation");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-5 reporting view working draft.
+	 * @since	TFP 1.7
+	 */
+	public static SchemaRelease	R5_5_REPORTING
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-5", "http://www.fpml.org/FpML-5/reporting");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-5 record keeping view working draft.
+	 * @since	TFP 1.7
+	 */
+	public static SchemaRelease	R5_5_RECORDKEEPING
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-5", "http://www.fpml.org/FpML-5/recordkeeping");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-5 transparency view working draft.
+	 * @since	TFP 1.7
+	 */
+	public static SchemaRelease	R5_5_TRANSPARENCY
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-5", "http://www.fpml.org/FpML-5/transparency");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-5 pre-trade view working draft.
+	 * @since	TFP 1.7
+	 */
+	public static SchemaRelease	R5_5_PRETRADE
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-5", "http://www.fpml.org/FpML-5/pretrade");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-6 confirmation view working draft.
+	 * @since	TFP 1.7
+	 */
+	public static SchemaRelease	R5_6_CONFIRMATION
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-6", "http://www.fpml.org/FpML-5/confirmation");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-6 reporting view working draft.
+	 * @since	TFP 1.7
+	 */
+	public static SchemaRelease	R5_6_REPORTING
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-6", "http://www.fpml.org/FpML-5/reporting");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-6 record keeping view working draft.
+	 * @since	TFP 1.7
+	 */
+	public static SchemaRelease	R5_6_RECORDKEEPING
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-6", "http://www.fpml.org/FpML-5/recordkeeping");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-6 transparency view working draft.
+	 * @since	TFP 1.7
+	 */
+	public static SchemaRelease	R5_6_TRANSPARENCY
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-6", "http://www.fpml.org/FpML-5/transparency");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-6 pre-trade view working draft.
+	 * @since	TFP 1.7
+	 */
+	public static SchemaRelease	R5_6_PRETRADE
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-6", "http://www.fpml.org/FpML-5/pretrade");
 	
 	/**
 	 * A <CODE>Conversion</CODE> instance configured for FpML 1-0 to 2-0
