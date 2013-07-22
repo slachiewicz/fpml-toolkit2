@@ -608,17 +608,19 @@ public final class IrdRules extends FpMLRuleSet
 					Element payer	 = DOM.getElementByLocalName (context, "payerPartyReference");
 					Element receiver = DOM.getElementByLocalName (context, "receiverPartyReference");
 
-					if (payer.getAttribute ("href").equals (receiver.getAttribute ("href"))) {
-						payer	 = DOM.getElementByLocalName (context, "payerAccountReference");
-						receiver = DOM.getElementByLocalName (context, "receiverAccountReference");
-								
-						if (payer.getAttribute ("href").equals (receiver.getAttribute ("href"))) {
-							errorHandler.error ("305", context,
-								"The payer and receiver references must not be the same",
-								getDisplayName (), payer.getAttribute ("href"));
-							result = false;
-						}
-					}
+					if ((payer == null) || (receiver == null) || !payer.getAttribute ("href").equals (receiver.getAttribute ("href")))
+						continue;
+
+					payer	 = DOM.getElementByLocalName (context, "payerAccountReference");
+					receiver = DOM.getElementByLocalName (context, "receiverAccountReference");
+									
+					if ((payer != null) && (receiver != null) && !payer.getAttribute ("href").equals (receiver.getAttribute ("href")))
+						continue;
+					
+					errorHandler.error ("305", context,
+						"The payer and receiver references must not be the same",
+						getDisplayName (), null);
+					result = false;
 				}
 
 				return (result);
