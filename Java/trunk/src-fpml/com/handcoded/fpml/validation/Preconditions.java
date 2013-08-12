@@ -467,6 +467,22 @@ public interface Preconditions
 		= new VersionRangePrecondition ("5-4", null);
 
 	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML versions 5-5 and
+	 * later.
+	 * @since	TFP 1.7
+	 */
+	public static final Precondition	R5_5__LATER
+		= new VersionRangePrecondition ("5-5", null);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML versions 5-6 and
+	 * later.
+	 * @since	TFP 1.7
+	 */
+	public static final Precondition	R5_6__LATER
+		= new VersionRangePrecondition ("5-6", null);
+
+	/**
 	 * A <CODE>Precondition</CODE> instance that detects all FpML versions except
 	 * 4-0.
 	 * @since	TFP 1.0
