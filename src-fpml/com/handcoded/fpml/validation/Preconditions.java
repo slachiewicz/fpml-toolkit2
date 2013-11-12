@@ -191,16 +191,16 @@ public interface Preconditions
 	 * documents.
 	 * @since	TFP 1.7
 	 */
-	public static final Precondition 	R5_2__LATER_TRANSPARENCY
-		= new NamespacePrecondition (Releases.R5_2_TRANSPARENCY);
+	public static final Precondition 	R5_3__LATER_TRANSPARENCY
+		= new NamespacePrecondition (Releases.R5_3_TRANSPARENCY);
 
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML 5-x record keeping
 	 * documents.
 	 * @since	TFP 1.7
 	 */
-	public static final Precondition 	R5_2__LATER_RECORDKEEPING
-		= new NamespacePrecondition (Releases.R5_2_RECORDKEEPING);
+	public static final Precondition 	R5_3__LATER_RECORDKEEPING
+		= new NamespacePrecondition (Releases.R5_3_RECORDKEEPING);
 
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML versions that use
@@ -521,7 +521,7 @@ public interface Preconditions
      * @since	TFP 1.7
 	 */
 	public static final	Precondition	RECORDKEEPING
-		= R5_2__LATER_RECORDKEEPING;
+		= R5_3__LATER_RECORDKEEPING;
 	
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects all transparency
@@ -529,5 +529,5 @@ public interface Preconditions
      * @since	TFP 1.7
 	 */
 	public static final	Precondition	TRANSPARENCY
-		= R5_2__LATER_TRANSPARENCY;
+		= R5_3__LATER_TRANSPARENCY;
 }

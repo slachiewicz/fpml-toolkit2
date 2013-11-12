@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2013 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -16,7 +16,6 @@ package demo.com.handcoded.fpml;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +27,6 @@ import com.handcoded.framework.Option;
 import com.handcoded.meta.Conversion;
 import com.handcoded.meta.ConversionException;
 import com.handcoded.meta.Release;
-import com.handcoded.meta.SchemaRelease;
 import com.handcoded.meta.Specification;
 import com.handcoded.xml.XmlUtility;
 import com.handcoded.xml.writer.NestedWriter;
@@ -98,7 +96,6 @@ public final class Convert extends Application
 	{
 		String []	arguments = findFiles (getArguments ());
 		
-
 		for (String filename : arguments) {
 			File	 	file	 = new File (filename);
 			Document 	document = XmlUtility.nonValidatingParse (file);
@@ -106,7 +103,7 @@ public final class Convert extends Application
 			System.out.println (">> " + filename);
 			
 			Release source = Specification.releaseForDocument (document);
-			Release target = compatibleRelease (source, targetOption.getValue ());
+			Release target = Releases.compatibleRelease (document, targetOption.getValue ());
 			
 			if (target == null) {
 				System.out.println ("!! No compatible target FpML release");
@@ -180,51 +177,4 @@ public final class Convert extends Application
 	 */
 	private Convert ()
 	{ }
-	
-	/**
-	 * Attempts to locate a version of FpML that matches the target version
-	 * number while taking the view into account if appropriate.
-	 *  
-	 * @param	source			The source <CODE>Release</CODE>.
-	 * @param	targetVersion	The target version number.
-	 * @return	The target <CODE>Release</CODE> or <CODE>null</CODE> if no
-	 * 			suitable release exists.
-	 * @since	TFP 1.6
-	 */
-	private Release compatibleRelease (Release source, String targetVersion)
-	{
-		if (targetVersion.startsWith ("5-")) {
-			if (source.getVersion ().startsWith ("5-")) {
-				String view = extractView (((SchemaRelease) source).getNamespaceUri ());
-				
-				Enumeration<Release> cursor = Releases.FPML.releases ();
-				while (cursor.hasMoreElements ()) {
-					Release target = cursor.nextElement ();
-					if (target.getVersion ().equals (targetVersion)) {
-						if (view.equals (extractView (((SchemaRelease) target).getNamespaceUri ())))
-							return (target);
-					}
-				}
-			}
-			return (null);
-		}
-		
-		// Otherwise 
-		return (Releases.FPML.getReleaseForVersion (targetVersion));
-	}
-	
-	/**
-	 * Extract the name of the FpML view from the final section of the namespace
-	 * URI string.
-	 * 
-	 * @param	uri				The namespace URI string.
-	 * @return	The view name string (e.g. confirmation, reporting, etc.).
-	 * @since	TFP 1.6
-	 */
-	private String extractView (String uri)
-	{
-		int index 		= uri.lastIndexOf ('/');
-		
-		return ((index != -1) ? uri.substring (index + 1) : null);
-	}
 }
