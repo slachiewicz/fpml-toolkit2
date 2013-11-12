@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2013 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -92,7 +92,8 @@ public abstract class Release implements Grammar
 	 * {@inheritDoc}
 	 * @since	TFP 1.0
 	 */
-	public final String toString ()
+	@Override
+	public String toString ()
 	{
 		return (specification.getName () + " " + version);
 	}
