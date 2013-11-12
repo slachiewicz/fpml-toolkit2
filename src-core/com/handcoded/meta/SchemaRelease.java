@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2013 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -256,6 +256,16 @@ public class SchemaRelease extends Release implements Schema
 	public final String getAlternatePrefix ()
 	{
 		return (alternatePrefix);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @since	TFP 1.7
+	 */
+	@Override
+	public final String toString ()
+	{
+		return (super.toString () + " " + namespaceUri);
 	}
 
 	/**
