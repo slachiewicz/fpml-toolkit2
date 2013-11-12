@@ -30,19 +30,20 @@ import com.handcoded.xml.NodeIndex;
 public final class MessageRules extends FpMLRuleSet
 {
 	/**
-	 * A <CODE>Precondition</CODE> instance that detects FpML 5-2 or later
-	 * transparency view documents.
+	 * A <CODE>Precondition</CODE> instance that detects reporting, recordkeeping
+     * or transparency view documents.
 	 * @since	TFP 1.7
 	 */	
-	private static final Precondition	R5_2__LATER
-		= Preconditions.R5_3__LATER_TRANSPARENCY;
+	private static final Precondition	REPO_RECO_TRAN
+		= Precondition.or (Preconditions.REPORTING,
+				Precondition.or (Preconditions.RECORDKEEPING, Preconditions.TRANSPARENCY));
 	
 	/**
 	 * A rule that ensures that only novation messages can have more than
 	 * two onBehalfOf elements.
 	 * @since	TFP 1.7
 	 */
-	public static final Rule 	RULE05 = new Rule (R5_2__LATER, "msg-5")
+	public static final Rule 	RULE05 = new Rule (REPO_RECO_TRAN, "msg-5")
 	{
 		/**
 		 * {@inheritDoc}
