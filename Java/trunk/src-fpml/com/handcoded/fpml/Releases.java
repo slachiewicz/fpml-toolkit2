@@ -13,13 +13,20 @@
 
 package com.handcoded.fpml;
 
+import java.util.Enumeration;
+
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.TypeInfo;
 
 import com.handcoded.fpml.meta.DTDRelease;
 import com.handcoded.fpml.meta.SchemaRelease;
+import com.handcoded.fpml.util.Version;
 import com.handcoded.meta.Conversion;
 import com.handcoded.meta.Release;
+import com.handcoded.meta.Schema;
 import com.handcoded.meta.Specification;
 
 /**
@@ -190,22 +197,6 @@ public final class Releases
 	 */
 	public static SchemaRelease	R5_2_REPORTING
 		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-2", "http://www.fpml.org/FpML-5/reporting");
-	
-	/**
-	 * A <CODE>SchemaRelease</CODE> instance containing the details for
-	 * FpML 5-2 record keeping view working draft.
-	 * @since	TFP 1.6
-	 */
-	public static SchemaRelease	R5_2_RECORDKEEPING
-		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-2", "http://www.fpml.org/FpML-5/recordkeeping");
-	
-	/**
-	 * A <CODE>SchemaRelease</CODE> instance containing the details for
-	 * FpML 5-2 transparency view working draft.
-	 * @since	TFP 1.6
-	 */
-	public static SchemaRelease	R5_2_TRANSPARENCY
-		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-2", "http://www.fpml.org/FpML-5/transparency");
 	
 	/**
 	 * A <CODE>SchemaRelease</CODE> instance containing the details for
@@ -499,6 +490,28 @@ public final class Releases
 		= new Conversions.R4_8__R4_9 ();
 	
 	/**
+	 * A <CODE>Conversion</CODE> instance configured for FpML 4-9 to 5-0
+	 * confirmation view transformation. The specific changes needed are:
+	 * <UL>
+	 * <LI>The FpML XML schema namespace URI is updated.</LI>
+	 * </UL>
+	 * @since	TFP 1.7
+	 */
+	public static final Conversion R4_9__R5_0_CONFIRMATION
+		= new Conversions.R4_9__R5_0_CONFIRMATION ();
+	
+	/**
+	 * A <CODE>Conversion</CODE> instance configured for FpML 4-9 to 5-0
+	 * reporting view transformation. The specific changes needed are:
+	 * <UL>
+	 * <LI>The FpML XML schema namespace URI is updated.</LI>
+	 * </UL>
+	 * @since	TFP 1.7
+	 */
+	public static final Conversion R4_9__R5_0_REPORTING
+		= new Conversions.R4_9__R5_0_REPORTING ();
+	
+	/**
 	 * A <CODE>Conversion</CODE> instance configured for FpML 5-0 to 5-1
 	 * confirmation view transformation. The specific changes needed are:
 	 * <UL>
@@ -568,9 +581,123 @@ public final class Releases
 	}
 
 	/**
+	 * Determine which <CODE>Release</CODE> could be used to represent the indicated
+	 * <CODE>Document</CODE> at a specific target version. If the target version has
+	 * multiple views then the message type is used to make the selection.
+	 * 
+	 * @param 	document			The source document being converted.
+	 * @param 	targetVersionNumber	The target version number.
+	 * @return	The <CODE>Release</CODE> instance for the target schema.
+	 * @since	TFP 1.7
+	 */
+	public static Release compatibleRelease (Document document, String targetVersionNumber)
+	{
+		Release source = Specification.releaseForDocument (document);
+		
+		if (source != null)
+			return (compatibleRelease (document, source, targetVersionNumber));
+		
+		return (null);
+	}
+	
+	/**
+	 * Determine which <CODE>Release</CODE> could be used to represent the indicated
+	 * <CODE>Document</CODE> at a specific target version. If the target version has
+	 * multiple views then the message type is used to make the selection.
+	 * 
+	 * @param 	document			The source document being converted.
+	 * @param	source				The <CODE>Release</CODE> object for the source document.
+	 * @param 	targetVersionNumber	The target version number.
+	 * @return	The <CODE>Release</CODE> instance for the target schema.
+	 * @since	TFP 1.7
+	 */
+	public static Release compatibleRelease (Document document, Release source, String targetVersionNumber)
+	{
+		Version		sourceVersion = Version.parse (source.getVersion ());
+		Version		targetVersion = Version.parse (targetVersionNumber);
+		String 		view 		= null;
+		String		type		= null;
+
+		// If the target this not 5.0 or later its a direct conversion
+		if (targetVersion.getMajor () <= 4)
+			return (Releases.FPML.getReleaseForVersion (targetVersionNumber));
+
+		// Otherwise determine the target view based on version and message type
+		if (sourceVersion.getMajor () <= 3)
+			view = "confirmation";
+		else if (sourceVersion.getMajor () == 4) {
+			Element root = document.getDocumentElement ();
+			TypeInfo info = root.getSchemaTypeInfo ();
+			
+			if ((info == null) || (info.getTypeName () == null)) {
+				NamedNodeMap list = root.getAttributes ();
+				for (int index = 0; index < list.getLength (); ++index) {
+					Attr attr = (Attr) list.item (index);
+					
+					if ((attr.getNamespaceURI () != null)
+							&& attr.getNamespaceURI ().equals (Schema.INSTANCE_URL)
+							&& attr.getLocalName ().equals ("type")) {
+						type = attr.getValue ();
+						break;
+					}
+				}
+			}
+			else
+				type = info.getTypeName ();
+
+			// Look for messages that are in the reporting view
+			if (type.equals ("CancelTradeCashflows")
+					|| type.equals ("CreditEventNotification")
+					|| type.equals ("PositionAcknowledged")
+					|| type.equals ("PositionAsserted")
+					|| type.equals ("PositionMatchResults")
+					|| type.equals ("PositionReport")
+					|| type.equals ("RequestPortfolio")
+					|| type.equals ("RequestPositionReport")
+					|| type.equals ("RequestValuationReport")
+					|| type.equals ("TradeCashflowsAsserted")
+					|| type.equals ("TradeCashflowsMatchResult")
+					|| type.equals ("ValuationReport"))
+				view = "reporting";
+			else
+				view = "confirmation";
+		}
+		else
+			view = extractView (((SchemaRelease) source).getNamespaceUri ());
+		
+		// Find a release that matches the target version and view
+		Enumeration<Release> cursor = Releases.FPML.releases ();
+		while (cursor.hasMoreElements ()) {
+			Release target = cursor.nextElement ();
+			if (target.getVersion ().equals (targetVersionNumber)) {
+				if (view.equals (extractView (((SchemaRelease) target).getNamespaceUri ())))
+					return (target);
+			}
+		}
+		
+		// Otherwise no possible release
+		return (null);
+	}
+	
+	/**
 	 * Ensures that no instances can be constructed.
 	 * @since	TFP 1.0
 	 */
 	private Releases ()
 	{ }
+	
+	/**
+	 * Extract the name of the FpML view from the final section of the namespace
+	 * URI string.
+	 * 
+	 * @param	uri				The namespace URI string.
+	 * @return	The view name string (e.g. confirmation, reporting, etc.).
+	 * @since	TFP 1.7
+	 */
+	private static String extractView (String uri)
+	{
+		int index 		= uri.lastIndexOf ('/');
+		
+		return ((index != -1) ? uri.substring (index + 1) : null);
+	}
 }

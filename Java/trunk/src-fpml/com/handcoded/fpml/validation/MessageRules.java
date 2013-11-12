@@ -1,4 +1,4 @@
-// Copyright (C),2005-2012 HandCoded Software Ltd.
+// Copyright (C),2005-2013 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -35,7 +35,7 @@ public final class MessageRules extends FpMLRuleSet
 	 * @since	TFP 1.7
 	 */	
 	private static final Precondition	R5_2__LATER
-		= Preconditions.R5_2__LATER_TRANSPARENCY;
+		= Preconditions.R5_3__LATER_TRANSPARENCY;
 	
 	/**
 	 * A rule that ensures that only novation messages can have more than
