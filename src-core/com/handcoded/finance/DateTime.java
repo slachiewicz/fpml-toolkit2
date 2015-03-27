@@ -1,4 +1,4 @@
-// Copyright (C),2005-2011 HandCoded Software Ltd.
+// Copyright (C),2005-2014 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -15,6 +15,7 @@ package com.handcoded.finance;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.GregorianCalendar;
 
 /**
  * The <CODE>DateTime</CODE> class provides an immutable representation for a
@@ -261,6 +262,30 @@ public final class DateTime extends TemporalDate
 		}
 
 		throw new IllegalArgumentException ("Value is not in ISO date & time format");
+	}
+	
+	/**
+	 * Returns the current UTC or local time as <CODE>DateTime</CODE> value.
+	 * 
+	 * @param 	utc			Indicates if the UTC or local time is required
+	 * @return	The current UTC or local time as <CODE>DateTime</CODE> value.
+	 * @since	TFP 1.8
+	 */
+	public static DateTime now (boolean utc)
+	{
+		java.util.TimeZone tz = utc ? java.util.TimeZone.getTimeZone ("UTC")
+									: java.util.TimeZone.getDefault ();
+		java.util.Calendar cal = new GregorianCalendar (tz);
+		
+		return (new DateTime (
+					new DateValue (cal.get (java.util.Calendar.DAY_OF_MONTH),
+							cal.get (java.util.Calendar.MONTH),
+							cal.get(java.util.Calendar.YEAR)),
+					new TimeValue (cal.get (java.util.Calendar.HOUR),
+							cal.get (java.util.Calendar.MINUTE),
+							new BigDecimal (cal.get (java.util.Calendar.SECOND) * 1000
+									+ cal.get (java.util.Calendar.MILLISECOND)).divide (THOUSAND)),
+					utc ? TimeZone.UTC : null));
 	}
 
 	/**
@@ -656,6 +681,12 @@ public final class DateTime extends TemporalDate
 	 * @since	TFP 1.1
 	 */
 	private static final long serialVersionUID = 2153258690295593096L;
+	
+	/**
+	 * A constant used to create seconds values.
+	 * @since	TFP 1.8
+	 */
+	private static final BigDecimal	THOUSAND = new BigDecimal (1000);
 	
 	/**
 	 * The date part of the <CODE>DateTime</CODE>
