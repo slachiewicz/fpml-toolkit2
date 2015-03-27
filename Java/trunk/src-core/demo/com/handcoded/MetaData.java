@@ -14,6 +14,7 @@
 package demo.com.handcoded;
 
 import java.util.Enumeration;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.xml.sax.SAXException;
@@ -69,7 +70,7 @@ public final class MetaData extends Application
 			XmlUtility.setDefaultCatalog (CatalogManager.find ("files-core/catalog-toolkit.xml"));
 		}
 		catch (SAXException error) {
-			logger.severe ("Failed to parse XML catalog");
+			logger.log (Level.SEVERE, "Failed to parse XML catalog");
 			System.exit (1);
 		}
 	}
