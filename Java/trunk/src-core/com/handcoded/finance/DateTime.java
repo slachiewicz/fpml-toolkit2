@@ -15,6 +15,7 @@ package com.handcoded.finance;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
@@ -279,9 +280,9 @@ public final class DateTime extends TemporalDate
 		
 		return (new DateTime (
 					new DateValue (cal.get (java.util.Calendar.DAY_OF_MONTH),
-							cal.get (java.util.Calendar.MONTH),
+							cal.get (java.util.Calendar.MONTH) - Calendar.JANUARY + 1,
 							cal.get(java.util.Calendar.YEAR)),
-					new TimeValue (cal.get (java.util.Calendar.HOUR),
+					new TimeValue (cal.get (java.util.Calendar.HOUR_OF_DAY),
 							cal.get (java.util.Calendar.MINUTE),
 							new BigDecimal (cal.get (java.util.Calendar.SECOND) * 1000
 									+ cal.get (java.util.Calendar.MILLISECOND)).divide (THOUSAND)),
