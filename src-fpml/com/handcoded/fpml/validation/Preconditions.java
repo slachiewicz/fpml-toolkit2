@@ -1,4 +1,4 @@
-// Copyright (C),2005-2014 HandCoded Software Ltd.
+// Copyright (C),2005-2015 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -195,6 +195,14 @@ public interface Preconditions
 		= new VersionPrecondition ("5-7");
 
 	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5-8 compatible
+	 * documents.
+	 * @since	TFP 1.8
+	 */
+	public static final Precondition 	R5_8
+		= new VersionPrecondition ("5-8");
+
+	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML 5-x confirmation
 	 * documents.
 	 * @since	TFP 1.7
@@ -225,6 +233,14 @@ public interface Preconditions
 	 */
 	public static final Precondition 	R5_3__LATER_RECORDKEEPING
 		= new NamespacePrecondition (Releases.R5_3_RECORDKEEPING);
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML 5-x pretrade
+	 * documents.
+	 * @since	TFP 1.8
+	 */
+	public static final Precondition 	R5_5__LATER_PRETRADE
+		= new NamespacePrecondition (Releases.R5_5_PRETRADE);
 
 	/**
 	 * A <CODE>Precondition</CODE> instance that detects FpML versions that use
@@ -515,6 +531,14 @@ public interface Preconditions
 		= new VersionRangePrecondition ("5-7", null);
 
 	/**
+	 * A <CODE>Precondition</CODE> instance that detects FpML versions 5-8 and
+	 * later.
+	 * @since	TFP 1.8
+	 */
+	public static final Precondition	R5_8__LATER
+		= new VersionRangePrecondition ("5-8", null);
+
+	/**
 	 * A <CODE>Precondition</CODE> instance that detects all FpML versions except
 	 * 4-0.
 	 * @since	TFP 1.0
@@ -562,4 +586,12 @@ public interface Preconditions
 	 */
 	public static final	Precondition	TRANSPARENCY
 		= R5_3__LATER_TRANSPARENCY;
+
+	/**
+	 * A <CODE>Precondition</CODE> instance that detects all pre-trade
+     * view documents.
+     * @since	TFP 1.8
+	 */
+	public static final	Precondition	PRETRADE
+		= R5_5__LATER_PRETRADE;
 }

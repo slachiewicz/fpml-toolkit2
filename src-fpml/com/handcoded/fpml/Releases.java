@@ -1,4 +1,4 @@
-// Copyright (C),2005-2014 HandCoded Software Ltd.
+// Copyright (C),2005-2015 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -381,6 +381,62 @@ public final class Releases
 	 */
 	public static SchemaRelease	R5_7_PRETRADE
 		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-7", "http://www.fpml.org/FpML-5/pretrade");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-7 legal view working draft.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R5_7_LEGAL
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-7", "http://www.fpml.org/FpML-5/legal");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-8 confirmation view working draft.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R5_8_CONFIRMATION
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-8", "http://www.fpml.org/FpML-5/confirmation");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-8 reporting view working draft.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R5_8_REPORTING
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-8", "http://www.fpml.org/FpML-5/reporting");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-8 record keeping view working draft.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R5_8_RECORDKEEPING
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-8", "http://www.fpml.org/FpML-5/recordkeeping");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-8 transparency view working draft.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R5_8_TRANSPARENCY
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-8", "http://www.fpml.org/FpML-5/transparency");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-8 pre-trade view working draft.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R5_8_PRETRADE
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-8", "http://www.fpml.org/FpML-5/pretrade");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-8 legal view working draft.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R5_8_LEGAL
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-8", "http://www.fpml.org/FpML-5/legal");
 	
 	/**
 	 * A <CODE>Conversion</CODE> instance configured for FpML 1-0 to 2-0

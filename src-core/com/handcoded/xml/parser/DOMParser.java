@@ -1,4 +1,4 @@
-// Copyright (C),2005-2008 HandCoded Software Ltd.
+// Copyright (C),2005-2015 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -48,14 +48,15 @@ public final class DOMParser
 	 * @param	validating			Determines if validation is required. 
 	 * @param	namespaceAware		Determines if namespace processing required.
 	 * @param	schemaAware			Determines if schema processing required. 
+	 * @param	xincludeAware		Determines if XInclude processing required.
 	 * @param	schema				<CODE>Schema</CODE> used for validation.
 	 * @param	entityResolver		<CODE>EntityResolver</CODE> instance or <CODE>null</CODE>.
 	 * @param	errorHandler		<CODE>ErrorHandler</CODE> instance or <CODE>null</CODE>.
 	 * @throws	ParserConfigurationException If JAXP cannot provide a suitable parser.	
-	 * @since	TFP 1.0	
+	 * @since	TFP 1.8	
 	 */
 	public DOMParser (final boolean	validating, final boolean namespaceAware,
-			final boolean schemaAware, Schema schema,
+			final boolean schemaAware, final boolean xincludeAware, Schema schema,
 			EntityResolver entityResolver, ErrorHandler	errorHandler)
 		throws ParserConfigurationException
 	{
@@ -64,7 +65,8 @@ public final class DOMParser
 		factory.setAttribute("http://apache.org/xml/features/validation/schema", 
 			    (schemaAware || (schema != null) ? Boolean.TRUE : Boolean.FALSE));
 		factory.setValidating (validating && (schema == null));	
-		factory.setNamespaceAware (namespaceAware || schemaAware || (schema != null));
+		factory.setNamespaceAware (namespaceAware || schemaAware || xincludeAware || (schema != null));
+		factory.setXIncludeAware (xincludeAware);
 		factory.setSchema (schema);
 		
 		try {
@@ -81,6 +83,27 @@ public final class DOMParser
 		
 		if (errorHandler != null)
 			builder.setErrorHandler (errorHandler);
+	}
+	
+	/**
+	 * Constructs a <CODE>DomParser</CODE> configured to match the supplied
+	 * arguments.
+	 *
+	 * @param	validating			Determines if validation is required. 
+	 * @param	namespaceAware		Determines if namespace processing required.
+	 * @param	schemaAware			Determines if schema processing required. 
+	 * @param	schema				<CODE>Schema</CODE> used for validation.
+	 * @param	entityResolver		<CODE>EntityResolver</CODE> instance or <CODE>null</CODE>.
+	 * @param	errorHandler		<CODE>ErrorHandler</CODE> instance or <CODE>null</CODE>.
+	 * @throws	ParserConfigurationException If JAXP cannot provide a suitable parser.	
+	 * @since	TFP 1.0	
+	 */
+	public DOMParser (final boolean	validating, final boolean namespaceAware,
+			final boolean schemaAware, Schema schema,
+			EntityResolver entityResolver, ErrorHandler	errorHandler)
+		throws ParserConfigurationException
+	{
+		this (validating, namespaceAware, schemaAware, false, schema, entityResolver, errorHandler);
 	}
 	
 	/**

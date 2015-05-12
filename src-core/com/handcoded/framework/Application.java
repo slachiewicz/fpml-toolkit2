@@ -1,4 +1,4 @@
-// Copyright (C),2005-2010 HandCoded Software Ltd.
+// Copyright (C),2005-2015 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -21,6 +21,8 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.xml.sax.InputSource;
 
 /**
  * The <CODE>Application</CODE> class extends the basic <CODE>Process</CODE>
@@ -92,6 +94,60 @@ public abstract class Application extends Process
 			
 			// Or a local file
 			return (new FileInputStream (name));
+		}
+		catch (Exception error) {
+			logger.log (Level.SEVERE, "Error while opening stream", error);
+			return (null);
+		}
+	}
+	
+	/**
+	 * Opens an <CODE>InputSource</CODE> to read the contents of an application
+	 * resource that is with packaged in the application JAR or as a local file.
+	 * 
+	 * @param 	name			The name of the resource to be opened
+	 * @return	An <CODE>InputSource</CODE> attached to the resource.
+	 * @since	TFP 1.8
+	 */
+	public static InputSource openInputSource (String name)
+	{
+		InputStream			stream;
+		InputSource			source;
+		
+		// Reading the resource from a URI
+		try {
+			URL	url = new URL (name);
+
+			stream = url.openStream ();
+			source = new InputSource (stream);
+			source.setSystemId (url.toString ());
+			
+			return (source);
+		}
+		catch (Exception error) {
+			;
+		}
+	
+		// Otherwise check for a JAR resource
+		try {
+			if (true) {
+				URL url = Application.class.getResource ("/" + name);
+				
+				if (url != null) {
+					stream = url.openStream ();
+					source = new InputSource (stream);
+					source.setSystemId (url.toString ());
+					
+					return (source);
+				}
+			}
+			
+			// Or a local file
+			stream = new FileInputStream (name);
+			source = new InputSource (stream);
+			source.setSystemId (name);
+			
+			return (source);
 		}
 		catch (Exception error) {
 			logger.log (Level.SEVERE, "Error while opening stream", error);

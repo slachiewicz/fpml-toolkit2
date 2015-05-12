@@ -293,6 +293,63 @@ public final class XmlUtility
 	}
 
 	/**
+	 * Performs a non-validating parse of the indicated XML file discarding any
+	 * errors generated.
+	 * 
+	 * @param 	source			The <CODE>InputSource</CODE> to be processed.
+	 * @return	A <CODE>Document</CODE> instance if the parse succeeded or
+	 * 			<CODE>null</CODE> if it failed.
+	 * @since	TFP 1.8
+	 */
+	public static Document nonValidatingParseWithXInclude (InputSource source)
+	{
+		return (nonValidatingParseWithXInclude (source, defaultCatalog));
+	}
+	
+	/**
+	 * Performs a non-validating parse of the indicated XML file discarding any
+	 * errors generated.
+	 * 
+	 * @param 	source			The <CODE>InputSource</CODE> to be processed.
+	 * @param 	entityResolver	The <CODE>EntityResolver</CODE>.
+	 * @return	A <CODE>Document</CODE> instance if the parse succeeded or
+	 * 			<CODE>null</CODE> if it failed.
+	 * @since	TFP 1.8
+	 */
+	public static Document nonValidatingParseWithXInclude (InputSource source, EntityResolver entityResolver)
+	{
+		return (nonValidatingParseWithXInclude (source, entityResolver, defaultErrorHandler));
+	}
+	
+	/**
+	 * Performs a non-validating parse of the indicated XML file discarding any
+	 * errors generated.
+	 * 
+	 * @param 	source			The <CODE>InputSource</CODE> to be processed.
+	 * @param 	entityResolver	The <CODE>EntityResolver</CODE>.
+	 * @param	errorHandler	The <CODE>ErrorHandler</CODE>.
+	 * @return	A <CODE>Document</CODE> instance if the parse succeeded or
+	 * 			<CODE>null</CODE> if it failed.
+	 * @since	TFP 1.8
+	 */
+	public static Document nonValidatingParseWithXInclude (InputSource source, EntityResolver entityResolver,
+			ErrorHandler errorHandler)
+	{
+		Document	document	= null;
+		
+		try {
+			document = new DOMParser (false, true, false, true, null, entityResolver, errorHandler).parse (source);
+		}
+		catch (ParserConfigurationException error) {
+			logger.severe ("JAXP failed to provided a XML parser");
+		}
+		catch (IOException error) {
+			logger.log (Level.SEVERE, "Unexpected I/O error", error);
+		}
+		return (document);
+	}
+
+	/**
 	 * Performs a validating parse of the indicated XML <CODE>String</CODE> using the
 	 * most optimal technique given the mode. If the type of grammar is unknown
 	 * then a non-validating parse is done first and the document inspected to
