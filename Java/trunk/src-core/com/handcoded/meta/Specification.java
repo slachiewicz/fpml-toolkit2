@@ -1,4 +1,4 @@
-// Copyright (C),2005-2012 HandCoded Software Ltd.
+// Copyright (C),2005-2015 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import com.handcoded.framework.Application;
 import com.handcoded.xml.DOM;
@@ -430,9 +429,9 @@ public final class Specification
 		logger.log (Level.INFO, "Bootstrapping Specifications");
 		
 		try {
-			Document document = XmlUtility.nonValidatingParse (
-					new InputSource (Application.openStream ("files-core/releases.xml")));
-				
+			Document document = XmlUtility.nonValidatingParseWithXInclude (
+					Application.openInputSource ("files-core/releases.xml"));
+			
 			NodeList specifications = XPath.paths (document.getDocumentElement (), "specification");
 			for (int index = 0; index < specifications.getLength (); ++index) {
 				Element context = (Element) specifications.item (index);

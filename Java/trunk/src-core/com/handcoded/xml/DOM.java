@@ -1,4 +1,4 @@
-// Copyright (C),2005-2012 HandCoded Software Ltd.
+// Copyright (C),2005-2015 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -343,13 +343,16 @@ public final class DOM
 	 * @param 	name		The attribute name.
 	 * @return	The value of the attribute or <CODE>null</CODE> if it was
 	 * 			not present.
-	 * @since	TFP 1.0
+	 * @since	TFP 1.8
 	 */
 	public static String getAttribute (Element context, final String name)
 	{
-		Attr		attr = context.getAttributeNode (name);
-		
-		return ((attr != null) ? attr.getValue () : null);
+		if (context != null) {
+			Attr		attr = context.getAttributeNode (name);
+			
+			return ((attr != null) ? attr.getValue () : null);
+		}
+		return (null);
 	}
 	
 	/**
