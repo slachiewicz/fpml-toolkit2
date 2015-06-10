@@ -1,4 +1,4 @@
-// Copyright (C),2005-2008 HandCoded Software Ltd.
+// Copyright (C),2005-2015 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -15,6 +15,7 @@ package com.handcoded.xml;
 
 import java.math.BigDecimal;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -56,7 +57,13 @@ public abstract class Types
 	 */
 	public static String toToken (final Node node)
 	{
-		return (DOM.getInnerText ((Element) node).trim ());
+		if (node != null) {
+			if (node.getNodeType () == Node.ELEMENT_NODE)
+				return (DOM.getInnerText ((Element) node).trim ());
+			if (node.getNodeType () == Node.ATTRIBUTE_NODE)
+				return (((Attr) node).getValue ());
+		}
+		return (null);
 	}
 
 	/**
@@ -69,12 +76,10 @@ public abstract class Types
 	public static boolean toBool (final Node node)
 	{
 		if (node != null) {
-			try {
-				return (Boolean.parseBoolean (toToken (node)));
-			}
-			catch (Exception error) {
-				;
-			}
+			String text = toToken (node);
+			
+			if (text.equalsIgnoreCase("true") || text.equals ("1"))
+				return (true); 
 		}
 		return (false);
 	}
