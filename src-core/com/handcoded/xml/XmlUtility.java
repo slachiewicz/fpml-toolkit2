@@ -784,8 +784,6 @@ public final class XmlUtility
 	 * @since	TFP 1.6
 	 */
 	static {
-		Specification.forName ("DUMMY");
-		
 		logger.info ("Bootstrapping Default Schema Set");
 
 		try {
@@ -829,7 +827,7 @@ public final class XmlUtility
 							versionNumber.getValue ());
 					
 					if (release == null) {
-						logger.warning ("Invalid version" + versionNumber.getValue ());
+						logger.warning ("Invalid version " + versionNumber.getValue ());
 						continue;					
 					}
 				}

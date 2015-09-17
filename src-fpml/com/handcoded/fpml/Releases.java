@@ -152,6 +152,14 @@ public final class Releases
 	
 	/**
 	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 4-10 recommendation.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R4_10
+		= (SchemaRelease) FPML.getReleaseForVersion ("4-10");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
 	 * FpML 5-0 confirmation view working draft.
 	 * @since	TFP 1.3
 	 */
@@ -437,6 +445,54 @@ public final class Releases
 	 */
 	public static SchemaRelease	R5_8_LEGAL
 		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-8", "http://www.fpml.org/FpML-5/legal");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-9 confirmation view working draft.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R5_9_CONFIRMATION
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-9", "http://www.fpml.org/FpML-5/confirmation");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-9 reporting view working draft.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R5_9_REPORTING
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-9", "http://www.fpml.org/FpML-5/reporting");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-9 record keeping view working draft.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R5_9_RECORDKEEPING
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-9", "http://www.fpml.org/FpML-5/recordkeeping");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-9 transparency view working draft.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R5_9_TRANSPARENCY
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-9", "http://www.fpml.org/FpML-5/transparency");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-9 pre-trade view working draft.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R5_9_PRETRADE
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-9", "http://www.fpml.org/FpML-5/pretrade");
+	
+	/**
+	 * A <CODE>SchemaRelease</CODE> instance containing the details for
+	 * FpML 5-9 legal view working draft.
+	 * @since	TFP 1.8
+	 */
+	public static SchemaRelease	R5_9_LEGAL
+		= (SchemaRelease) FPML.getReleaseForVersionAndNamespace ("5-9", "http://www.fpml.org/FpML-5/legal");
 	
 	/**
 	 * A <CODE>Conversion</CODE> instance configured for FpML 1-0 to 2-0
