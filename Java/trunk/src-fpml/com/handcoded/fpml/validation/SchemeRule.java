@@ -1,4 +1,4 @@
-// Copyright (C),2005-2012 HandCoded Software Ltd.
+// Copyright (C),2005-2015 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -20,6 +20,7 @@ import com.handcoded.fpml.Releases;
 import com.handcoded.fpml.meta.SchemeAccess;
 import com.handcoded.fpml.schemes.Scheme;
 import com.handcoded.fpml.schemes.SchemeCollection;
+import com.handcoded.meta.Release;
 import com.handcoded.meta.Specification;
 import com.handcoded.validation.Precondition;
 import com.handcoded.validation.Rule;
@@ -118,8 +119,21 @@ public class SchemeRule extends Rule
 			if (version == null)
 				errorHandler.error ("999", list.item (0), "", "", "");
 			
-			SchemeCollection 	schemes =
-				((SchemeAccess) (Releases.FPML.getReleaseForVersion (version))).getSchemeCollection ();
+			Release release = Releases.FPML.getReleaseForVersion (version);
+			if (release == null) {
+				errorHandler.error ("305", null,
+						"The document release is not in the schema set -- Check configuration",
+						getDisplayName (), null);
+				return (false);
+			}
+			
+			SchemeCollection 	schemes = ((SchemeAccess) release).getSchemeCollection ();
+			if (schemes == null) {
+				errorHandler.error ("305", null,
+						"No schemes data is available for this FpML version -- Check configuration",
+						getDisplayName (), null);
+				return (false);				
+			}
 		
 			for (int index = 0; index < list.getLength (); ++index) {
 				Element	context = (Element) list.item (index);
