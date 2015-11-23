@@ -1,4 +1,4 @@
-// Copyright (C),2005-2013 HandCoded Software Ltd.
+// Copyright (C),2005-2015 HandCoded Software Ltd.
 // All rights reserved.
 //
 // This software is licensed in accordance with the terms of the 'Open Source
@@ -707,6 +707,8 @@ public final class IrdRules extends FpMLRuleSet
 					if (!exists (startDate))
 						startDate = XPath.path (context, "effectiveDate", "unadjustedDate");
 
+					if (startDate == null) return (true);
+					
 					int		rollDate = toInteger (rollConvention);
 					Date	start	 = toDate (startDate);
 
