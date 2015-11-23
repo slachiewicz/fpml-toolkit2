@@ -707,7 +707,7 @@ public final class IrdRules extends FpMLRuleSet
 					if (!exists (startDate))
 						startDate = XPath.path (context, "effectiveDate", "unadjustedDate");
 
-					if (startDate == null) return (true);
+					if (startDate == null) continue;
 					
 					int		rollDate = toInteger (rollConvention);
 					Date	start	 = toDate (startDate);
