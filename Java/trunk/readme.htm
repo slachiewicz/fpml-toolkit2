@@ -10,9 +10,9 @@
 <body>
     <p>
         <font size="6">Toolkit for FpML Processing<br>
-            Java Open Source Release 1.8</font></p>
+            Java Open Source Release 1.8.1</font></p>
     <p>
-        <font size="5">May, 2015</font></p>
+        <font size="5">November, 2015</font></p>
     <p>
         <font size="5">Copyright (C),2006-2015 HandCoded Software Ltd.<br>
             All rights reserved.</font></p>
@@ -21,7 +21,7 @@
     <h1>
         Introduction</h1>
     <p>
-        This document accompanies Java 1.8 release of the 'HandCoded Toolkit for FpML Processing'
+        This document accompanies Java 1.8.1 release of the 'HandCoded Toolkit for FpML Processing'
         and describes the contents of the release area. The source code for this release
         is not included but is available from the SVN repository on SourceForge.</p>
     <h2>
@@ -54,7 +54,7 @@
         <li>Classify*.bat<br />
             <br />
             Running these files will execute a simple program that uses the classification tools
-            within the toolkit to identifty the financial product within the example files.</li>
+            within the toolkit to identify the financial product within the example files.</li>
         <li>files-core &amp; files-fpml
             <br />
             Contains an XML catalog file (and its associated schema) used to resolve DTD system
@@ -94,23 +94,26 @@
 	<h3>
 		Validation</h3>
 	<p>
-		The validation scripts (e.g. Validate1-0.bat, etc.) use a simple application (implemented
+		The validation scripts (e.g. Validate5-9.bat, etc.) use a simple application (implemented
 		as the class demo.com.handcoded.fpml.Validate) to process one or more XML files.
 		Running one of the example batch files will process a small selection of FpML examples
 		displaying the results to the screen.</p>
 	<p>
-		At the end of the run the program calculates the average processing &nbsp;time for
+		At the end of the run the program calculates the average processing time for
 		each file and displays the number of rules tested against each file as shown below.</p>
-	<pre>&gt;&gt; files/examples/fpml4-0/ird_ex26_fxnotional_swap_with_cfs.xml
-&gt;&gt; files/examples/fpml4-0/ird_ex27_inverse_floater.xml
-&gt;&gt; files/examples/fpml4-0/ird_ex28_bullet_payments.xml
-&gt;&gt; files/examples/fpml4-0/msg_ex01_request_confirmation.xml
-&gt;&gt; files/examples/fpml4-0/msg_ex02_trade_confirmed.xml
-&gt;&gt; files/examples/fpml4-0/msg_ex03_portfolio.xml
-&gt;&gt; files/examples/fpml4-0/td_ex01_simple_term_deposit.xml
-&gt;&gt; files/examples/fpml4-0/td_ex02_term_deposit_w_settlement_etc.xml
-== Processed 91 files in 1391 milliseconds
-== 65.42056074766356 files/sec checking 219 rules</pre>
+	<pre>&gt;&gt; files-fpml\examples\fpml5-9\confirmation\products\securities\sec-ex001-trade-execution-future.xml
+&gt;&gt; files-fpml\examples\fpml5-9\confirmation\products\securities\sec-ex002-trade-execution-exchange-traded-option.xml
+&gt;&gt; files-fpml\examples\fpml5-9\confirmation\products\variance-swaps\eqvs-ex01-variance-swap-index.xml
+&gt;&gt; files-fpml\examples\fpml5-9\confirmation\products\variance-swaps\eqvs-ex02-variance-swap-single-stock.xml
+&gt;&gt; files-fpml\examples\fpml5-9\confirmation\products\variance-swaps\eqvs-ex03-conditional-variance-swap.xml
+&gt;&gt; files-fpml\examples\fpml5-9\confirmation\products\variance-swaps\eqvs-ex04-dispersion-variance-swap.xml
+&gt;&gt; files-fpml\examples\fpml5-9\confirmation\products\variance-swaps\eqvs-ex05-dispersion-variance-swap-transaction-supplement.xml
+&gt;&gt; files-fpml\examples\fpml5-9\confirmation\products\variance-swaps\eqvs-ex06-variance-option-transaction-supplement.xml
+&gt;&gt; files-fpml\examples\fpml5-9\confirmation\products\volatility-swaps\eqvls-ex01-volatility-swap-index-matrix.xml
+scheme-31 /requestConfirmation/trade/documentation/masterAgreement/masterAgreementType An unrecognized scheme URI has been used as a qualifier [http://dtcc.com/coding-scheme/master-agreement-type]
+&gt;&gt; files-fpml\examples\fpml5-9\confirmation\products\volatility-swaps\eqvls-ex02-volatility-swap-index-mca.xml
+== Processed 454 files in 1812 milliseconds
+== 250.55187637969095 files/sec checking 480 rules</pre>
 	<p>
 		The application responds to a number of command line options and can be configured
 		to test the FpML defined rules (e.g. excludes HandCoded rules including scheme value
@@ -131,7 +134,7 @@
 		Changes in 1.1:</p>
 	<ul>
 		<li>Support for FpML 4.3 LCWD and 4.4 WD</li>
-		<li>Toolkit supports full ISO date/time/dateTime types with timezone offsets.</li>
+		<li>Toolkit supports full ISO date/time/dateTime types with time zone offsets.</li>
 	</ul>
 	<p>
 		Changes in 1.2:</p>
@@ -220,6 +223,12 @@
 		build the Maven directory structure without duplicating the code base.</li>
 		<li>XInclude is enabled while loading schema meta-data so each schema can
 		have its data in a separate file.</li>
+	</ul>
+	<p>
+		Changes in 1.8.1:
+	</p>
+	<ul>
+		<li>The materials for FpML 5.9 have been added.</li>
 	</ul>
 </body>
 </html>
